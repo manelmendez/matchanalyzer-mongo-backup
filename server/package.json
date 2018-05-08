@@ -1,0 +1,31 @@
+{
+  "name": "matchanalyzer",
+  "version": "0.0.0",
+  "description": "Software to control match stats",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "keywords": [
+    "node",
+    "vue"
+  ],
+  "author": "manelmendez",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.2",
+    "connect-history-api-fallback": "^1.5.0",
+    "cors": "^2.8.4",
+    "ejs": "^2.5.8",
+    "express": "^4.16.3",
+    "file-loader": "^1.1.11",
+    "google-auth-library": "^1.4.0",
+    "helmet": "^3.12.0",
+    "jsonwebtoken": "^8.2.1",
+    "moment": "^2.22.0",
+    "mongoose": "^5.0.14",
+    "morgan": "^1.9.0",
+    "nodemon": "^1.17.3"
+  }
+}
