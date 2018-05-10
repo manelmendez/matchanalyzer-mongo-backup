@@ -1,23 +1,19 @@
 'use strict'
 
-const User = require('../models/user')
-const tokenServices = require('../services/token-services')
-const bcrypt = require('bcrypt-nodejs')
+const Player = require('../models/player.js')
 
 /**
  * Function to sign up a new user in the DB 
  *
  */
-function signUp(req, res) {
-  console.log(req.body)
+function addPlayer(req, res) {
   // getting data
-  const user = new User({
+  const player = new Player({
     email: req.body.email,
     name: req.body.name,
     password: req.body.password,
     provider: 'local'
   })
-  console.log("Registrando usuario con nombre: " + user.name + "...");
   // check if user exists in database
   User.findOne({ email: user.email }, function(err, existingUser) {
     // case if error in search

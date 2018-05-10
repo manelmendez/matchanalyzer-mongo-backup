@@ -23,8 +23,7 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now()
   },
-  lastLogin: Date,
-  notes: Array
+  lastLogin: Date
 })
 
 /**

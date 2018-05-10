@@ -27,6 +27,7 @@ function isAuth(req, res, next) {
 }
 
 function checkAuth(req, res, next) {
+  console.log("");
   console.log("Comprobando header Authorization");
     if (!req.headers.authorization) {
       console.log("No existe");
@@ -46,7 +47,7 @@ function checkAuth(req, res, next) {
         next()
       }
       else{
-        console.log("AAAAAA");
+        console.log("No está autorizado");
       }
     })
     .catch(reject => {
