@@ -14,6 +14,8 @@ api.get('/oauth/google', oauth2Ctrl.verifyGoogleToken)
 // USER
 api.post('/signUp', userCtrl.signUp)
 api.post('/signIn', userCtrl.signIn)
+api.get('/getUser/:id', userCtrl.getUser)
+api.get('/getAllUsers', userCtrl.getAllUsers)
 
 // TEAM
 api.post('/addTeam', teamCtrl.addTeam)

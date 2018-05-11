@@ -23,7 +23,7 @@ app.use(function(req, res, next) {
     next();
 });
 // middleware para obtener LOGS de cada petición que hagamos al servidor
-//app.use(morgan('dev'))
+app.use(morgan('dev'))
 
 // SEGURIDAD, helmet protege de varias cosas sobretodo en temas de cabeceras HTTP
 app.use(helmet())

@@ -79,13 +79,4 @@ UserSchema.statics.loginDate = function loginDate(id, callback) {
    return this.findByIdAndUpdate(id, { $set : { 'lastLogin' : Date.now() }}, { new : true }, callback);
 };
 
-/**
- * Function that save a new note to a user
- *
- */
-UserSchema.statics.saveNote = function saveNote(id, noteId, callback) {
-   return this.findByIdAndUpdate(id, { $push : { 'notes' : noteId }}, callback);
-};
-
-
 module.exports = mongoose.model('User', UserSchema)

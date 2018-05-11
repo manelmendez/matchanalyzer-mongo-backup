@@ -99,37 +99,12 @@ function signIn(req, res) {
     }
   })
 }
-function saveNoteToUser(noteId, userId) {
-  // search for user in DB
-  User.findById(userId, (err, user) => {
-    // case if there is any problem in search
-    if (err) {
-      console.log(`Error: ${err}`)
-      return ({
-        message: `Error al guardar nota: ${err}`
-      })
-    }
-    // case if user is not found on DB
-    if (!user) {
-      console.log("No existe el usuario")
-      return ({
-        message: 'Algunos de los datos introducidos son incorrectos.'
-      })
-    }
-    // case if user found
-    if (user) {
-      // setting new note to user array on DB
-      User.saveNote(user.id, noteId, function(err, userUpdated) {
-        if(err) return console.log(err);
-        return userUpdated
-      });
-      
-    }
-  })
-}
+
 function getUser(req, res) {
   let userId = req.params.id
+  console.log("Buscando usuario con ID: "+userId+ "...");
   //search user on DB
+  // User.findOne({_id:userId}, (err, user) => {
   User.findById(userId, (err, user) => {
     // case if there is any problem in search
     if (err) {
@@ -140,14 +115,14 @@ function getUser(req, res) {
     }
     // case if user is not found on DB
     if (!user) {
-      console.log("No existe el usuario")
+      console.log("No existe el usuario.")
       return res.status(401).send({
         message: 'Algunos de los datos introducidos son incorrectos.'
       })
     }
     // case if user found
     if (user) {
-      console.log(user);
+      console.log("Usuario encontrado.");
       // send user
       res.status(200).send({
         message: 'Datos obtenidos correctamente',
@@ -156,35 +131,16 @@ function getUser(req, res) {
     }
   })
 }
-function getUserNotes(userId) {
-  return new Promise((resolve, reject) => {
-    //search user on DB
-    User.findById(userId, (err, user) => {
-      // case if there is any problem in search
-      if (err) {
-        console.log(`Error: ${err}`)
-        reject({ message: `Error al buscar: ${err}` })
-      }
-      // case if user is not found on DB
-      if (!user) {
-        console.log("No existe el usuario")
-        reject({ message: 'Algunos de los datos introducidos son incorrectos.'} )
-      }
-      // case if user found
-      if (user) {
-        // send user notes
-        resolve (user.notes)
-      }
-    })
-  });
-}
+
 function getAllUsers(req, res) {
+  console.log("Buscando todos los usuarios...");
   User.find({},(err, users) => {
     // case if there is any problem in search
     if (err) {
       console.log(`Error: ${err}`)
     }
     if (users) {
+      console.log("Usuarios encontrados.");
       res.status(200).send({
         users: users
       })
@@ -195,8 +151,6 @@ function getAllUsers(req, res) {
 module.exports = {
   signUp,
   signIn,
-  saveNoteToUser,
   getUser,
-  getUserNotes,
   getAllUsers
 }
