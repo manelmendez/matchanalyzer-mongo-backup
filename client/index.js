@@ -1,7 +1,6 @@
 import Vue from 'vue'
+import Vuex from 'vuex'
 import Vuetify from 'vuetify'
-import Vuex from 'vuex';
-import axios from 'axios'
 import GSignInButton from 'vue-google-signin-button'
 import FBSignInButton from 'vue-facebook-signin-button'
 
@@ -10,23 +9,26 @@ import router from './routes/routes'
 import App from './components/App.vue'
 import store from './store/store'
 
-Vue.use(Vuex)
 Vue.use(Vuetify)
 Vue.use(GSignInButton)
 Vue.use(FBSignInButton)
 
-Vue.prototype.$axios = axios.create()
-Vue.prototype.$axios.defaults.baseURL = constants.LOCAL_ADDRESS
-// add token to Auth header if onceLogged
-if (JSON.parse(window.localStorage.getItem('authUser'))!= null)
-{
-  Vue.prototype.$axios.defaults.headers.common['Authorization'] = 'Bearer '+JSON.parse(window.localStorage.getItem('authUser')).token
-}
+// Vue.prototype.$axios = axios.create()
+// Vue.prototype.$axios.defaults.baseURL = constants.LOCAL_ADDRESS
+// // add token to Auth header if onceLogged
+// if (JSON.parse(window.localStorage.getItem('authUser'))!= null)
+// {
+//   Vue.prototype.$axios.defaults.headers.common['Authorization'] = 'Bearer '+JSON.parse(window.localStorage.getItem('authUser')).token
+// }
 
 new Vue({
   el: '#app',
   router,
   store,
+  beforeCreate() {
+    //do something before creating vue instance
+    this.$store.dispatch('initializeStore')
+  },
   render: (h) => h(App)
 })
 

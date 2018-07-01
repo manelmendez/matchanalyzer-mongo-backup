@@ -3,7 +3,7 @@
 const Team = require('../models/team.js')
 
 /**
- * Function to sign up a new user in the DB 
+ * Function to sign up a new user in the DB
  *
  */
 function addTeam(req, res) {
@@ -86,7 +86,7 @@ function getAllTeams(req, res) {
     if (err) {
       console.log(`Error: ${err}`)
     }
-    if (users) {
+    if (teams) {
       console.log("Equipos encontrados.");
       res.status(200).send({
         teams: teams
@@ -97,5 +97,6 @@ function getAllTeams(req, res) {
 
 module.exports = {
   addTeam,
+  getTeam,
   getAllTeams
 }

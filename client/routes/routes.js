@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Welcome from '../components/Welcome.vue'
-import MainPage from '../components/MainPage.vue'
+import Teams from '../components/Teams.vue'
+import Players from '../components/Players.vue'
+import Dashboards from '../components/Dashboards.vue'
+import Settings from '../components/Settings.vue'
 
 import constants from '../assets/constants/constants'
 
@@ -16,25 +19,55 @@ const router = new VueRouter({
       path: '/',
       name: 'Welcome',
       component: Welcome,
-      // meta: { onceLogged: true }
+      meta: { onceLogged: true }
     },
     {
-      path: '/mainpage',
-      name: 'MainPage',
-      component: MainPage,
+      path: '/teams',
+      name: 'Teams',
+      component: Teams,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/players',
+      name: 'Players',
+      component: Players,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/dashboards',
+      name: 'Dashboards',
+      component: Dashboards,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/settings',
+      name: 'Settings',
+      component: Settings,
+      meta: { requiresAuth: true }
     }
   ]
 })
 /**
  * Function to check some things before redirect to a page
- * 
+ *
  */
 router.beforeEach((to, from, next) => {
+  // method to check if user needs to be logged to access a page
+  if(to.meta.requiresAuth) {
+    const authUser = JSON.parse(window.localStorage.getItem('authUser'))
+    if(!authUser) {
+      next({name:'Welcome'})
+    }
+    else {
+      isAuth()
+      next()
+    }
+  }
   // method to not allow a user to go to certain pages once logged
-  if (to.meta.onceLogged) {
+  else if (to.meta.onceLogged) {
     const authUser = JSON.parse(window.localStorage.getItem('authUser'))
     if(authUser) {
-      next({name:'MainPage'})
+      next({name:'Teams'})
     }
     else {
       next()
@@ -44,27 +77,25 @@ router.beforeEach((to, from, next) => {
     next()
   }
 })
-function isAuth(authUser) {
+function isAuth() {
   axios.post(constants.LOCAL_ADDRESS+'private', null)
   .then(response => {
     if(response.status === 200) {
       console.log("Autorizado")
     }
-    else if (response.status === 202) {
-      console.log("Autenticado pero no autorizado")
-      router.push({ path: "/userPage" })
-    }
   })
   .catch(error => {
-    if (error.status === 403) {
+    console.log(error);
+    if (error.response.status === 403) {
       console.log("No estás autorizado");
     }
-    else if (error.status === 401) {
+    else if (error.response.status === 401) {
       console.log("No estás autorizado");
     }
-    else if (error.status === 500) {
+    else if (error.response.status === 500) {
       console.log("No estás autorizado");
     }
+    window.localStorage.removeItem('authUser')
     router.push({ path: "/" })
   })
 }

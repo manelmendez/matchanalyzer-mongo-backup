@@ -19,6 +19,7 @@ api.get('/getAllUsers', userCtrl.getAllUsers)
 
 // TEAM
 api.post('/addTeam', teamCtrl.addTeam)
+api.get('/getTeam/:id', teamCtrl.getTeam)
 api.get('/getAllTeams', teamCtrl.getAllTeams)
 
 module.exports = api

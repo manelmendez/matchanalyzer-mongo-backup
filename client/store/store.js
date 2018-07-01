@@ -6,11 +6,23 @@ import * as actions from '../actions/actions'
 Vue.use(Vuex)
 
 const state = {
-  isLogged: true
+  user:{},
+  team: {},
+  teams: []
+}
+
+const getters = {
+  isLogged: state => {
+    return state.user.isLogged
+  },
+  teams: state => {
+    return state.teams
+  }
 }
 
 export default new Vuex.Store({
   state,
   mutations,
-  actions
+  actions,
+  getters
 })

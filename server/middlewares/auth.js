@@ -3,12 +3,13 @@
 const tokenServices = require('../services/token-services')
 
 function isAuth(req, res, next) {
+  console.log(req.headers);
   if (!req.headers.authorization) {
     return res.status(403).send({
       message: 'No tienes autorización'
     })
   }
-  // extract 'Bearer' from Auth header 
+  // extract 'Bearer' from Auth header
   const tokenBearer = req.get("authorization")
   let arr = tokenBearer.split(" ")
   const token = arr[1]
@@ -35,7 +36,7 @@ function checkAuth(req, res, next) {
         message: 'No tienes autorización'
       })
     }
-    // extract 'Bearer' from Auth header 
+    // extract 'Bearer' from Auth header
     const tokenBearer = req.get("authorization")
     let arr = tokenBearer.split(" ")
     const token = arr[1]

@@ -6,12 +6,10 @@ const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client(config.GOOGLE_CLIENT_ID);
 
 function verifyGoogleToken(req, res, next) {
-	
+
 	const tokenBearer = req.get("authorization")
-	console.log(tokenBearer);
   let arr = tokenBearer.split(" ")
   const token = arr[1]
-	console.log(token);
   // verify token
 	async function verify() {
 		const ticket = await client.verifyIdToken({
@@ -24,8 +22,8 @@ function verifyGoogleToken(req, res, next) {
 	  const userid = payload['sub'];
 	  // If request specified a G Suite domain:
 	  //const domain = payload['hd'];
-		console.log(payload);
-		console.log(userid);
+		// console.log(payload);
+		// console.log(userid);
 		//coger datos de payload y guardarlo en base de datos como usuario
 		const user = new User({
 	    email: payload.email,
@@ -60,7 +58,6 @@ function verifyGoogleToken(req, res, next) {
 	    }
 	    // case if user exists ==> RETURN Error
 	    if (existingUser) {
-				console.log(existingUser);
 	      console.log("Este email ya está registrado, no se puede continuar registrando. LOGUEANDO...")
 				return res.status(200).send({
 					message: 'Te has logueado correctamente',

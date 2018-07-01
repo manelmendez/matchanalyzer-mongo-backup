@@ -57,6 +57,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
   export default {
     name: 'Welcome',
     data () {
@@ -90,27 +92,13 @@
         }
       },
       onSignInSuccess (googleUser) {
-        const authUser = {}
-        // `googleUser` is the GoogleUser object that represents the just-signed-in user.
-        // See https://developers.google.com/identity/sign-in/web/reference#users
-        // Useful data for your client-side scripts:
-        var profile = googleUser.getBasicProfile();
-        // The ID token you need to pass to your backend:
-        var id_token = googleUser.getAuthResponse().id_token;
-        let headers = {
-          'Authorization': 'Bearer '+id_token
-        }
-        this.$axios.get('oauth/google',{headers})
+
+        this.signInGoogle(googleUser)
         .then(response => {
           if(response.status === 200) {
-            this.toggle= true
-            authUser.id = response.data.user._id
-            authUser.token = response.data.token
-            window.localStorage.setItem('authUser', JSON.stringify(authUser))
             setTimeout(() => {
-              this.$bus.$emit('logged', 'User logged')
               this.$router.push({
-                name: "MainPage" //si uso path: "/mainpage" el params (props) no funciona -- params: { user: response.data.user } --
+                name: "Teams" //si uso path: "/mainpage" el params (props) no funciona -- params: { user: response.data.user } --
               })
             }, 2000);
           }
@@ -121,13 +109,19 @@
         console.log('OH NOES', error)
       },
       onSignInSuccessFB (response) {
-        FB.api('/me', dude => {
+        console.log(response);
+        FB.api('https://graph.facebook.com/me', dude => {
+          console.log(dude);
           console.log(`Good to see you, ${dude.name}.`)
         })
       },
       onSignInErrorFB (error) {
-        console.log('OH NOES', error)
-      }
+        console.log('Error en el login de Facebook', error)
+      },
+      ...mapActions([
+        'signIn',
+        'signInGoogle'
+      ])
     },
     events: {}
   }

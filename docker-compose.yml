@@ -1,0 +1,43 @@
+version: '3.5'
+
+services:
+  adminmongo:
+    image: mrvautin/adminmongo
+    container_name: adminmongo
+    restart: "always"
+    stdin_open: true
+    tty: true
+    environment:
+      CONN_NAME: matchanalyzer
+      DB_HOST: mongo
+      DB_PORT: 27017
+    ports:
+      - "4444:1234"
+    networks:
+      - ma_backend
+  matchanalyzer:
+    build: .
+    container_name: "matchanalyzer"
+    restart: always
+    stdin_open: true
+    tty: true
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/matchAnalyzer
+    ports:
+      - "9000:9000"
+    networks:
+      - ma_backend
+  mongo:
+    image: mongo
+    container_name: "mongo"
+    restart: always
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./.data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - ma_backend
+networks:
+  ma_backend:

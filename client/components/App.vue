@@ -8,7 +8,7 @@
 <script>
   import Layout from './Layout.vue'
   import Welcome from './Welcome.vue'
-  import { mapState } from 'vuex'
+  import { mapGetters } from 'vuex'
   export default {
     name: "App",
     components: {
@@ -19,7 +19,7 @@
       drawer: true,
     }),
     computed: {
-      ...mapState([
+      ...mapGetters([
         'isLogged'
       ])
     }

@@ -2,14 +2,25 @@
   <v-content>
   <!-- component matched by the route will render here -->
     <v-container>
-      <p>PRAAAAAAAAAAA</p>
+      <p>AJUSTES</p>
+
+      <v-btn
+        fab
+        color="pink"
+        dark
+        bottom
+        right
+        fixed
+      >
+        <i class="material-icons">add</i>
+      </v-btn>
     </v-container>
   </v-content>
 </template>
 
 <script>
   export default {
-    name: "MainPage",
+    name: "Settings",
     data: () => ({
 
     })
