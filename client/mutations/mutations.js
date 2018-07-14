@@ -3,6 +3,7 @@ import * as types from './mutation-types'
 export const mutations = {
   [types.INITIALIZE] (state) {
     const authUser = JSON.parse(window.localStorage.getItem('authUser'))
+    console.log(authUser);
     if (authUser) {
       state.user = authUser
     }

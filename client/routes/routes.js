@@ -55,6 +55,7 @@ router.beforeEach((to, from, next) => {
   // method to check if user needs to be logged to access a page
   if(to.meta.requiresAuth) {
     const authUser = JSON.parse(window.localStorage.getItem('authUser'))
+    console.log("Requires Auth");
     if(!authUser) {
       next({name:'Welcome'})
     }
@@ -67,6 +68,7 @@ router.beforeEach((to, from, next) => {
   else if (to.meta.onceLogged) {
     const authUser = JSON.parse(window.localStorage.getItem('authUser'))
     if(authUser) {
+      console.log("Logged");
       next({name:'Teams'})
     }
     else {
