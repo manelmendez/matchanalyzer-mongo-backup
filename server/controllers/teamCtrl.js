@@ -12,7 +12,7 @@ function addTeam(req, res) {
     name: req.body.name,
     manager: req.body.manager,
     players: [],
-    email: req.body.email
+    season: req.body.temporada
   })
   console.log("Registrando equipo con nombre: " + team.name + "...");
   // check if team exists in database
@@ -95,8 +95,41 @@ function getAllTeams(req, res) {
   })
 }
 
+function getUserTeams(req, res) {
+  let userId = req.params.userId
+  console.log("Buscando equipos del usuario " + userId + "en la base de datos..." );
+  //search team on DB
+  Team.find({ manager: userId }, (err, teams) => {
+    // case if there is any problem in search
+    if (err) {
+      console.log(`Error: ${err}`)
+      return res.status(500).send({
+        message: `Error al buscar: ${err}`
+      })
+    }
+    // case if team is not found on DB
+    if (!teams) {
+      console.log("No existen equipos.")
+      return res.status(401).send({
+        message: 'No se han encontrado equipos'
+      })
+    }
+    // case if team found
+    if (teams) {
+      console.log("Equipos de " + userId + " entontrados.");
+      // send user
+      res.status(200).send({
+        message: 'Datos obtenidos correctamente',
+        teams: teams
+      })
+    }
+  })
+}
+
+
 module.exports = {
   addTeam,
   getTeam,
-  getAllTeams
+  getAllTeams,
+  getUserTeams
 }

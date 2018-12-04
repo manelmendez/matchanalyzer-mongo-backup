@@ -1,19 +1,23 @@
 <template>
   <v-app dark>
-    <Layout v-if="isLogged"/>
-    <router-view></router-view>
+    <div v-if="isLogged">
+      <Layout>
+    </div>
+    <div v-else>
+      <Welcome>
+    </div>
   </v-app>
 </template>
 
 <script>
-  import Layout from './Layout.vue'
-  import Welcome from './Welcome.vue'
+import Layout from './Layout.vue'
+import Welcome from './Welcome.vue'
   import { mapGetters } from 'vuex'
   export default {
     name: "App",
     components: {
-      Welcome,
-      Layout
+      Layout,
+      Welcome
     },
     data: () => ({
       drawer: true,

@@ -3,7 +3,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import moment from 'moment'
 
-import constants from '../assets/constants/constants'
+import constants from '../../assets/constants/constants'
 import store from '../store/store'
 
 // SETTING UP AXIOS IN VUEX
@@ -32,7 +32,8 @@ export const signIn = ({commit}, body) => {
       if(response.status === 200) {
         let authUser = {
           token: response.data.token,
-          isLogged: true
+          isLogged: true,
+          ...response.data.user
         }
         axios.defaults.headers.common['Authorization'] = 'Bearer '+response.data.token
         window.localStorage.setItem('authUser', JSON.stringify(authUser))
@@ -60,7 +61,8 @@ export const signInGoogle = ({commit}, googleUser) => {
       if(response.status === 200) {
         let authUser = {
           token: response.data.token,
-          isLogged: true
+          isLogged: true,
+          ...response.data.user
         }
         axios.defaults.headers.common['Authorization'] = 'Bearer '+response.data.token
         window.localStorage.setItem('authUser', JSON.stringify(authUser))
@@ -78,7 +80,8 @@ export const signInFB = ({commit}, token_payload) => {
       if(response.status === 200) {
         let authUser = {
           token: response.data.token,
-          isLogged: true
+          isLogged: true,
+          ...response.data.user
         }
         axios.defaults.headers.common['Authorization'] = 'Bearer '+response.data.token
         window.localStorage.setItem('authUser', JSON.stringify(authUser))
@@ -93,6 +96,7 @@ export const signInFB = ({commit}, token_payload) => {
 
 export const signOut = ({commit}) => {
   axios.defaults.headers.common['Authorization'] = null
+  window.localStorage.removeItem('authUser')
   commit(types.SIGN_OUT)
 }
 /*
@@ -105,8 +109,9 @@ export const signOut = ({commit}) => {
 export const addTeam = ({commit}, body) => {
   return axios.post('addTeam', body)
     .then(response => {
+      console.log(response.data);
       if(response.status === 200) {
-        commit(types.ADD_TEAM)
+        commit(types.ADD_TEAM, response.data.team)
       }
       return response
     })
@@ -114,18 +119,26 @@ export const addTeam = ({commit}, body) => {
       return err.response
     })
 }
-export const getTeam = ({commit}) => {
-  axios.get('getTeam/')
+export const getTeam = ({commit}, id) => {
+  return axios.get('getTeam/'+id)
     .then(response => {
       let team = response.data.team
       commit(types.GET_TEAM, team)
     })
 }
 export const getAllTeams = ({commit}) => {
-  axios.get('getAllTeams')
+  return axios.get('getAllTeams')
     .then(response => {
       let teams = response.data.teams
       commit(types.GET_TEAMS, teams)
+    })
+}
+
+export const getUserTeams = ({commit}, userId) => {
+  return axios.get('getUserTeams/'+userId)
+    .then(response => {
+      let teams = response.data.teams
+      commit(types.GET_MYTEAMS, teams)
     })
 }
 /*
@@ -135,3 +148,22 @@ export const getAllTeams = ({commit}) => {
 *
 *
 */
+export const addPlayer = ({commit}, body) => {
+  return axios.post('addPlayer', body)
+    .then(response => {
+      if(response.status === 200) {
+        commit(types.ADD_PLAYER, response.data)
+      }
+      return response
+    })
+    .catch((err) => {
+      return err.response
+    })
+}
+export const getPlayerByTeamId = ({commit}, id) => {
+  return axios.get('getPlayerByTeamId/'+id)
+    .then(response => {
+      let players = response.data
+      commit(types.GET_TEAMPLAYERS, players)
+    })
+}

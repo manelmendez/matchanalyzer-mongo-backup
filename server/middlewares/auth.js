@@ -5,6 +5,7 @@ const tokenServices = require('../services/token-services')
 function isAuth(req, res, next) {
   console.log(req.headers);
   if (!req.headers.authorization) {
+    console.log('Sin cabeceras. No autorizado');
     return res.status(403).send({
       message: 'No tienes autorización'
     })
@@ -16,11 +17,13 @@ function isAuth(req, res, next) {
   tokenServices.decodeToken(token)
     .then(response => {
       req.user = response
+      console.log('Tiene acceso');
       return res.status(200).send({
         message: 'Tienes acceso'
       })
     })
     .catch(response => {
+      console.log('No autorizado. Sin acceso');
       return res.status(response.status).send({
         message: 'No tienes autorización'
       })

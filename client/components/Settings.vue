@@ -1,21 +1,18 @@
 <template>
-  <v-content>
-  <!-- component matched by the route will render here -->
-    <v-container>
-      <p>AJUSTES</p>
+  <v-container>
+    <p>AJUSTES</p>
 
-      <v-btn
-        fab
-        color="pink"
-        dark
-        bottom
-        right
-        fixed
-      >
-        <i class="material-icons">add</i>
-      </v-btn>
-    </v-container>
-  </v-content>
+    <v-btn
+      fab
+      color="pink"
+      dark
+      bottom
+      right
+      fixed
+    >
+      <i class="material-icons">add</i>
+    </v-btn>
+  </v-container>
 </template>
 
 <script>

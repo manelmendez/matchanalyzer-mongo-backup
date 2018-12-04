@@ -5,7 +5,7 @@ const tokenServices = require('../services/token-services')
 const bcrypt = require('bcrypt-nodejs')
 
 /**
- * Function to sign up a new user in the DB 
+ * Function to sign up a new user in the DB
  *
  */
 function signUp(req, res) {
@@ -35,8 +35,10 @@ function signUp(req, res) {
         if (err) return res.status(500).send({
           message: `Error al crear el usuario: ${err}`
         })
+        delete user[password]
         return res.status(200).send({
-          token: tokenServices.createToken(user)
+          token: tokenServices.createToken(user),
+          user: user
         })
       })
     }
@@ -83,6 +85,8 @@ function signIn(req, res) {
           if(err) return console.log(err);
           console.log(`${user[0].email} se ha logueado correctamente`)
         });
+        delete user[0][password]
+        console.log(user[0]);
         res.status(200).send({
           message: 'Te has logueado correctamente',
           token: tokenServices.createToken(user[0]),

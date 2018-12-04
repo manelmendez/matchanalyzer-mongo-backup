@@ -7,14 +7,14 @@ const crypto = require('crypto')
 
 const PlayerSchema = new Schema({
   name: String,
-  surname: String,
+  position: String,
   avatar: String,
   signupDate: {
     type: Date,
     default: Date.now()
   },
-  team: String,
-  positions: Array
+  team: { type: Schema.ObjectId, ref: 'team' },
+  year: String
 })
 
 /**
@@ -45,9 +45,9 @@ PlayerSchema.post('save', function() {
  *
  */
 PlayerSchema.methods.gravatar = function() {
-  if (!this.email) return `https://gravatar.com/avatar/?s=200&d=retro`
+  if (!this.name) return `https://gravatar.com/avatar/?s=200&d=retro`
 
-  const md5 = crypto.createHash('md5').update(this.email).digest('hex')
+  const md5 = crypto.createHash('md5').update(this.name).digest('hex')
   return `https://gravatar.com/avatar/${md5}?s=200&d=retro`
 }
 

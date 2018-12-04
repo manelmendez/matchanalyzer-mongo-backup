@@ -7,7 +7,7 @@ import FBSignInButton from 'vue-facebook-signin-button'
 import constants from './assets/constants/constants'
 import router from './routes/routes'
 import App from './components/App.vue'
-import store from './store/store'
+import store from './vuex/store/store'
 
 Vue.use(Vuetify)
 Vue.use(GSignInButton)

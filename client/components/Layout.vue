@@ -1,5 +1,20 @@
 <template>
   <v-content>
+    <v-toolbar app fixed clipped-left>
+      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-title>MatchAnalyzer</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-menu open-on-hover offset-y>
+        <v-btn slot="activator" icon dark>
+          <v-icon>account_circle</v-icon>
+        </v-btn>
+        <v-list>
+          <v-list-tile v-for="(item, i) in items" :key="i" @click="">
+            <v-list-tile-title @click="logOut()">{{ item.title }}</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
+    </v-toolbar>
     <v-navigation-drawer
         clipped
         fixed
@@ -15,12 +30,12 @@
             <v-list-tile-title>Mis equipos</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click="goTo('Players')">
+        <v-list-tile @click="goTo('CompeticionBase')">
           <v-list-tile-action>
-            <i class="material-icons">directions_run</i>
+            <v-icon>fas fa-trophy</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>Mis jugadores</v-list-tile-title>
+            <v-list-tile-title>Mis competicones</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-list-tile @click="goTo('Dashboards')">
@@ -41,21 +56,7 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar app fixed clipped-left>
-      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-toolbar-title>MatchAnalyzer</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-menu open-on-hover offset-y>
-        <v-btn slot="activator" icon dark>
-          <v-icon>account_circle</v-icon>
-        </v-btn>
-        <v-list>
-          <v-list-tile v-for="(item, i) in items" :key="i" @click="">
-            <v-list-tile-title @click="logOut()">{{ item.title }}</v-list-tile-title>
-          </v-list-tile>
-        </v-list>
-      </v-menu>
-    </v-toolbar>
+    <router-view></router-view>
   </v-content>
 </template>
 <script>

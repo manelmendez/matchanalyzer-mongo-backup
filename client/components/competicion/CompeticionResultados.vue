@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <p>BIENVENIDO A TUS GRÁFICOS</p>
+    <p>COMPETICION/RESULTADOS</p>
 
     <v-btn
       fab
@@ -17,7 +17,7 @@
 
 <script>
   export default {
-    name: "Dashboards",
+    name: "CompeticionResultados",
     data: () => ({
 
     })

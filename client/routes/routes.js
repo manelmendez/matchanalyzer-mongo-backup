@@ -1,9 +1,13 @@
 import Vue from 'vue'
 import Welcome from '../components/Welcome.vue'
 import Teams from '../components/Teams.vue'
-import Players from '../components/Players.vue'
+import MyTeam from '../components/MyTeam.vue'
 import Dashboards from '../components/Dashboards.vue'
 import Settings from '../components/Settings.vue'
+import CompeticionBase from '../components/competicion/CompeticionBase.vue'
+import CompeticionEquipos from '../components/competicion/CompeticionEquipos.vue'
+import CompeticionResultados from '../components/competicion/CompeticionResultados.vue'
+import CompeticionClasificacion from '../components/competicion/CompeticionClasificacion.vue'
 
 import constants from '../assets/constants/constants'
 
@@ -15,12 +19,12 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   mode: 'history',
   routes: [
-    {
-      path: '/',
-      name: 'Welcome',
-      component: Welcome,
-      meta: { onceLogged: true }
-    },
+    // {
+    //   path: '/',
+    //   name: 'Welcome',
+    //   component: Welcome,
+    //   meta: { onceLogged: true }
+    // },
     {
       path: '/teams',
       name: 'Teams',
@@ -28,9 +32,9 @@ const router = new VueRouter({
       meta: { requiresAuth: true }
     },
     {
-      path: '/players',
-      name: 'Players',
-      component: Players,
+      path: '/teams/:id',
+      name: 'MyTeam',
+      component: MyTeam,
       meta: { requiresAuth: true }
     },
     {
@@ -44,6 +48,38 @@ const router = new VueRouter({
       name: 'Settings',
       component: Settings,
       meta: { requiresAuth: true }
+    },
+    {
+      path: '/competition',
+      component: CompeticionBase,
+      meta: { requiresAuth: true },
+      props: true,
+      children: [
+        {
+          path: '',
+          name: 'CompeticionBase',
+          props: true,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: ':id/teams',
+          name: 'CompeticionEquipos',
+          component: CompeticionEquipos,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: ':id/results',
+          name: 'CompeticionResultados',
+          component: CompeticionResultados,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: ':id/ranking',
+          name: 'CompeticionClasificacion',
+          component: CompeticionClasificacion,
+          meta: { requiresAuth: true }
+        }
+      ]
     }
   ]
 })
@@ -68,10 +104,11 @@ router.beforeEach((to, from, next) => {
   else if (to.meta.onceLogged) {
     const authUser = JSON.parse(window.localStorage.getItem('authUser'))
     if(authUser) {
-      console.log("Logged");
+      console.log("Logged")
       next({name:'Teams'})
     }
     else {
+      console.log("Not Logged")
       next()
     }
   }
