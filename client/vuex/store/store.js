@@ -5,33 +5,6 @@ import * as actions from '../actions/actions'
 
 Vue.use(Vuex)
 
-// const userModule = {
-//   state: { ... },
-//   mutations: { ... },
-//   actions: { ... },
-//   getters: { ... }
-// }
-//
-// const teamModule = {
-//   state: {},
-//   mutations: { ... },
-//   actions: { ... },
-//   getters: { ... }
-// }
-//
-// const playerModule = {
-//   state: { ... },
-//   mutations: { ... },
-//   actions: { ... },
-//   getters: { ... }
-// }
-//
-// const competitionModule = {
-//   state: { ... },
-//   mutations: { ... },
-//   actions: { ... },
-//   getters: { ... }
-// }
 const state = {
   user: {},
   team: {},
