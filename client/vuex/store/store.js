@@ -1,7 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { mutations } from '../mutations/mutations'
-import * as actions from '../actions/actions'
+
+import { rootMutations } from '../mutations/rootMutations'
+import { userMutations } from '../mutations/userMutations'
+import { teamMutations } from '../mutations/teamMutations'
+import { playerMutations } from '../mutations/playerMutations'
+
+import * as rootActions from '../actions/rootActions'
+import * as userActions from '../actions/userActions'
+import * as teamActions from '../actions/teamActions'
+import * as playerActions from '../actions/playerActions'
 
 Vue.use(Vuex)
 
@@ -31,6 +39,20 @@ const getters = {
   teamPlayers: state => {
     return state.team.players
   },
+}
+
+const actions = {
+  ...rootActions,
+  ...userActions,
+  ...teamActions,
+  ...playerActions
+}
+
+const mutations = {
+  ...rootMutations,
+  ...userMutations,
+  ...teamMutations,
+  ...playerMutations
 }
 
 export default new Vuex.Store({
