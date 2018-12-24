@@ -2,11 +2,9 @@
   <v-container fluid>
     <v-card>
       <v-card-title>
-        <v-avatar
-          color="grey lighten-4"
-        >
-          <img :src="this.team.avatar" alt="avatar">
-        </v-avatar>
+        <v-list-tile-avatar>
+          <v-img :src="team.avatar">
+        </v-list-tile-avatar>
         {{this.team.name}}
       </v-card-title>
       <v-data-table
@@ -17,9 +15,9 @@
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">
-            <v-avatar color="grey lighten-4">
+            <v-list-tile-avatar>
               <img :src="props.item.avatar" alt="avatar">
-            </v-avatar>
+            </v-list-tile-avatar>
           </td>
           <td class="text-xs-center">{{ props.item.name }}</td>
           <td class="text-xs-center">{{ props.item.position }}</td>
@@ -141,8 +139,7 @@ import { mapGetters } from 'vuex'
       },
       ...mapActions([
         'getTeam',
-        'addPlayer',
-        'getPlayerByTeamId'
+        'addPlayer'
       ])
     },
     computed: {
@@ -154,7 +151,6 @@ import { mapGetters } from 'vuex'
     created() {
       //do something after creating vue instance
       this.getTeam(this.$route.params.id)
-      this.getPlayerByTeamId(this.$route.params.id)
     }
   }
 </script>

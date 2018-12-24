@@ -15,5 +15,9 @@ export const teamMutations = {
 
   [types.GET_MYTEAMS] (state, teams) {
     state.myTeams = teams
-  }
+  },
+
+  [types.ADD_TEAM_TO_COMPETITION] (state, team) {
+    state.competition.teams = [...state.competition.teams, team]
+  },
 }

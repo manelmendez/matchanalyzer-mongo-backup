@@ -14,7 +14,16 @@ const PlayerSchema = new Schema({
     default: Date.now()
   },
   team: { type: Schema.ObjectId, ref: 'team' },
-  year: String
+  year: String,
+  stats: {
+    goals: Number,
+    minutes: Number,
+    titularGames: Number,
+    substituteGames: Number,
+    playedGames: Number,
+    yellowCards: Number,
+    redCards: Number
+  }
 })
 
 /**

@@ -1,20 +1,20 @@
 <template>
   <v-container>
-    <p v-if="this.teams.length == 0">Aún no tienes equipos. Dale al botón para crear uno</p>
+    <p v-if="this.myTeams.length == 0">Aún no tienes equipos. Dale al botón para crear uno</p>
     <div v-else >
       <v-list>
         <v-list-tile
-          v-for="team in this.teams"
+          v-for="team in this.myTeams"
           :key="team._id"
           avatar
-          @click="goTo(team._id, team)"
+          @click="goTo(team._id)"
         >
           <v-list-tile-content>
             <v-list-tile-title v-text="team.name"></v-list-tile-title>
           </v-list-tile-content>
 
           <v-list-tile-avatar>
-            <img :src="team.avatar">
+            <v-img :src="team.avatar">
           </v-list-tile-avatar>
         </v-list-tile>
       </v-list>
@@ -27,20 +27,29 @@
         <v-card-text>
           <v-container grid-list-md>
             <v-layout wrap>
-              <v-flex xs12 md6>
+              <v-flex xs12 md4 class="text-xs-center">
+                <v-avatar size="100px" v-if="!image" class="uploadPhoto" @click="launchFilePicker">
+                  <v-icon>add_a_photo</v-icon>
+                  <input type="file" ref="file" @change="onFileChanged" style="display:none">
+                </v-avatar>
+                <v-avatar size="100px" v-else class="uploadPhoto" @click="launchFilePicker">
+                  <img :src="this.image" alt="avatar">
+                </v-avatar>
+              </v-flex>
+              <v-flex xs12 md4>
                 <v-text-field label="Nombre del equipo" v-model="name" required></v-text-field>
               </v-flex>
-              <v-flex xs12 md6>
+              <v-flex xs12 md4>
                 <v-select
                   :items="temporada"
                   label="Temporada"
                   v-model="season"
                   required
                 ></v-select>
+
               </v-flex>
             </v-layout>
           </v-container>
-          <small>*indicates required field</small>
         </v-card-text>
         <v-btn color="primary" @click.native="createTeam()">Continue</v-btn>
         <v-btn flat @click.native="dialog=!dialog">Cancel</v-btn>
@@ -67,6 +76,7 @@ import { mapGetters } from 'vuex'
   export default {
     name: "Teams",
     data: () => ({
+      image:"",
       dialog: false,
       temporada: [
         "14/15",
@@ -87,6 +97,12 @@ import { mapGetters } from 'vuex'
           }
         })
       },
+      launchFilePicker(){
+        this.$refs.file.click();
+      },
+      onFileChanged (event) {
+        this.image = URL.createObjectURL(event.target.files[0])
+      },
       createTeam() {
         let body = {
           season: this.season,
@@ -100,20 +116,28 @@ import { mapGetters } from 'vuex'
         })
       },
       ...mapActions([
-        'getAllTeams',
+        'getUserTeams',
         'addTeam',
         'selectTeam'
       ])
     },
     computed:{
       ...mapGetters([
-        'teams',
+        'myTeams',
         'user'
       ])
     },
     created() {
       //do something after creating vue instance
-      this.getAllTeams()
+      this.getUserTeams(this.user._id)
     }
   }
 </script>
+<style>
+.uploadPhoto {
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 209, 89, 0.44);
+  cursor: pointer;
+}
+</style>

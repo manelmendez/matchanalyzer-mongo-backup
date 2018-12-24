@@ -3,6 +3,7 @@ const oauth2Ctrl = require('../controllers/oauth2Ctrl')
 const userCtrl = require('../controllers/userCtrl')
 const teamCtrl = require('../controllers/teamCtrl')
 const playerCtrl = require('../controllers/playerCtrl')
+const competitionCtrl = require('../controllers/competitionCtrl')
 const auth = require('../middlewares/auth')
 const api = express.Router()
 
@@ -23,11 +24,16 @@ api.post('/addTeam', auth.checkAuth, teamCtrl.addTeam)
 api.get('/getTeam/:id', auth.checkAuth, teamCtrl.getTeam)
 api.get('/getAllTeams', auth.checkAuth, teamCtrl.getAllTeams)
 api.get('/getUserTeams/:userId', auth.checkAuth, teamCtrl.getUserTeams)
+api.post('/addNoManagerTeam', auth.checkAuth, teamCtrl.addNoManagerTeam, competitionCtrl.addTeamToCompetition)
 
 // PLAYER
-api.post('/addPlayer', auth.checkAuth, playerCtrl.addPlayer)
+api.post('/addPlayer', auth.checkAuth, playerCtrl.addPlayer, teamCtrl.addPlayerToTeam)
 api.get('/getPlayer/:id', auth.checkAuth, playerCtrl.getPlayer)
-api.get('/getPlayerByTeamId/:id', auth.checkAuth, playerCtrl.getPlayerByTeamId)
 api.get('/getAllPlayers', auth.checkAuth, playerCtrl.getAllPlayers)
+
+// COMPETITIION
+api.post('/addCompetition', auth.checkAuth, competitionCtrl.addCompetition)
+api.get('/getCompetition/:id', auth.checkAuth, competitionCtrl.getCompetition)
+api.get('/getUserCompetitions/:id', auth.checkAuth, competitionCtrl.getUserCompetitions)
 
 module.exports = api

@@ -83,6 +83,25 @@ export const signInFB = ({commit}, token_payload) => {
     })
 }
 
+export const signUp = ({commit}, body) => {
+  return axios.post('signup', body)
+    .then(response => {
+      if(response.status === 200) {
+        let authUser = {
+          token: response.data.token,
+          isLogged: true,
+          ...response.data.user
+        }
+        axios.defaults.headers.common['Authorization'] = 'Bearer '+response.data.token
+        window.localStorage.setItem('authUser', JSON.stringify(authUser))
+        commit(types.SIGN_UP, authUser)
+      }
+      return response
+    })
+    .catch((err) => {
+      return err.response
+    })
+}
 export const signOut = ({commit}) => {
   axios.defaults.headers.common['Authorization'] = null
   window.localStorage.removeItem('authUser')

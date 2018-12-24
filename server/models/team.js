@@ -22,7 +22,27 @@ const TeamSchema = new Schema({
     }
   ],
   manager: String,
-  season: String
+  season: String,
+  stats: {
+    points: Number,
+    homePoints: Number,
+    awayPoints: Number,
+    wins: Number,
+    homeWins: Number,
+    awayWins: Number,
+    draws: Number,
+    homeDraws: Number,
+    awayDraws: Number,
+    loses: Number,
+    homeLoses: Number,
+    awayLoses: Number,
+    goals: Number,
+    homeGoals: Number,
+    awayGoals: Number,
+    againstGoals: Number,
+    homeAgainstGoals: Number,
+    awayAgainstGoals: Number,
+  }
 })
 
 /**

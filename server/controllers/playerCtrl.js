@@ -6,7 +6,7 @@ const Player = require('../models/player.js')
  * Function to sign up a new player in the DB
  *
  */
-function addPlayer(req, res) {
+function addPlayer(req, res, next) {
   // getting data
   const player = new Player({
     name: req.body.name,
@@ -31,9 +31,10 @@ function addPlayer(req, res) {
         if (err) return res.status(500).send({
           message: `Error al crear el jugador: ${err}`
         })
-        return res.status(200).send(
-          player
-        )
+        else {
+          req.player = player
+          next()
+        }
       })
     }
     // case if player exists ==> RETURN Error
@@ -75,14 +76,6 @@ function getPlayer(req, res) {
     }
   })
 }
-function getPlayerByTeamId(req, res) {
-  let teamId = req.params.id
-  return Player.find({team: teamId}).populate('team')
-    .then(player => {
-      console.log(player);
-      res.status(200).send(player)
-    })
-}
 
 function getAllPlayers(req, res) {
   Player.find({},(err, players) => {
@@ -101,6 +94,5 @@ function getAllPlayers(req, res) {
 module.exports = {
   addPlayer,
   getPlayer,
-  getAllPlayers,
-  getPlayerByTeamId
+  getAllPlayers
 }

@@ -50,3 +50,17 @@ export const getUserTeams = ({commit}, userId) => {
       commit(types.GET_MYTEAMS, teams)
     })
 }
+
+export const addNoManagerTeam = ({commit}, body) => {
+  return axios.post('addNoManagerTeam', body)
+    .then(response => {
+      console.log(response.data);
+      if(response.status === 200) {
+        commit(types.ADD_TEAM_TO_COMPETITION, response.data.team)
+      }
+      return response
+    })
+    .catch((err) => {
+      return err.response
+    })
+}

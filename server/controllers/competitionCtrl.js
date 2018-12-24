@@ -7,9 +7,11 @@ function addCompetition(req, res) {
   const competition = new Competition({
     name: req.body.name,
     myTeam: req.body.team,
-    season: req.body.season
+    teams: [req.body.team],
+    season: req.body.season,
+    manager: req.body.manager
   })
-  console.log("Registrando competicion con nombre: " + competition.name + "...");
+  console.log("Registrando competicion con nombre: " + competition.name + "...")
   // check if competition exists in database
   Competition.findOne({ name: competition.name }, function(err, existingCompetition) {
     // case if error in search
@@ -46,7 +48,7 @@ function getCompetition(req, res) {
   let id = req.params.id
   console.log("Buscando competición con id: " + id + " en la base de datos...");
   //search competition on DB
-  Competition.findById(id, (err, competition) => {
+  Competition.findById(id).populate('teams').populate('myTeam').populate('players').exec((err, competition) => {
     // case if there is any problem in search
     if (err) {
       console.log(`Error: ${err}`)
@@ -73,9 +75,10 @@ function getCompetition(req, res) {
   })
 }
 
-function getAllCompetitions(req, res) {
+function getUserCompetitions(req, res) {
+  let id = req.params.id
   console.log("Buscando todas las competiciones en la base de datos...");
-  Competition.find({},(err, competitions) => {
+  Competition.find({manager: id},(err, competitions) => {
     // case if there is any problem in search
     if (err) {
       console.log(`Error: ${err}`)
@@ -89,8 +92,58 @@ function getAllCompetitions(req, res) {
   })
 }
 
+function addTeamToCompetition(req, res) {
+  let competition = req.competition
+  let team = req.team
+  Competition.findByIdAndUpdate(competition,{ "$push": {"teams": team._id}}, function(err, competition) {
+    if (err) {
+      console.log(`Error: ${err}`)
+      return res.status(500).send({
+        message: `Error al insertar equipo en la competición: ${err}`
+      })
+    }
+    if (!competition) {
+      return res.status(404).send({
+        message: `Error al insertar equipo en la competición: ${err}`
+      })
+    }
+    if (competition) {
+      console.log("Equipo añadido a la competición...")
+      return res.status(200).send({
+        team: team
+      })
+    }
+  })
+}
+
+function addRoundToCompetition(req, res) {
+  let competition = req.competition
+  let round = req.round
+  Competition.findByIdAndUpdate(competition,{ "$push": {"rounds": round._id}}, function(err, competition) {
+    if (err) {
+      console.log(`Error: ${err}`)
+      return res.status(500).send({
+        message: `Error al insertar jornada en la competición: ${err}`
+      })
+    }
+    if (!competition) {
+      return res.status(404).send({
+        message: `Error al insertar jornada en la competición: ${err}`
+      })
+    }
+    if (competition) {
+      console.log("Jornada añadida a la competición...")
+      return res.status(200).send({
+        round: round
+      })
+    }
+  })
+}
+
 module.exports = {
   addCompetition,
   getCompetition,
-  getAllCompetitions
+  getUserCompetitions,
+  addTeamToCompetition,
+  addRoundToCompetition
 }

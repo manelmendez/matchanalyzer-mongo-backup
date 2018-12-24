@@ -1,3 +1,9 @@
 module.exports = {
-  LOCAL_ADDRESS : 'http://localhost:9000/api/'
+  LOCAL_ADDRESS : 'http://192.168.1.134:9000/api/',
+  PRIMARY_COLOR : '#6200EE',
+  PRIMARY_DARK_COLOR : '#3700B3',
+  PRIMARY_LIGHT_COLOR : '',
+  SECONDARY_COLOR : '#03DAC6',
+  SECONDARY_DARK_COLOR : '#018786',
+  SECONDARY_LIGHT_COLOR : ''
 }

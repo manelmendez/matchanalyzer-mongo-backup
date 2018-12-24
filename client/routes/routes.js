@@ -4,10 +4,11 @@ import Teams from '../components/Teams.vue'
 import MyTeam from '../components/MyTeam.vue'
 import Dashboards from '../components/Dashboards.vue'
 import Settings from '../components/Settings.vue'
-import CompeticionBase from '../components/competicion/CompeticionBase.vue'
-import CompeticionEquipos from '../components/competicion/CompeticionEquipos.vue'
-import CompeticionResultados from '../components/competicion/CompeticionResultados.vue'
-import CompeticionClasificacion from '../components/competicion/CompeticionClasificacion.vue'
+import CompetitionBase from '../components/competition/CompetitionBase.vue'
+import CompetitionList from '../components/competition/CompetitionList.vue'
+import CompetitionSummary from '../components/competition/CompetitionSummary.vue'
+import CompetitionResults from '../components/competition/CompetitionResults.vue'
+import CompetitionClasification from '../components/competition/CompetitionClasification.vue'
 
 import constants from '../assets/constants/constants'
 
@@ -51,32 +52,31 @@ const router = new VueRouter({
     },
     {
       path: '/competition',
-      component: CompeticionBase,
+      name: 'CompetitionList',
+      component: CompetitionList,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/competition/:id',
+      component: CompetitionBase,
       meta: { requiresAuth: true },
-      props: true,
       children: [
         {
-          path: '',
-          name: 'CompeticionBase',
-          props: true,
+          path: 'summary',
+          name: 'CompetitionBase',
+          component: CompetitionSummary,
           meta: { requiresAuth: true }
         },
         {
-          path: ':id/teams',
-          name: 'CompeticionEquipos',
-          component: CompeticionEquipos,
+          path: 'results',
+          name: 'CompetitionResults',
+          component: CompetitionResults,
           meta: { requiresAuth: true }
         },
         {
-          path: ':id/results',
-          name: 'CompeticionResultados',
-          component: CompeticionResultados,
-          meta: { requiresAuth: true }
-        },
-        {
-          path: ':id/ranking',
-          name: 'CompeticionClasificacion',
-          component: CompeticionClasificacion,
+          path: 'rankings',
+          name: 'CompetitionClasification',
+          component: CompetitionClasification,
           meta: { requiresAuth: true }
         }
       ]

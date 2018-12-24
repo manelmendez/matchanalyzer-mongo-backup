@@ -33,6 +33,7 @@ app.use(history())
 
 // la ruta a los archivos estaticos (HTML, JS, ...) una vez hecho el "build" en cliente
 app.use(express.static(path.join(__dirname, '../client/dist')));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
 // hay que decirle a express en que ruta estan las vistas (aunque solo hay una que es index.html en la carpeta client)
 app.set('views', path.join(__dirname, '../client/dist'));
 // aquí le decimos que el engine que usaremos es html y que use EJS para renderizarlo

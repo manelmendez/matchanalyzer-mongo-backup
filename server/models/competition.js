@@ -24,6 +24,13 @@ const CompetitionSchema = new Schema({
     type: Schema.ObjectId,
     ref: "team"
   },
+  rounds: [
+    {
+      type: Schema.ObjectId,
+      ref: "round"
+    }
+  ],
+  manager: String,
   season: String
 })
 
@@ -32,8 +39,8 @@ const CompetitionSchema = new Schema({
  *
  */
 CompetitionSchema.post('save', function() {
-  let team = this
+  let competition = this
   console.log("Competición " + competition.name + " añadida correctamente a la base de datos.");
-}
+})
 
 module.exports = mongoose.model('competition', CompetitionSchema)

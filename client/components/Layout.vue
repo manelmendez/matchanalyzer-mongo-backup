@@ -1,6 +1,6 @@
 <template>
   <v-content>
-    <v-toolbar app fixed clipped-left>
+    <v-toolbar app fixed clipped-left :color="constants.PRIMARY_COLOR">
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>MatchAnalyzer</v-toolbar-title>
       <v-spacer></v-spacer>
@@ -30,7 +30,7 @@
             <v-list-tile-title>Mis equipos</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click="goTo('CompeticionBase')">
+        <v-list-tile @click="goTo('CompetitionList')">
           <v-list-tile-action>
             <v-icon>fas fa-trophy</v-icon>
           </v-list-tile-action>
@@ -61,9 +61,11 @@
 </template>
 <script>
 import { mapActions } from 'vuex'
+import constants from '../assets/constants/constants'
   export default {
     name: "Layout",
     data: () => ({
+      constants: constants,
       drawer: true,
       items: [
         { title: 'Sign Out' },

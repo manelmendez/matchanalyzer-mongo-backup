@@ -5,6 +5,10 @@ export const userMutations = {
     state.user = {...user_payload}
   },
 
+  [types.SIGN_UP] (state, user_payload) {
+    state.user = {...user_payload}
+  },
+
   [types.SIGN_OUT] (state) {
     state.user = {
       isLogged: false

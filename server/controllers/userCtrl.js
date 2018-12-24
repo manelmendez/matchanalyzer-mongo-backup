@@ -35,8 +35,10 @@ function signUp(req, res) {
         if (err) return res.status(500).send({
           message: `Error al crear el usuario: ${err}`
         })
-        delete user[password]
+        console.log(user);
+        delete user['password']
         return res.status(200).send({
+          message: 'Te has registrado correctamente',
           token: tokenServices.createToken(user),
           user: user
         })
@@ -85,7 +87,7 @@ function signIn(req, res) {
           if(err) return console.log(err);
           console.log(`${user[0].email} se ha logueado correctamente`)
         });
-        delete user[0][password]
+        delete user[0]['password']
         console.log(user[0]);
         res.status(200).send({
           message: 'Te has logueado correctamente',
