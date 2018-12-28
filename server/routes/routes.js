@@ -4,6 +4,9 @@ const userCtrl = require('../controllers/userCtrl')
 const teamCtrl = require('../controllers/teamCtrl')
 const playerCtrl = require('../controllers/playerCtrl')
 const competitionCtrl = require('../controllers/competitionCtrl')
+const roundCtrl = require('../controllers/roundCtrl')
+const matchCtrl = require('../controllers/matchCtrl')
+const statsCtrl = require('../controllers/statsCtrl')
 const auth = require('../middlewares/auth')
 const api = express.Router()
 
@@ -35,5 +38,11 @@ api.get('/getAllPlayers', auth.checkAuth, playerCtrl.getAllPlayers)
 api.post('/addCompetition', auth.checkAuth, competitionCtrl.addCompetition)
 api.get('/getCompetition/:id', auth.checkAuth, competitionCtrl.getCompetition)
 api.get('/getUserCompetitions/:id', auth.checkAuth, competitionCtrl.getUserCompetitions)
+
+// ROUND
+api.post('/addRound', auth.checkAuth, roundCtrl.addRound, competitionCtrl.addRoundToCompetition)
+
+// MATCH
+api.post('/addMatch', auth.checkAuth, matchCtrl.addMatch, statsCtrl.addTeamStats, teamCtrl.addStatsToTeam, roundCtrl.addMatchToRound)
 
 module.exports = api

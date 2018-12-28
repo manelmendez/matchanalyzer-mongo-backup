@@ -9,27 +9,7 @@ function addTeam(req, res) {
     name: req.body.name,
     manager: req.body.manager,
     players: [],
-    season: req.body.temporada,
-    stats: {
-      points: 0,
-      homePoints: 0,
-      awayPoints: 0,
-      wins: 0,
-      homeWins: 0,
-      awayWins: 0,
-      draws: 0,
-      homeDraws: 0,
-      awayDraws: 0,
-      loses: 0,
-      homeLoses: 0,
-      awayLoses: 0,
-      goals: 0,
-      homeGoals: 0,
-      awayGoals: 0,
-      againstGoals: 0,
-      homeAgainstGoals: 0,
-      awayAgainstGoals: 0
-    }
+    season: req.body.temporada
   })
   console.log("Registrando equipo con nombre: " + team.name + "...");
   // check if team exists in database
@@ -69,7 +49,7 @@ function getTeam(req, res) {
   let teamId = req.params.id
   console.log("Buscando equipo con id: " + teamId + " en la base de datos...");
   //search team on DB
-  Team.findById(teamId).populate('players').exec((err, team) => {
+  Team.findById(teamId).populate('players').populate('stats').exec((err, team) => {
     // case if there is any problem in search
     if (err) {
       console.log(`Error: ${err}`)
@@ -173,34 +153,18 @@ function addNoManagerTeam(req, res, next) {
   const team = new Team({
     name: req.body.team.name,
     players: [],
-    season: req.body.team.temporada,
-    stats: {
-      points: 0,
-      homePoints: 0,
-      awayPoints: 0,
-      wins: 0,
-      homeWins: 0,
-      awayWins: 0,
-      draws: 0,
-      homeDraws: 0,
-      awayDraws: 0,
-      loses: 0,
-      homeLoses: 0,
-      awayLoses: 0,
-      goals: 0,
-      homeGoals: 0,
-      awayGoals: 0,
-      againstGoals: 0,
-      homeAgainstGoals: 0,
-      awayAgainstGoals: 0
-    }
+    season: req.body.team.temporada
   })
+  console.log(team);
   console.log("Registrando equipo con nombre: " + team.name + "...");
 
   team.save((err) => {
-    if (err) return res.status(500).send({
-      message: `Error al crear el equipo: ${err}`
-    })
+    if (err) {
+      console.log(err)
+      return res.status(500).send({
+        message: `Error al crear el equipo: ${err}`
+      })
+    }
     else {
       req.competition = req.body.competition
       req.team = team
@@ -208,11 +172,45 @@ function addNoManagerTeam(req, res, next) {
     }
   })
 }
+
+function addStatsToTeam(req, res, next) {
+  let match = req.match
+  let localStats = req.localTeamStats._id
+  let awayStats = req.awayTeamStats._id
+
+  Team.findByIdAndUpdate(match.localTeam,{ "$push": {"stats": localStats}}, function(err, stats) {
+    if (err) {
+      console.log(`Error: ${err}`)
+      return res.status(500).send({
+        message: `Error al insertar stats al equipo: ${err}`
+      })
+    }
+    if (stats) {
+      console.log("Stats local añadidos al equipo...")
+      Team.findByIdAndUpdate(match.awayTeam,{ "$push": {"stats": awayStats}}, function(err, stats2) {
+        if (err) {
+          console.log(`Error: ${err}`)
+          return res.status(500).send({
+            message: `Error al insertar stats al equipo: ${err}`
+          })
+        }
+        if (stats2) {
+          console.log("Stats visitante añadidos al equipo...")
+          req.round = req.round
+          req.match = req.match
+          next()
+        }
+      })
+    }
+  })
+}
+
 module.exports = {
   addTeam,
   getTeam,
   getAllTeams,
   getUserTeams,
   addPlayerToTeam,
-  addNoManagerTeam
+  addNoManagerTeam,
+  addStatsToTeam
 }

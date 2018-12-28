@@ -21,40 +21,6 @@
       </v-tab>
     </v-tabs>
     <router-view></router-view>
-
-    <!-- <v-layout>
-      <v-flex xs12 sm4 offset-sm3>
-        <v-card v-for="team in this.competition.teams" :key="team._id">
-          <v-img
-            :src="team.avatar"
-            aspect-ratio="2.75"
-          ></v-img>
-
-          <v-card-title primary-title>
-            <div>
-              <h3 class="headline mb-0">{{team.name}}</h3>
-              <div>Nº de jugadores: <br>{{team.players.length}}</div>
-            </div>
-          </v-card-title>
-
-          <v-card-actions>
-            <v-btn flat color="orange">Share</v-btn>
-            <v-btn flat color="orange">Explore</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-flex>
-    </v-layout>
-
-    <v-btn
-      fab
-      color="pink"
-      dark
-      bottom
-      right
-      fixed
-    >
-      <i class="material-icons">add</i>
-    </v-btn> -->
   </v-container>
 </template>
 
@@ -74,9 +40,6 @@ import { mapGetters } from 'vuex'
             id: id
           }
         })
-      },
-      createCompetitionTeam(){
-
       },
       ...mapActions([
         'getCompetition',

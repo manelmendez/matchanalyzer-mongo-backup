@@ -43,3 +43,25 @@ export const getUserCompetitions = ({commit}, id) => {
       commit(types.GET_COMPETITIONS, competitions)
     })
 }
+
+export const addRound = ({commit}, body) => {
+  return axios.post('addRound', body).then(response => {
+    if(response.status === 200) {
+      commit(types.ADD_ROUND, response.data.round)
+    }
+    return response
+  }).catch((err) => {
+    return err.response
+  })
+}
+
+export const addMatch = ({commit}, body) => {
+  return axios.post('addMatch', body).then(response => {
+    if(response.status === 200) {
+      commit(types.ADD_MATCH, response.data.match)
+    }
+    return response
+  }).catch((err) => {
+    return err.response
+  })
+}

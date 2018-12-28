@@ -104,7 +104,6 @@ import { mapGetters } from 'vuex'
         })
       },
       ...mapActions([
-        'getCompetition',
         'addNoManagerTeam'
       ])
     },
@@ -112,9 +111,6 @@ import { mapGetters } from 'vuex'
       ...mapGetters([
         'competition'
       ])
-    },
-    created() {
-      this.getCompetition(this.$route.params.id)
     }
   }
 </script>

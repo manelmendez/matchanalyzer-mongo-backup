@@ -9,7 +9,8 @@ function addCompetition(req, res) {
     myTeam: req.body.team,
     teams: [req.body.team],
     season: req.body.season,
-    manager: req.body.manager
+    manager: req.body.manager,
+    rounds: []
   })
   console.log("Registrando competicion con nombre: " + competition.name + "...")
   // check if competition exists in database
@@ -48,7 +49,24 @@ function getCompetition(req, res) {
   let id = req.params.id
   console.log("Buscando competición con id: " + id + " en la base de datos...");
   //search competition on DB
-  Competition.findById(id).populate('teams').populate('myTeam').populate('players').exec((err, competition) => {
+  Competition.findById(id)
+  .populate({
+    path:'teams',
+    populate: {
+      path: 'stats'
+    }
+  })
+  .populate('myTeam').populate('players')
+  .populate({
+    path: 'rounds',
+    populate: {
+      path: 'matches',
+      populate: [
+        {path: 'localTeam'},
+        {path: 'awayTeam'}
+      ]
+    }
+  }).exec((err, competition) => {
     // case if there is any problem in search
     if (err) {
       console.log(`Error: ${err}`)

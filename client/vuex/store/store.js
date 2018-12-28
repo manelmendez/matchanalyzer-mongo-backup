@@ -48,7 +48,7 @@ const getters = {
   },
   competition: state => {
     return state.competition
-  },
+  }
 }
 
 const actions = {

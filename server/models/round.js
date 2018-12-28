@@ -8,7 +8,6 @@ const crypto = require('crypto')
 const RoundSchema = new Schema({
   name: {
     type: String,
-    unique: true
   },
   signupDate: {
     type: Date,
@@ -19,11 +18,7 @@ const RoundSchema = new Schema({
       type: Schema.ObjectId,
       ref: "match"
     }
-  ],
-  myMatch: {
-    type: Schema.ObjectId,
-    ref: "myMatch"
-  }
+  ]
 })
 
 RoundSchema.post('save', function() {

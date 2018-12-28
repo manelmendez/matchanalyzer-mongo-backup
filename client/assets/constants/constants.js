@@ -1,5 +1,5 @@
 module.exports = {
-  LOCAL_ADDRESS : 'http://192.168.1.134:9000/api/',
+  LOCAL_ADDRESS : 'http://192.168.1.135:9000/api/',
   PRIMARY_COLOR : '#6200EE',
   PRIMARY_DARK_COLOR : '#3700B3',
   PRIMARY_LIGHT_COLOR : '',

@@ -2,40 +2,21 @@
 
 const Round = require('../models/round.js')
 
-function addRound(req, res) {
+function addRound(req, res, next) {
   // getting data
   const round = new Round({
     name: req.body.round.name,
+    matches: []
   })
   console.log("Registrando competicion con nombre: " + round.name + "...")
-  // check if round exists in database
-  Round.findOne({ name: round.name }, function(err, existingRound) {
-    // case if error in search
-    if (err) {
-      console.log(`Error: ${err}`)
-      return res.status(500).send({
-        message: `Error al registrar competicion: ${err}`
-      })
-    }
-    // case if round not exists ==> register
-    if (!existingRound) {
-      console.log("No existe ninguna competicion con ese nombre, creando...")
-      // saving round in DB
-      round.save((err) => {
-        if (err) return res.status(500).send({
-          message: `Error al crear competición: ${err}`
-        })
-        return res.status(200).send({
-          round: round
-        })
-      })
-    }
-    // case if round exists ==> RETURN Error
-    if (existingRound) {
-      console.log("Este nombre de competición ya está registrado, no se puede continuar.")
-      return res.status(202).send({
-        message: `Error. Competición ya registrada`
-      })
+  round.save((err, round) => {
+    if (err) return res.status(500).send({
+      message: `Error al crear competición: ${err}`
+    })
+    else {
+      req.round = round
+      req.competition = req.body.competition
+      next()
     }
   })
 }

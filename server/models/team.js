@@ -6,43 +6,13 @@ const bcrypt = require('bcrypt-nodejs')
 const crypto = require('crypto')
 
 const TeamSchema = new Schema({
-  name: {
-    type: String,
-    unique: true
-  },
+  name: { type: String, unique: true },
   avatar: String,
-  signupDate: {
-    type: Date,
-    default: Date.now()
-  },
-  players: [
-    {
-      type: Schema.ObjectId,
-      ref: "player"
-    }
-  ],
+  signupDate: { type: Date, default: Date.now() },
+  players: [ { type: Schema.ObjectId, ref: "player" } ],
   manager: String,
   season: String,
-  stats: {
-    points: Number,
-    homePoints: Number,
-    awayPoints: Number,
-    wins: Number,
-    homeWins: Number,
-    awayWins: Number,
-    draws: Number,
-    homeDraws: Number,
-    awayDraws: Number,
-    loses: Number,
-    homeLoses: Number,
-    awayLoses: Number,
-    goals: Number,
-    homeGoals: Number,
-    awayGoals: Number,
-    againstGoals: Number,
-    homeAgainstGoals: Number,
-    awayAgainstGoals: Number,
-  }
+  stats: [{ type: Schema.ObjectId, ref: "teamStats" }]
 })
 
 /**
