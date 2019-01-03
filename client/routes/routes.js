@@ -2,8 +2,6 @@ import Vue from 'vue'
 import Welcome from '../components/Welcome.vue'
 import Teams from '../components/Teams.vue'
 import MyTeam from '../components/MyTeam.vue'
-import Dashboards from '../components/Dashboards.vue'
-import Settings from '../components/Settings.vue'
 import CompetitionBase from '../components/competition/CompetitionBase.vue'
 import CompetitionList from '../components/competition/CompetitionList.vue'
 import CompetitionSummary from '../components/competition/CompetitionSummary.vue'
@@ -20,12 +18,11 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   mode: 'history',
   routes: [
-    // {
-    //   path: '/',
-    //   name: 'Welcome',
-    //   component: Welcome,
-    //   meta: { onceLogged: true }
-    // },
+    {
+      path: '/',
+      name: 'Index',
+      redirect: 'teams',
+    },
     {
       path: '/teams',
       name: 'Teams',
@@ -36,18 +33,6 @@ const router = new VueRouter({
       path: '/teams/:id',
       name: 'MyTeam',
       component: MyTeam,
-      meta: { requiresAuth: true }
-    },
-    {
-      path: '/dashboards',
-      name: 'Dashboards',
-      component: Dashboards,
-      meta: { requiresAuth: true }
-    },
-    {
-      path: '/settings',
-      name: 'Settings',
-      component: Settings,
       meta: { requiresAuth: true }
     },
     {
