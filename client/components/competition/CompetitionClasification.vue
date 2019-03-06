@@ -1,40 +1,55 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="rankedTeams"
-    class="elevation-1 text-xs-center"
-    hide-actions
-  >
-    <template slot="items" slot-scope="props">
-      <td class="text-xs-center">{{ props.index+1 }}</td>
-      <td class="text-xs-center">{{ props.item.name }}</td>
-      <td class="text-xs-center">{{ props.item.stats[props.item.stats.length -1].points }}</td>
-      <td class="text-xs-center">{{ props.item.stats[props.item.stats.length -1].wins }}</td>
-      <td class="text-xs-center">{{ props.item.stats[props.item.stats.length -1].draws }}</td>
-      <td class="text-xs-center">{{ props.item.stats[props.item.stats.length -1].loses }}</td>
-      <td class="text-xs-center">{{ props.item.stats[props.item.stats.length -1].goals }}</td>
-      <td class="text-xs-center">{{ props.item.stats[props.item.stats.length -1].againstGoals }}</td>
-      <td class="text-xs-center"></td>
-      <td class="text-xs-center">{{ props.item.stats[props.item.stats.length -1].homePoints }}</td>
-      <td class="text-xs-center">{{ props.item.stats[props.item.stats.length -1].homeWins }}</td>
-      <td class="text-xs-center">{{ props.item.stats[props.item.stats.length -1].homeDraws }}</td>
-      <td class="text-xs-center">{{ props.item.stats[props.item.stats.length -1].homeLoses }}</td>
-      <td class="text-xs-center">{{ props.item.stats[props.item.stats.length -1].homeGoals }}</td>
-      <td class="text-xs-center">{{ props.item.stats[props.item.stats.length -1].homeAgainstGoals }}</td>
-      <td class="text-xs-center"></td>
-      <td class="text-xs-center">{{ props.item.stats[props.item.stats.length -1].awayPoints }}</td>
-      <td class="text-xs-center">{{ props.item.stats[props.item.stats.length -1].awayWins }}</td>
-      <td class="text-xs-center">{{ props.item.stats[props.item.stats.length -1].awayDraws }}</td>
-      <td class="text-xs-center">{{ props.item.stats[props.item.stats.length -1].awayLoses }}</td>
-      <td class="text-xs-center">{{ props.item.stats[props.item.stats.length -1].awayGoals }}</td>
-      <td class="text-xs-center">{{ props.item.stats[props.item.stats.length -1].awayAgainstGoals }}</td>
-    </template>
-    <template slot="no-data">
-      <v-alert :value="true" color="error" icon="warning">
-        Aún no están los datos de esta jornada :(
-      </v-alert>
-    </template>
-  </v-data-table>
+<div v-if="competition.rounds">
+  <div v-if="competition.rounds.length == 0">
+    <v-card>
+      <v-card-text class="text-xs-center">
+        Aun no hay ninguna jornada disputada
+        <br>
+      </v-card-text>
+    </v-card>
+  </div>
+  <div v-else>
+    <v-data-table v-if="rankedTeams"
+      :headers="headers"
+      :items="rankedTeams"
+      class="elevation-1 text-xs-center"
+      hide-actions
+    >
+      <template slot="items" slot-scope="props">
+        <td class="text-xs-center">{{ props.index+1 }}</td>
+        <td class="text-xs-center">{{ props.item.name }}</td>
+        <td class="text-xs-center">{{ props.item.stats.points }}</td>
+        <td class="text-xs-center">{{ props.item.stats.gamesPlayed }}</td>
+        <td class="text-xs-center">{{ props.item.stats.wins }}</td>
+        <td class="text-xs-center">{{ props.item.stats.draws }}</td>
+        <td class="text-xs-center">{{ props.item.stats.loses }}</td>
+        <td class="text-xs-center">{{ props.item.stats.goals }}</td>
+        <td class="text-xs-center">{{ props.item.stats.againstGoals }}</td>
+        <td class="text-xs-center"></td>
+        <td class="text-xs-center">{{ props.item.stats.homePoints }}</td>
+        <td class="text-xs-center">{{ props.item.stats.homeGamesPlayed }}</td>
+        <td class="text-xs-center">{{ props.item.stats.homeWins }}</td>
+        <td class="text-xs-center">{{ props.item.stats.homeDraws }}</td>
+        <td class="text-xs-center">{{ props.item.stats.homeLoses }}</td>
+        <td class="text-xs-center">{{ props.item.stats.homeGoals }}</td>
+        <td class="text-xs-center">{{ props.item.stats.homeAgainstGoals }}</td>
+        <td class="text-xs-center"></td>
+        <td class="text-xs-center">{{ props.item.stats.awayPoints }}</td>
+        <td class="text-xs-center">{{ props.item.stats.awayGamesPlayed }}</td>
+        <td class="text-xs-center">{{ props.item.stats.awayWins }}</td>
+        <td class="text-xs-center">{{ props.item.stats.awayDraws }}</td>
+        <td class="text-xs-center">{{ props.item.stats.awayLoses }}</td>
+        <td class="text-xs-center">{{ props.item.stats.awayGoals }}</td>
+        <td class="text-xs-center">{{ props.item.stats.awayAgainstGoals }}</td>
+      </template>
+      <template slot="no-data">
+        <v-alert :value="true" color="error" icon="warning">
+          Aún no están los datos de esta jornada :(
+        </v-alert>
+      </template>
+    </v-data-table>
+  </div>
+  </div>
 </template>
 
 <script>
@@ -47,6 +62,7 @@ import { mapGetters } from 'vuex'
           { text: 'P', align: 'center', sortable: false, value: 'name'},
           { text: 'Nombre', align: 'center', sortable: false, value: 'name'},
           { text: 'PTS', value: 'points', align: 'center', sortable: false,},
+          { text: 'PJ', value: 'gamesPlayed', align: 'center', sortable: false,},
           { text: 'V', value: 'wins', align: 'center', sortable: false,},
           { text: 'E', value: 'draws', align: 'center', sortable: false,},
           { text: 'D', value: 'loses', align: 'center', sortable: false,},
@@ -54,6 +70,7 @@ import { mapGetters } from 'vuex'
           { text: 'GC', value: 'againstGoals', align: 'center', sortable: false,},
           { text: 'En Casa', sortable: false },
           { text: 'PTS', value: 'points', align: 'center', sortable: false,},
+          { text: 'PJ', value: 'gamesPlayed', align: 'center', sortable: false,},
           { text: 'V', value: 'wins', align: 'center', sortable: false,},
           { text: 'E', value: 'draws', align: 'center', sortable: false,},
           { text: 'D', value: 'loses', align: 'center', sortable: false,},
@@ -61,6 +78,7 @@ import { mapGetters } from 'vuex'
           { text: 'GC', value: 'againstGoals', align: 'center', sortable: false,},
           { text: 'Fuera', sortable: false },
           { text: 'PTS', value: 'points', align: 'center', sortable: false,},
+          { text: 'PJ', value: 'gamesPlayed', align: 'center', sortable: false,},
           { text: 'V', value: 'wins', align: 'center', sortable: false,},
           { text: 'E', value: 'draws', align: 'center', sortable: false,},
           { text: 'D', value: 'loses', align: 'center', sortable: false,},
@@ -72,19 +90,12 @@ import { mapGetters } from 'vuex'
       
     },
     computed: {
-      rankedTeams() {
-        let teams = [...this.$store.state.competition.teams]
-        // esto ordena primero por puntos y luego por diferencia de goles
-        return teams.sort(function(b, a) {
-          if (a.stats[a.stats.length -1].points !== b.stats[b.stats.length -1].points) {
-              return a.stats[a.stats.length -1].points - b.stats[b.stats.length -1].points
-          }
-          if (a.stats[a.stats.length -1].goals-a.stats[a.stats.length -1].againstGoals === b.stats[b.stats.length -1].goals-b.stats[b.stats.length -1].againstGoals) {
-            return 0;
-          }
-          return (a.stats[a.stats.length -1].goals-a.stats[a.stats.length -1].againstGoals) > (b.stats[b.stats.length -1].goals-b.stats[b.stats.length -1].againstGoals) ? 1 : -1;
-        })
-      }
+      ...mapGetters([
+        'competition',
+        'selectedRound',
+        'rankedTeams'
+      ]),
+      
     }
   }
 </script>

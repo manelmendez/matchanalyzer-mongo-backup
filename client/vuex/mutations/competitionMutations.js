@@ -24,4 +24,8 @@ export const competitionMutations = {
       }
     }
   },
+
+  [types.CHANGE_ROUND] (state, round) {
+    state.selectedRound = round
+  },
 }

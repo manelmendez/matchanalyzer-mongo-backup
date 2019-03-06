@@ -16,6 +16,7 @@ if (JSON.parse(window.localStorage.getItem('authUser'))!= null)
 }
 
 export const addCompetition = ({commit}, body) => {
+  console.log("ACTION -- addCompetition")
   return axios.post('addCompetition', body)
     .then(response => {
       if(response.status === 200) {
@@ -29,6 +30,7 @@ export const addCompetition = ({commit}, body) => {
 }
 
 export const getCompetition = ({commit}, id) => {
+  console.log("ACTION -- getCompetition")
   return axios.get('getCompetition/'+id)
     .then(response => {
       let competition = response.data.competition
@@ -37,6 +39,7 @@ export const getCompetition = ({commit}, id) => {
 }
 
 export const getUserCompetitions = ({commit}, id) => {
+  console.log("ACTION -- getUserCompetitions")
   return axios.get('getUserCompetitions/'+id)
     .then(response => {
       let competitions = response.data.competitions
@@ -45,6 +48,7 @@ export const getUserCompetitions = ({commit}, id) => {
 }
 
 export const addRound = ({commit}, body) => {
+  console.log("ACTION -- addRound")
   return axios.post('addRound', body).then(response => {
     if(response.status === 200) {
       commit(types.ADD_ROUND, response.data.round)
@@ -56,6 +60,7 @@ export const addRound = ({commit}, body) => {
 }
 
 export const addMatch = ({commit}, body) => {
+  console.log("ACTION -- addMatch")
   return axios.post('addMatch', body).then(response => {
     if(response.status === 200) {
       commit(types.ADD_MATCH, response.data.match)
@@ -64,4 +69,27 @@ export const addMatch = ({commit}, body) => {
   }).catch((err) => {
     return err.response
   })
+}
+
+export const getCompetitionRounds = ({commit}, id) => {
+  console.log("ACTION -- getCompetitionRounds")
+  return axios.get('getCompetitionRounds/'+id)
+    .then(response => {
+      let rounds = response.data.rounds
+      commit(types.GET_COMPETITION_ROUNDS, rounds)
+    })
+}
+
+export const getRound = ({commit}, id) => {
+  console.log("ACTION -- getRound")
+  return axios.get('getRound/'+id)
+    .then(response => {
+      let competitions = response.data.competitions
+      commit(types.GET_ROUND, round)
+    })
+}
+
+export const changeRound = ({commit}, round) => {
+  console.log("ACTION -- changeRound")
+  return commit(types.CHANGE_ROUNG, round)
 }

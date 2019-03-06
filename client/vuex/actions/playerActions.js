@@ -15,6 +15,7 @@ if (JSON.parse(window.localStorage.getItem('authUser'))!= null)
   axios.defaults.headers.common['Authorization'] = 'Bearer '+JSON.parse(window.localStorage.getItem('authUser')).token
 }
 export const addPlayer = ({commit}, body) => {
+  console.log("ACTION -- addPlayer")
   return axios.post('addPlayer', body)
     .then(response => {
       if(response.status === 200) {
@@ -27,6 +28,7 @@ export const addPlayer = ({commit}, body) => {
     })
 }
 export const getPlayerByTeamId = ({commit}, id) => {
+  console.log("ACTION -- getPlayerByTeamId")
   return axios.get('getPlayerByTeamId/'+id)
     .then(response => {
       let players = response.data

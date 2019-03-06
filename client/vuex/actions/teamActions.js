@@ -16,6 +16,7 @@ if (JSON.parse(window.localStorage.getItem('authUser'))!= null)
 }
 
 export const addTeam = ({commit}, body) => {
+  console.log("ACTION -- addTeam")
   return axios.post('addTeam', body)
     .then(response => {
       console.log(response.data);
@@ -29,6 +30,7 @@ export const addTeam = ({commit}, body) => {
     })
 }
 export const getTeam = ({commit}, id) => {
+  console.log("ACTION -- getTeam")
   return axios.get('getTeam/'+id)
     .then(response => {
       let team = response.data.team
@@ -36,6 +38,7 @@ export const getTeam = ({commit}, id) => {
     })
 }
 export const getAllTeams = ({commit}) => {
+  console.log("ACTION -- getAllTeams")
   return axios.get('getAllTeams')
     .then(response => {
       let teams = response.data.teams
@@ -44,6 +47,7 @@ export const getAllTeams = ({commit}) => {
 }
 
 export const getUserTeams = ({commit}, userId) => {
+  console.log("ACTION -- getUserTeams")
   return axios.get('getUserTeams/'+userId)
     .then(response => {
       let teams = response.data.teams
@@ -52,6 +56,7 @@ export const getUserTeams = ({commit}, userId) => {
 }
 
 export const addNoManagerTeam = ({commit}, body) => {
+  console.log("ACTION -- addNoManagerTeam")
   return axios.post('addNoManagerTeam', body)
     .then(response => {
       console.log(response.data);

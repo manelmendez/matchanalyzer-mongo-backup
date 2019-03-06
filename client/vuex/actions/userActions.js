@@ -16,6 +16,7 @@ if (JSON.parse(window.localStorage.getItem('authUser'))!= null)
 }
 
 export const signIn = ({commit}, body) => {
+  console.log("ACTION -- signIn")
   return axios.post('signin', body)
     .then(response => {
       if(response.status === 200) {
@@ -35,6 +36,7 @@ export const signIn = ({commit}, body) => {
     })
 }
 export const signInGoogle = ({commit}, googleUser) => {
+  console.log("ACTION -- signInGoogle")
   const authUser = {}
   // `googleUser` is the GoogleUser object that represents the just-signed-in user.
   // See https://developers.google.com/identity/sign-in/web/reference#users
@@ -64,6 +66,7 @@ export const signInGoogle = ({commit}, googleUser) => {
     })
 }
 export const signInFB = ({commit}, token_payload) => {
+  console.log("ACTION -- signInFB")
   return axios.post('signin', body)
     .then(response => {
       if(response.status === 200) {
@@ -84,6 +87,7 @@ export const signInFB = ({commit}, token_payload) => {
 }
 
 export const signUp = ({commit}, body) => {
+  console.log("ACTION -- signUp")
   return axios.post('signup', body)
     .then(response => {
       if(response.status === 200) {
@@ -103,6 +107,7 @@ export const signUp = ({commit}, body) => {
     })
 }
 export const signOut = ({commit}) => {
+  console.log("ACTION -- signOut")
   axios.defaults.headers.common['Authorization'] = null
   window.localStorage.removeItem('authUser')
   commit(types.SIGN_OUT)
