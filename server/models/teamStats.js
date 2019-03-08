@@ -7,6 +7,9 @@ const crypto = require('crypto')
 
 const TeamStatsSchema = new Schema({
   round: { type: Schema.ObjectId, ref: "round" },
+  gamesPlayed: Number,
+  homeGamesPlayed: Number,
+  awayGamesPlayed: Number,
   points: Number,
   homePoints: Number,
   awayPoints: Number,
