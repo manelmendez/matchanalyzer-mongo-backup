@@ -6,6 +6,12 @@
           <v-img :src="team.avatar">
         </v-list-tile-avatar>
         {{this.team.name}}
+        <v-btn flat icon color="blue lighten-2" @click="click">
+          <v-icon size="18">edit</v-icon>
+        </v-btn>
+        <v-btn flat icon color="red lighten-2">
+          <v-icon size="18">delete</v-icon>
+        </v-btn>
       </v-card-title>
       <v-data-table
         :headers="headers"
@@ -22,6 +28,14 @@
           <td class="text-xs-center">{{ props.item.name }}</td>
           <td class="text-xs-center">{{ props.item.position }}</td>
           <td class="text-xs-center">{{ props.item.year }}</td>
+          <td class="text-xs-center align-center">
+            <v-btn flat icon color="blue lighten-2" @click="click">
+              <v-icon size="18">edit</v-icon>
+            </v-btn>
+            <v-btn flat icon color="red lighten-2">
+              <v-icon size="18">delete</v-icon>
+            </v-btn>
+          </td>
         </template>
         <template slot="no-data">
           <v-alert :value="true" color="error" icon="warning">
@@ -122,7 +136,8 @@ import { mapGetters } from 'vuex'
             value: 'name'
           },
           { text: 'Posición', value: 'position', align: 'center', },
-          { text: 'Año de nacimiento', value: 'year', align: 'center', }
+          { text: 'Año de nacimiento', value: 'year', align: 'center', },
+          { text: 'Acciones', align: 'center', }
         ],
     }),
     methods: {
@@ -136,6 +151,9 @@ import { mapGetters } from 'vuex'
         this.addPlayer(player).then((value) => {
           this.dialog = false
         })
+      },
+      click(){
+        alert("gilipolias")
       },
       ...mapActions([
         'getTeam',

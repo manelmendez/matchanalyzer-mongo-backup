@@ -56,9 +56,9 @@ const getters = {
   selectedRound: state => {
     return state.selectedRound
   },
-  roundTeams: state => {        
+  roundTeams: state => {
     if (state.competition.rounds){
-      let actualCompetition = {...state.competition}    
+      let actualCompetition = {...state.competition}
       let actualRound = {...actualCompetition.rounds[state.selectedRound!=null ? state.selectedRound : actualCompetition.rounds.length -1]}
       let actualRoundTeams = [...actualCompetition.teams]
       for (var i = 0; i < actualCompetition.teams.length; i++) {
@@ -82,7 +82,7 @@ const getters = {
     if (state.competition.teams && state.competition.rounds){
       let teams = [...state.competition.teams]
         let updatedTeams = []
-        let actualCompetition = {...state.competition}    
+        let actualCompetition = {...state.competition}
         // sumar todas las jornadas hasta la seleccionada
         for (let i = 0; i < teams.length; i++) {
           let updatedTeam = teams[i]
@@ -113,7 +113,7 @@ const getters = {
               teamStats.awayGoals+= teams[i].stats[j].awayGoals
               teamStats.againstGoals+= teams[i].stats[j].againstGoals
               teamStats.homeAgainstGoals+= teams[i].stats[j].homeAgainstGoals
-              teamStats.awayAgainstGoals+= teams[i].stats[j].awayAgainstGoals  
+              teamStats.awayAgainstGoals+= teams[i].stats[j].awayAgainstGoals
             }
           }
           updatedTeam.stats = teamStats
@@ -132,14 +132,14 @@ const getters = {
             //coger todos los partidos
             for (let x = 0; x < actualCompetition.rounds.length; x++) {
               matches=[...matches,...actualCompetition.rounds[x].matches]
-            }            
+            }
             let duelMatches = []
             //buscar los partidos que esos 2 equipos hayan jugado entre ellos
             for (let y = 0; y < matches.length; y++) {
               if ((matches[y].localTeam._id===a._id && matches[y].awayTeam._id===b._id) || (matches[y].localTeam._id===b._id && matches[y].awayTeam._id===a._id)) {
                 duelMatches.push(matches[y])
-              }       
-            }            
+              }
+            }
             //buscar diferencia de victorias/empates/derrotas
             let aWin=0
             let aDraw=0
@@ -195,15 +195,6 @@ const getters = {
               else if (aLose==1) {
                 return -1
               }
-              //si es igual, buscar diferencia de goles individual (no cuenta doble fuera de casa)
-              else {
-                if (goalDifference>0) {
-                  return 1
-                }
-                else {
-                  return -1
-                }
-              }
             }
           }
           //si el goal average particular es igual pasa a hacer lo siguiente:
@@ -238,7 +229,7 @@ const mutations = {
 
 function sumObjectsByKey(...objs) {
   console.log(objs);
-  
+
   return objs.reduce((a, b) => {
     for (let k in b) {
       if (b.hasOwnProperty(k))

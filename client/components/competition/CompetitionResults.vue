@@ -51,18 +51,34 @@
               <v-container grid-list-md>
                 <v-layout row justify-center>
                   <v-flex xs4>
-                    <div class="match elevation-2">
-                      {{match.localTeam.name}}
-                    </div>
+                    <v-card class="match elevation-2">
+                      <v-card-text class="text-xs-center" :class="resultClass(match.localTeamGoals,match.awayTeamGoals)">
+                        {{match.localTeam.name}}
+                      </v-card-text>
+                    </v-card>
+                  </v-flex>
+                  <v-flex xs2>
+                    <v-card class="match elevation-2">
+                      <v-card-text class="text-xs-center">
+                      {{match.localTeamGoals}} - {{match.awayTeamGoals}}
+                    </v-card-text>
+                  </v-card>
+                  </v-flex>
+                  <v-flex xs4>
+                    <v-card class="match elevation-2">
+                      <v-card-text class="text-xs-center" :class="resultClass(match.awayTeamGoals,match.localTeamGoals)">
+                      {{match.awayTeam.name}}
+                      </v-card-text>
+                    </v-card>
                   </v-flex>
                   <v-flex xs2>
                     <div class="match elevation-2">
-                      {{match.localTeamGoals}} - {{match.awayTeamGoals}}
-                    </div>
-                  </v-flex>
-                  <v-flex xs4>
-                    <div class="match elevation-2">
-                      {{match.awayTeam.name}}
+                      <v-btn flat icon color="blue lighten-2" @click="editMatch(match)">
+                        <v-icon size="18">edit</v-icon>
+                      </v-btn>
+                      <v-btn flat icon color="red lighten-2">
+                        <v-icon size="18">delete</v-icon>
+                    </v-btn>
                     </div>
                   </v-flex>
                 </v-layout>
@@ -102,10 +118,10 @@
                 <v-flex xs12 md4 class="text-xs-center">
                   Resultado
                   <v-layout wrap>
-                    <v-flex xs12 md4 class="text-xs-center red">
+                    <v-flex xs12 md4 class="text-xs-center">
                       <v-text-field class="centered-input" type="number" v-model="localGoals" required></v-text-field>
                     </v-flex>
-                    <v-flex xs12 md4 class="text-xs-center">
+                    <v-flex xs12 md4 class="text-xs-center align-self-center">
                       -
                     </v-flex>
                     <v-flex xs12 md4 class="text-xs-center">
@@ -127,7 +143,46 @@
             </v-container>
           </v-card-text>
           <v-btn color="primary" @click.native="createMatch()">Continue</v-btn>
-          <v-btn flat @click.native="dialog=!dialog">Cancel</v-btn>
+          <v-btn flat @click.native="clearDialog()">Cancel</v-btn>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="dialog2" width="70%" persistent>
+        <v-card>
+          <v-card-title>
+            <span class="headline">Editar Partido</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout wrap>
+                <v-flex xs12 md4 class="text-xs-center align-self-center">
+                  <div v-model="editingTeam">
+                    {{editingTeam.name}}
+                  </div>
+                </v-flex>
+                <v-flex xs12 md4 class="text-xs-center">
+                  Resultado
+                  <v-layout wrap>
+                    <v-flex xs12 md4 class="text-xs-center">
+                      <v-text-field class="centered-input" type="number" v-model="editingLocalGoals" :value="editingLocalGoals" required></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 md4 class="text-xs-center align-self-center">
+                      -
+                    </v-flex>
+                    <v-flex xs12 md4 class="text-xs-center">
+                      <v-text-field class="centered-input" type="number" v-model="editingAwayGoals" :value="editingAwayGoals" required></v-text-field>
+                    </v-flex>
+                </v-layout>
+                </v-flex>
+                <v-flex xs12 md4 class="text-xs-center align-self-center">
+                  <div v-model="editingTeam2">
+                    <p>{{editingTeam2.name}}</p>
+                  </div>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-card-text>
+          <v-btn color="primary" @click.native="updateMatch()">Edit</v-btn>
+          <v-btn flat @click.native="clearDialog()">Cancel</v-btn>
         </v-card>
       </v-dialog>
     </div>
@@ -141,10 +196,15 @@ import { mapGetters } from 'vuex'
     name: "CompetitionResults",
     data: () => ({
       dialog: false,
+      dialog2: false,
       localGoals: 0,
       awayGoals: 0,
       team: '',
       team2: '',
+      editingTeam: '',
+      editingTeam2: '',
+      editingLocalGoals: 0,
+      editingAwayGoals: 0,
     }),
     methods: {
       createRound() {
@@ -188,11 +248,39 @@ import { mapGetters } from 'vuex'
           })
         }
       },
+      editMatch(match) {
+        console.log(match);
+        this.editingTeam = match.localTeam
+        this.editingTeam2 = match.awayTeam
+        this.editingLocalGoals = match.localTeamGoals
+        this.editingAwayGoals = match.awayTeamGoals
+        this.dialog2=true
+      },
+      updateMatch() {
+        let stats = this.setStats(this.editingTeam, this.editingTeam2)
+        console.log(stats);
+        let body = {
+          match: {
+            localTeam: this.editingTeam._id,
+            awayTeam: this.editingTeam._id,
+            localTeamGoals: this.editingLocalGoals,
+            awayTeamGoals: this.editingAwayGoals,
+            matchDay: Date.now(),
+            competition: this.competition._id,
+            round: this.competition.rounds[this.competition.rounds.length-1]._id,
+          },
+          localTeamStats: stats.localTeamStats,
+          awayTeamStats: stats.awayTeamStats
+        }
+        console.log(body);
+      },
       clearDialog() {
         this.team = ''
         this.team2 = ''
         this.localGoals = 0
         this.awayGoals = 0
+        this.dialog = false
+        this.dialog2 = false
       },
       setStats(team1, team2) {
         let stats = {
@@ -346,8 +434,13 @@ import { mapGetters } from 'vuex'
       },
       changeResultRound(){
         console.log(this.round);
-        
+
         this.changeRound(this.round)
+      },
+      resultClass(goals1, goals2){
+        if(goals1==goals2) return 'draw'
+        else if(goals1>goals2) return 'victory'
+        else return 'lose'
       },
       ...mapActions([
         'getCompetition',
@@ -373,9 +466,25 @@ import { mapGetters } from 'vuex'
   text-align: center
 }
 .match {
+  height: 100%;
   background-color: 'rgb(0, 255, 247)';
   color: 'rgb(201, 53, 165)';
-  padding: 30px;
-  margin-bottom: -15px;
+  align-items: center;
+  justify-content: center;
+  text-align:center;
+}
+.victory{
+  background-color: rgba(117, 255, 131, 0.55)
+}
+.draw{
+  background-color: rgba(255, 216, 117, 0.55)
+}
+.lose{
+  background-color: rgba(255, 117, 117, 0.55)
+}
+.editingTeam{
+  align-items: center;
+  justify-content: center;
+  text-align:center;
 }
 </style>
