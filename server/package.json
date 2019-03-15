@@ -26,6 +26,7 @@
     "moment": "latest",
     "mongoose": "latest",
     "morgan": "latest",
+    "multer": "^1.4.1",
     "nodemon": "latest"
   }
 }

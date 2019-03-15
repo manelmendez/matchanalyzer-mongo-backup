@@ -69,3 +69,18 @@ export const addNoManagerTeam = ({commit}, body) => {
       return err.response
     })
 }
+
+export const uploadTeamImage = ({commit}, formData) => {
+  console.log("ACTION -- uploadTeamImage")
+  return axios.post('uploadImage', formData,{
+    onUploadProgress: progressEvent => {
+      console.log("Progress: "+Math.round(progressEvent.loaded / progressEvent.total*100)+ '%')
+    }
+  })
+  .then(response => {
+    return response
+  })
+  .catch((err) => {
+    return err.response
+  })
+}

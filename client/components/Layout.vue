@@ -1,6 +1,6 @@
 <template>
   <v-content>
-    <v-toolbar app fixed clipped-left :color="constants.PRIMARY_COLOR">
+    <v-toolbar app fixed clipped-left :color="constants.PRIMARY_COLOR_GREEN">
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>MatchAnalyzer</v-toolbar-title>
       <v-spacer></v-spacer>

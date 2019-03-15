@@ -7,6 +7,7 @@ const competitionCtrl = require('../controllers/competitionCtrl')
 const roundCtrl = require('../controllers/roundCtrl')
 const matchCtrl = require('../controllers/matchCtrl')
 const statsCtrl = require('../controllers/statsCtrl')
+const imageServices = require('../services/image-services')
 const auth = require('../middlewares/auth')
 const api = express.Router()
 
@@ -15,6 +16,9 @@ api.post('/private', auth.isAuth)
 
 // OAUTH2
 api.get('/oauth/google', oauth2Ctrl.verifyGoogleToken)
+
+// IMAGES
+api.post('/uploadImage', imageServices.uploadImage)
 
 // USER
 api.post('/signUp', userCtrl.signUp)
@@ -44,5 +48,7 @@ api.post('/addRound', auth.checkAuth, roundCtrl.addRound, competitionCtrl.addRou
 
 // MATCH
 api.post('/addMatch', auth.checkAuth, matchCtrl.addMatch, statsCtrl.addTeamStats, teamCtrl.addStatsToTeam, roundCtrl.addMatchToRound)
+api.put('/updateMatch/:id', auth.checkAuth, matchCtrl.updateMatch, statsCtrl.updateTeamStats)
+api.delete('/deleteMatch/:id', auth.checkAuth, matchCtrl.deleteMatch, statsCtrl.deleteTeamStats, teamCtrl.deleteStatsOfTeam, roundCtrl.deleteMatchOfRound)
 
 module.exports = api

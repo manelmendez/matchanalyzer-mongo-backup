@@ -91,5 +91,30 @@ export const getRound = ({commit}, id) => {
 
 export const changeRound = ({commit}, round) => {
   console.log("ACTION -- changeRound")
-  return commit(types.CHANGE_ROUNG, round)
+  return commit(types.CHANGE_ROUND, round)
+}
+
+export const updateMatch = ({commit}, data) => {
+  console.log("ACTION -- updateMatch")
+  return axios.put('updateMatch/'+data.id, data.body).then(response => {
+    if(response.status === 200) {
+      commit(types.UPDATE_MATCH)//TODO de momento no se devuelve nada desde el servidor
+    }
+    return response
+  }).catch((err) => {
+    return err.response
+  })
+}
+
+export const deleteMatch = ({commit}, data) => {
+  console.log("ACTION -- deleteMatch")
+  console.log(data);
+  return axios.delete('deleteMatch/'+data.id, { data: data.body }).then(response => {
+    if(response.status === 200) {
+      commit(types.DELETE_MATCH)
+    }
+    return response
+  }).catch((err) => {
+    return err.response
+  })
 }

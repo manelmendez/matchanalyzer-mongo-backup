@@ -54,12 +54,19 @@ const getters = {
     return state.competition.rounds
   },
   selectedRound: state => {
-    return state.selectedRound
+    if (state.selectedRound==null) {
+      if (state.competition.rounds) {
+        return state.competition.rounds.length
+      }
+    }
+    else{
+      return state.selectedRound
+    }
   },
   roundTeams: state => {
     if (state.competition.rounds){
       let actualCompetition = {...state.competition}
-      let actualRound = {...actualCompetition.rounds[state.selectedRound!=null ? state.selectedRound : actualCompetition.rounds.length -1]}
+      let actualRound = {...actualCompetition.rounds[state.selectedRound!=null ? state.selectedRound -1 : actualCompetition.rounds.length -1]}
       let actualRoundTeams = [...actualCompetition.teams]
       for (var i = 0; i < actualCompetition.teams.length; i++) {
         let found = false
@@ -81,39 +88,42 @@ const getters = {
   rankedTeams: state => {
     if (state.competition.teams && state.competition.rounds){
       let teams = [...state.competition.teams]
+      // console.log(teams);
         let updatedTeams = []
         let actualCompetition = {...state.competition}
         // sumar todas las jornadas hasta la seleccionada
         for (let i = 0; i < teams.length; i++) {
-          let updatedTeam = teams[i]
+          let updatedTeam = {...teams[i]}
           let teamStats = {}
-          let actualRound = (state.selectedRound!=null||state.selectedRound>teams[i].stats.length) ? state.selectedRound : teams[i].stats.length -1
+          let actualRound = (state.selectedRound!=null||state.selectedRound -1 > teams[i].stats.length) ? state.selectedRound-1 : teams[i].stats.length -1
           for (let j = 0; j < actualRound+1; j++) {
             if(j==0){
-              teamStats = teams[i].stats[j]
+              teamStats = {...teams[i].stats[j]}
             }
             else{
-              teamStats.gamesPlayed+=teams[i].stats[j].gamesPlayed
-              teamStats.homeGamesPlayed+= teams[i].stats[j].homeGamesPlayed
-              teamStats.awayGamesPlayed+= teams[i].stats[j].awayGamesPlayed
-              teamStats.points+= teams[i].stats[j].points
-              teamStats.homePoints += teams[i].stats[j].homePoints
-              teamStats.awayPoints+= teams[i].stats[j].awayPoints
-              teamStats.wins+= teams[i].stats[j].wins
-              teamStats.homeWins+= teams[i].stats[j].homeWins
-              teamStats.awayWins+= teams[i].stats[j].awayWins
-              teamStats.draws+= teams[i].stats[j].draws
-              teamStats.homeDraws+= teams[i].stats[j].homeDraws
-              teamStats.awayDraws+= teams[i].stats[j].awayDraws
-              teamStats.loses+= teams[i].stats[j].loses
-              teamStats.homeLoses+= teams[i].stats[j].homeLoses
-              teamStats.awayLoses+= teams[i].stats[j].awayLoses
-              teamStats.goals+= teams[i].stats[j].goals
-              teamStats.homeGoals+= teams[i].stats[j].homeGoals
-              teamStats.awayGoals+= teams[i].stats[j].awayGoals
-              teamStats.againstGoals+= teams[i].stats[j].againstGoals
-              teamStats.homeAgainstGoals+= teams[i].stats[j].homeAgainstGoals
-              teamStats.awayAgainstGoals+= teams[i].stats[j].awayAgainstGoals
+              if (teams[i].stats[j]!=undefined) {
+                teamStats.gamesPlayed+=teams[i].stats[j].gamesPlayed
+                teamStats.homeGamesPlayed+= teams[i].stats[j].homeGamesPlayed
+                teamStats.awayGamesPlayed+= teams[i].stats[j].awayGamesPlayed
+                teamStats.points+= teams[i].stats[j].points
+                teamStats.homePoints += teams[i].stats[j].homePoints
+                teamStats.awayPoints+= teams[i].stats[j].awayPoints
+                teamStats.wins+= teams[i].stats[j].wins
+                teamStats.homeWins+= teams[i].stats[j].homeWins
+                teamStats.awayWins+= teams[i].stats[j].awayWins
+                teamStats.draws+= teams[i].stats[j].draws
+                teamStats.homeDraws+= teams[i].stats[j].homeDraws
+                teamStats.awayDraws+= teams[i].stats[j].awayDraws
+                teamStats.loses+= teams[i].stats[j].loses
+                teamStats.homeLoses+= teams[i].stats[j].homeLoses
+                teamStats.awayLoses+= teams[i].stats[j].awayLoses
+                teamStats.goals+= teams[i].stats[j].goals
+                teamStats.homeGoals+= teams[i].stats[j].homeGoals
+                teamStats.awayGoals+= teams[i].stats[j].awayGoals
+                teamStats.againstGoals+= teams[i].stats[j].againstGoals
+                teamStats.homeAgainstGoals+= teams[i].stats[j].homeAgainstGoals
+                teamStats.awayAgainstGoals+= teams[i].stats[j].awayAgainstGoals
+              }
             }
           }
           updatedTeam.stats = teamStats
@@ -225,18 +235,6 @@ const mutations = {
   ...teamMutations,
   ...playerMutations,
   ...competitionMutations
-}
-
-function sumObjectsByKey(...objs) {
-  console.log(objs);
-
-  return objs.reduce((a, b) => {
-    for (let k in b) {
-      if (b.hasOwnProperty(k))
-        a[k] = (a[k] || 0) + b[k];
-    }
-    return a;
-  }, {});
 }
 
 export default new Vuex.Store({

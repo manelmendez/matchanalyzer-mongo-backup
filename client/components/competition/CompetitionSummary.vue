@@ -30,20 +30,30 @@
         <v-card-text>
           <v-container grid-list-md>
             <v-layout wrap>
-              <v-flex xs12 md6>
+              <v-flex xs12 md4 class="text-xs-center">
+                <v-avatar size="100px" v-if="!image" class="uploadPhoto" @click="launchFilePicker">
+                  <v-icon>add_a_photo</v-icon>
+                  <input type="file" ref="file" @change="onFileChanged" style="display:none">
+                </v-avatar>
+                <v-avatar size="100px" v-else class="uploadPhoto" @click="launchFilePicker">
+                  <img :src="this.image" alt="avatar">
+                </v-avatar>
+              </v-flex>
+              <v-flex xs12 md4>
                 <v-text-field label="Nombre del equipo" v-model="name" required></v-text-field>
               </v-flex>
-              <v-flex xs12 md6>
+              <v-flex xs12 md4>
                 <v-select
                   :items="temporada"
                   label="Temporada"
                   v-model="season"
                   required
                 ></v-select>
+
               </v-flex>
             </v-layout>
           </v-container>
-          <small>*indicates required field</small>
+          <small>La imagen es opcional, si no subes ninguna se asignará una aleatoria</small>
         </v-card-text>
         <v-btn color="primary" @click.native="createCompetitionTeam()">Continue</v-btn>
         <v-btn flat @click.native="dialog=!dialog">Cancel</v-btn>
@@ -78,7 +88,9 @@ import { mapGetters } from 'vuex'
         "18/19"
       ],
       name: '',
-      season: ''
+      season: '',
+      image: null,
+      file: null
     }),
     methods: {
       goTo(id) {
@@ -90,21 +102,55 @@ import { mapGetters } from 'vuex'
         })
       },
       createCompetitionTeam(){
-        let body = {
-          team: {
-            season: this.season,
-            name: this.name
-          },
-          competition: this.competition._id
+        if(this.file!=null){
+          const fd = new FormData()
+          fd.append('image', this.file, this.file.name)
+          this.uploadTeamImage(fd).then((response) => {
+            console.log(response);
+            let body = {
+              team: {
+                season: this.season,
+                name: this.name,
+                avatar: null
+              },
+              competition: this.competition._id
+            }
+            if (response.status == 200) {
+              body.team.avatar = response.data
+            }
+            this.addNoManagerTeam(body).then((response) => {
+              if(response.status === 200) {
+                this.dialog=false
+              }
+            })
+          })
         }
-        this.addNoManagerTeam(body).then((response) => {
-          if(response.status === 200) {
-            this.dialog=false
+        else {
+          let body = {
+            team: {
+              season: this.season,
+              name: this.name,
+              avatar: null
+            },
+            competition: this.competition._id
           }
-        })
+          this.addNoManagerTeam(body).then((response) => {
+            if(response.status === 200) {
+              this.dialog=false
+            }
+          })
+        }
+      },
+      launchFilePicker(){
+        this.$refs.file.click();
+      },
+      onFileChanged (event) {
+        this.image = URL.createObjectURL(event.target.files[0])
+        this.file = event.target.files[0]
       },
       ...mapActions([
-        'addNoManagerTeam'
+        'addNoManagerTeam',
+        'uploadTeamImage'
       ])
     },
     computed: {

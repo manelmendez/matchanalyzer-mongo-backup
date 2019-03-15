@@ -9,7 +9,8 @@ function addTeam(req, res) {
     name: req.body.name,
     manager: req.body.manager,
     players: [],
-    season: req.body.temporada
+    season: req.body.temporada,
+    avatar: req.body.avatar
   })
   console.log("Registrando equipo con nombre: " + team.name + "...");
   // check if team exists in database
@@ -153,7 +154,8 @@ function addNoManagerTeam(req, res, next) {
   const team = new Team({
     name: req.body.team.name,
     players: [],
-    season: req.body.team.temporada
+    season: req.body.team.temporada,
+    avatar: req.body.team.avatar
   })
   console.log(team);
   console.log("Registrando equipo con nombre: " + team.name + "...");
@@ -205,6 +207,41 @@ function addStatsToTeam(req, res, next) {
   })
 }
 
+function deleteStatsOfTeam(req, res, next) {
+  // borrar un atributo del array de stats en team
+  // localteamId    borrar localTeamStatsId
+  // awayTeamId    borrar awayTeamStatsId
+  // let localStatsId = req.params.localStatsId
+  Team.updateOne({_id:req.body.localTeamId}, { $pullAll: {stats: [req.body.localTeamStatsId] } } )
+  .then((value) => {
+    console.log("Paso 3a - Eliminar stats de lista de stats del equipo local");
+    console.log(value);
+    Team.updateOne({_id:req.body.awayTeamId}, { $pullAll: {stats: [req.body.awayTeamStatsId] } } )
+    .then((value2) => {
+      console.log("Paso 3b - Eliminar stats de lista de stats del equipo visitante");
+      console.log(value2);
+      next()
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({message: `Error al borrar team stats: ${err}`})
+    })
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).send({message: `Error al borrar team stats: ${err}`})
+  })
+
+  // Match.deleteOne(localStatsId)
+  // .then((value) => {
+  //   console.log('Las stats han sido eliminadas')
+  // })
+  // .catch((err) => {
+  //   if (err) res.status(500).send({message: `Error al borrar team stats: ${err}`})
+  // })
+  // }
+}
+
 module.exports = {
   addTeam,
   getTeam,
@@ -212,5 +249,6 @@ module.exports = {
   getUserTeams,
   addPlayerToTeam,
   addNoManagerTeam,
-  addStatsToTeam
+  addStatsToTeam,
+  deleteStatsOfTeam
 }

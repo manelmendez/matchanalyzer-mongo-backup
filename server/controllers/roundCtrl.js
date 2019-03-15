@@ -46,7 +46,22 @@ function addMatchToRound(req, res) {
   })
 }
 
+function deleteMatchOfRound(req, res, next) {
+  // borrar un atributo del array de matchs en round
+  // roundId     borrar params.matchId
+  Round.updateOne({_id:req.body.roundId}, { $pullAll: {matches: [req.params.id] } } )
+  .then((value) => {
+    console.log("Paso 4 FINAL - Eliminar partido de lista de partidos de la jornada");
+    res.status(200).send({message: `Stats borradas`})
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).send({message: `Error al borrar team stats: ${err}`})
+  })
+}
+
 module.exports = {
   addRound,
-  addMatchToRound
+  addMatchToRound,
+  deleteMatchOfRound
 }

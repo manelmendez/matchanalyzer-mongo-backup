@@ -76,7 +76,8 @@ import { mapGetters } from 'vuex'
   export default {
     name: "Teams",
     data: () => ({
-      image:"",
+      image:null,
+      file: null,
       dialog: false,
       temporada: [
         "14/15",
@@ -102,23 +103,49 @@ import { mapGetters } from 'vuex'
       },
       onFileChanged (event) {
         this.image = URL.createObjectURL(event.target.files[0])
+        this.file = event.target.files[0]
       },
       createTeam() {
-        let body = {
-          season: this.season,
-          name: this.name,
-          manager: this.user._id
+        if(this.file!=null){
+          const fd = new FormData()
+          fd.append('image', this.file, this.file.name)
+          this.uploadTeamImage(fd).then((response) => {
+            console.log(response);
+            let body = {
+                season: this.season,
+                name: this.name,
+                avatar: response.data,
+                manager: this.user._id
+            }
+            if (response.status == 200) {
+              body.avatar = response.data
+            }
+            this.addTeam(body).then((response) => {
+              if(response.status === 200) {
+                this.dialog=false
+              }
+            })
+          })
         }
-        this.addTeam(body).then((response) => {
-          if(response.status === 200) {
-            this.dialog=false
+        else {
+          let body = {
+              season: this.season,
+              name: this.name,
+              avatar: null,
+              manager: this.user._id
           }
-        })
+          this.addTeam(body).then((response) => {
+            if(response.status === 200) {
+              this.dialog=false
+            }
+          })
+        }
       },
       ...mapActions([
         'getUserTeams',
         'addTeam',
-        'selectTeam'
+        'selectTeam',
+        'uploadTeamImage'
       ])
     },
     computed:{

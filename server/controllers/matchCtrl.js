@@ -54,7 +54,52 @@ function addMyMatch(req, res, next) {
   })
 }
 
+function updateMatch (req, res, next) {
+  let id = req.params.id
+  //no se hace const match = new Match porque eso te genera una nueva _id y por tanto no te deja editar
+  const match = {
+    localTeam: req.body.match.localTeam,
+    awayTeam: req.body.match.awayTeam,
+    localTeamGoals: req.body.match.localTeamGoals,
+    awayTeamGoals: req.body.match.awayTeamGoals,
+    matchDay: req.body.match.matchDay,
+    competition: req.body.match.competition,
+    round: req.body.match.round
+  }
+  console.log("Actualizar partido");
+  Match.updateOne({_id:id}, {$set:match})
+  .then((value) => {
+    console.log("Partido actualizado");
+    console.log("datos: ");
+    req.match = match
+    req.round = req.body.match.round
+    req.localTeamStats = req.body.localTeamStats
+    req.awayTeamStats = req.body.awayTeamStats
+    next()
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).send({message: `Error al actualizar el partido: ${err}`})
+  })
+}
+
+function deleteMatch (req, res, next) {
+  let matchId = req.params.id
+  Match.deleteOne({_id:matchId})
+  .then((value) => {
+    console.log("Paso 1 - Eliminar partido de lista de partidos");
+    console.log(value);
+    next()
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).send({message: `Error al borrar el partido: ${err}`})
+  })
+}
+
 module.exports = {
   addMatch,
-  addMyMatch
+  addMyMatch,
+  updateMatch,
+  deleteMatch
 }

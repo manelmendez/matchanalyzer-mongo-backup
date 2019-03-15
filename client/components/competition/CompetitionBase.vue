@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-tabs
     centered
-    color="cyan"
+    :color="constants.PRIMARY_DARK_COLOR_GREEN"
     dark
     icons-and-text >
       <v-tabs-slider color="yellow"></v-tabs-slider>
@@ -27,10 +27,11 @@
 <script>
 import { mapActions } from 'vuex'
 import { mapGetters } from 'vuex'
+import constants from '../../assets/constants/constants'
   export default {
     name: "CompetitionBase",
     data: () => ({
-
+      constants: constants,
     }),
     methods: {
       goTo(id) {

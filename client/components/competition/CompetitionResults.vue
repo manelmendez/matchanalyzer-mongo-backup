@@ -1,5 +1,5 @@
 <template>
-  <div v-if="competition.rounds">
+  <div v-if="competition.rounds && selectedRound!=null">
     <div v-if="competition.rounds.length == 0">
       <v-card>
         <v-card-text class="text-xs-center">
@@ -22,12 +22,11 @@
             <v-select
               :items="competition.rounds"
               item-text="name"
-              item-value="_id"
-              label=""
-              v-model="round"
               required
+              v-model="round"
               class="headline"
-              v-on:change="changeResultRound()"
+              return-object
+              @change="changeResultRound"
             ></v-select>
             </v-flex>
             <v-flex xs3>
@@ -43,11 +42,11 @@
           </v-layout>
         </v-card-title>
         <v-card-text class="text-xs-center">
-          <div v-if="competition.rounds[competition.rounds.length-1].matches.length == 0">
+          <div v-if="competition.rounds[selectedRound -1].matches.length == 0">
             Aún no has añadido partidos en esta jornada
           </div>
           <div v-else>
-            <div v-for="match in competition.rounds[competition.rounds.length-1].matches" :key="match._id">
+            <div v-for="match in competition.rounds[selectedRound -1].matches" :key="match._id">
               <v-container grid-list-md>
                 <v-layout row justify-center>
                   <v-flex xs4>
@@ -59,7 +58,7 @@
                   </v-flex>
                   <v-flex xs2>
                     <v-card class="match elevation-2">
-                      <v-card-text class="text-xs-center">
+                      <v-card-text class="text-xs-center result">
                       {{match.localTeamGoals}} - {{match.awayTeamGoals}}
                     </v-card-text>
                   </v-card>
@@ -76,7 +75,7 @@
                       <v-btn flat icon color="blue lighten-2" @click="editMatch(match)">
                         <v-icon size="18">edit</v-icon>
                       </v-btn>
-                      <v-btn flat icon color="red lighten-2">
+                      <v-btn flat icon color="red lighten-2" @click="delMatch(match)">
                         <v-icon size="18">delete</v-icon>
                     </v-btn>
                     </div>
@@ -181,10 +180,42 @@
               </v-layout>
             </v-container>
           </v-card-text>
-          <v-btn color="primary" @click.native="updateMatch()">Edit</v-btn>
+          <v-btn color="primary" @click.native="updateMatchFunction()">Edit</v-btn>
           <v-btn flat @click.native="clearDialog()">Cancel</v-btn>
         </v-card>
       </v-dialog>
+      <v-dialog
+      v-model="dialog3"
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">Quieres borrar este partido?</v-card-title>
+
+        <v-card-text>
+          Si aceptas, el partido se borrará y se perderán todos sus datos. Quieres continuar?
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn
+            color="green darken-1"
+            flat="flat"
+            @click="dialog3 = false"
+          >
+            Atras
+          </v-btn>
+
+          <v-btn
+            color="green darken-1"
+            flat="flat"
+            @click="deleteMatchFunction"
+          >
+            Adelante
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     </div>
   </div>
 </template>
@@ -197,6 +228,7 @@ import { mapGetters } from 'vuex'
     data: () => ({
       dialog: false,
       dialog2: false,
+      dialog3: false,
       localGoals: 0,
       awayGoals: 0,
       team: '',
@@ -205,6 +237,8 @@ import { mapGetters } from 'vuex'
       editingTeam2: '',
       editingLocalGoals: 0,
       editingAwayGoals: 0,
+      editingMatch: '',
+      deletingMatch:''
     }),
     methods: {
       createRound() {
@@ -218,7 +252,6 @@ import { mapGetters } from 'vuex'
       },
       createMatch() {
         let stats = this.setStats(this.team, this.team2)
-        console.log(stats);
         let body = {
           match: {
             localTeam: this.team._id,
@@ -227,11 +260,12 @@ import { mapGetters } from 'vuex'
             awayTeamGoals: this.awayGoals,
             matchDay: Date.now(),
             competition: this.competition._id,
-            round: this.competition.rounds[this.competition.rounds.length-1]._id,
+            round: this.competition.rounds[this.selectedRound -1]._id,
           },
           localTeamStats: stats.localTeamStats,
           awayTeamStats: stats.awayTeamStats
         }
+        console.log(body);
         if (this.team._id == this.team2._id) {
           alert("No puedes seleccionar el mismo equipo en ambos lados")
         }
@@ -249,30 +283,62 @@ import { mapGetters } from 'vuex'
         }
       },
       editMatch(match) {
-        console.log(match);
         this.editingTeam = match.localTeam
         this.editingTeam2 = match.awayTeam
         this.editingLocalGoals = match.localTeamGoals
         this.editingAwayGoals = match.awayTeamGoals
+        this.editingMatch= match._id
         this.dialog2=true
       },
-      updateMatch() {
+      delMatch(match) {
+        this.deletingMatch = match
+        this.dialog3=true
+      },
+      updateMatchFunction() {
         let stats = this.setStats(this.editingTeam, this.editingTeam2)
-        console.log(stats);
         let body = {
           match: {
             localTeam: this.editingTeam._id,
-            awayTeam: this.editingTeam._id,
+            awayTeam: this.editingTeam2._id,
             localTeamGoals: this.editingLocalGoals,
             awayTeamGoals: this.editingAwayGoals,
             matchDay: Date.now(),
             competition: this.competition._id,
-            round: this.competition.rounds[this.competition.rounds.length-1]._id,
+            round: this.competition.rounds[this.selectedRound -1]._id,
           },
           localTeamStats: stats.localTeamStats,
           awayTeamStats: stats.awayTeamStats
         }
-        console.log(body);
+        let data={
+          id:this.editingMatch,
+          body:body
+        }
+        this.updateMatch(data).then((response) => {
+          if (response.status == 200) {
+            this.getCompetition(this.$route.params.id)
+            this.clearDialog()
+          }
+        })
+      },
+      deleteMatchFunction(){
+        let body = {
+          localTeamId: this.deletingMatch.localTeam._id,
+          awayTeamId: this.deletingMatch.awayTeam._id,
+          localTeamStatsId: this.deletingMatch.localTeam.stats[this.selectedRound-1],
+          awayTeamStatsId: this.deletingMatch.awayTeam.stats[this.selectedRound-1],
+          roundId: this.competition.rounds[this.selectedRound -1]._id
+        }
+        let data={
+          id: this.deletingMatch._id,
+          body: body
+        }
+        console.log(data);
+        this.deleteMatch(data).then((response) => {
+          if (response.status == 200) {
+            this.getCompetition(this.$route.params.id)
+            this.clearDialog()
+          }
+        })
       },
       clearDialog() {
         this.team = ''
@@ -281,6 +347,7 @@ import { mapGetters } from 'vuex'
         this.awayGoals = 0
         this.dialog = false
         this.dialog2 = false
+        this.dialog3 = false
       },
       setStats(team1, team2) {
         let stats = {
@@ -288,12 +355,15 @@ import { mapGetters } from 'vuex'
           awayTeamStats: {}
         }
         let localTeamStats = {
-          round: this.competition.rounds[this.competition.rounds.length-1]._id,
+          round: this.competition.rounds[this.selectedRound -1]._id,
         }
         let awayTeamStats = {
-          round: this.competition.rounds[this.competition.rounds.length-1]._id,
+          round: this.competition.rounds[this.selectedRound -1]._id,
         }
-        if(Number(this.localGoals)>Number(this.awayGoals)) {
+        if((this.dialog2?Number(this.editingLocalGoals):Number(this.localGoals))>(this.dialog2?Number(this.editingAwayGoals):Number(this.awayGoals))) {
+          if(this.dialog2){
+            localTeamStats._id= this.editingTeam.stats[this.editingTeam.stats.length -1]
+          }
           localTeamStats.gamesPlayed= 1,
           localTeamStats.homeGamesPlayed= 1,
           localTeamStats.awayGamesPlayed= 0,
@@ -309,12 +379,15 @@ import { mapGetters } from 'vuex'
           localTeamStats.loses= 0
           localTeamStats.homeLoses= 0
           localTeamStats.awayLoses= 0
-          localTeamStats.goals= Number(this.localGoals)
-          localTeamStats.homeGoals= Number(this.localGoals)
+          localTeamStats.goals= (this.dialog2)?Number(this.editingLocalGoals):Number(this.localGoals)
+          localTeamStats.homeGoals= (this.dialog2)?Number(this.editingLocalGoals):Number(this.localGoals)
           localTeamStats.awayGoals= 0
-          localTeamStats.againstGoals= Number(this.awayGoals)
-          localTeamStats.homeAgainstGoals= Number(this.awayGoals)
+          localTeamStats.againstGoals= (this.dialog2)?Number(this.editingAwayGoals):Number(this.awayGoals)
+          localTeamStats.homeAgainstGoals= (this.dialog2)?Number(this.editingAwayGoals):Number(this.awayGoals)
           localTeamStats.awayAgainstGoals= 0
+          if(this.dialog2){
+            awayTeamStats._id= this.editingTeam2.stats[this.editingTeam2.stats.length -1]
+          }
           awayTeamStats.gamesPlayed= 1,
           awayTeamStats.homeGamesPlayed= 0,
           awayTeamStats.awayGamesPlayed= 1,
@@ -330,14 +403,17 @@ import { mapGetters } from 'vuex'
           awayTeamStats.loses= 1
           awayTeamStats.homeLoses= 0
           awayTeamStats.awayLoses= 1
-          awayTeamStats.goals= Number(this.awayGoals)
+          awayTeamStats.goals= (this.dialog2)?Number(this.editingAwayGoals):Number(this.awayGoals)
           awayTeamStats.homeGoals= 0
-          awayTeamStats.awayGoals= Number(this.awayGoals)
-          awayTeamStats.againstGoals= Number(this.localGoals)
+          awayTeamStats.awayGoals= (this.dialog2)?Number(this.editingAwayGoals):Number(this.awayGoals)
+          awayTeamStats.againstGoals= (this.dialog2)?Number(this.editingLocalGoals):Number(this.localGoals)
           awayTeamStats.homeAgainstGoals= 0
-          awayTeamStats.awayAgainstGoals= Number(this.localGoals)
+          awayTeamStats.awayAgainstGoals= (this.dialog2)?Number(this.editingLocalGoals):Number(this.localGoals)
         }
-        else if (Number(this.localGoals)==Number(this.awayGoals)) {
+        else if ((this.dialog2?Number(this.editingLocalGoals):Number(this.localGoals))==(this.dialog2?Number(this.editingAwayGoals):Number(this.awayGoals))) {
+          if(this.dialog2) {
+            localTeamStats._id= this.editingTeam.stats[this.editingTeam.stats.length -1]
+          }
           localTeamStats.gamesPlayed= 1,
           localTeamStats.homeGamesPlayed= 1,
           localTeamStats.awayGamesPlayed= 0,
@@ -353,12 +429,15 @@ import { mapGetters } from 'vuex'
           localTeamStats.loses= 0
           localTeamStats.homeLoses= 0
           localTeamStats.awayLoses= 0
-          localTeamStats.goals= Number(this.localGoals)
-          localTeamStats.homeGoals= Number(this.localGoals)
+          localTeamStats.goals= (this.dialog2)?Number(this.editingLocalGoals):Number(this.localGoals)
+          localTeamStats.homeGoals= (this.dialog2)?Number(this.editingLocalGoals):Number(this.localGoals)
           localTeamStats.awayGoals= 0
-          localTeamStats.againstGoals= Number(this.awayGoals)
-          localTeamStats.homeAgainstGoals= Number(this.awayGoals)
+          localTeamStats.againstGoals= (this.dialog2)?Number(this.editingAwayGoals):Number(this.awayGoals)
+          localTeamStats.homeAgainstGoals= (this.dialog2)?Number(this.editingAwayGoals):Number(this.awayGoals)
           localTeamStats.awayAgainstGoals= 0
+          if(this.dialog2) {
+            awayTeamStats._id= this.editingTeam2.stats[this.editingTeam2.stats.length -1]
+          }
           awayTeamStats.gamesPlayed= 1,
           awayTeamStats.homeGamesPlayed= 0,
           awayTeamStats.awayGamesPlayed= 1,
@@ -374,14 +453,17 @@ import { mapGetters } from 'vuex'
           awayTeamStats.loses= 0
           awayTeamStats.homeLoses= 0
           awayTeamStats.awayLoses= 0
-          awayTeamStats.goals= Number(this.awayGoals)
+          awayTeamStats.goals= (this.dialog2)?Number(this.editingAwayGoals):Number(this.awayGoals)
           awayTeamStats.homeGoals= 0
-          awayTeamStats.awayGoals= Number(this.awayGoals)
-          awayTeamStats.againstGoals= Number(this.localGoals)
+          awayTeamStats.awayGoals= (this.dialog2)?Number(this.editingAwayGoals):Number(this.awayGoals)
+          awayTeamStats.againstGoals= (this.dialog2)?Number(this.editingLocalGoals):Number(this.localGoals)
           awayTeamStats.homeAgainstGoals= 0
-          awayTeamStats.awayAgainstGoals= Number(this.localGoals)
+          awayTeamStats.awayAgainstGoals= (this.dialog2)?Number(this.editingLocalGoals):Number(this.localGoals)
         }
-        else if (Number(this.localGoals)<Number(this.awayGoals)) {
+        else if ((this.dialog2?Number(this.editingLocalGoals):Number(this.localGoals))<(this.dialog2?Number(this.editingAwayGoals):Number(this.awayGoals))) {
+          if(this.dialog2) {
+            localTeamStats._id= this.editingTeam.stats[this.editingTeam.stats.length -1]
+          }
           localTeamStats.gamesPlayed= 1,
           localTeamStats.homeGamesPlayed= 1,
           localTeamStats.awayGamesPlayed= 0,
@@ -397,12 +479,15 @@ import { mapGetters } from 'vuex'
           localTeamStats.loses= 1
           localTeamStats.homeLoses= 1
           localTeamStats.awayLoses= 0
-          localTeamStats.goals= Number(this.localGoals)
-          localTeamStats.homeGoals= Number(this.localGoals)
+          localTeamStats.goals= (this.dialog2)?Number(this.editingLocalGoals):Number(this.localGoals)
+          localTeamStats.homeGoals= (this.dialog2)?Number(this.editingLocalGoals):Number(this.localGoals)
           localTeamStats.awayGoals= 0
-          localTeamStats.againstGoals= Number(this.awayGoals)
-          localTeamStats.homeAgainstGoals= Number(this.awayGoals)
+          localTeamStats.againstGoals= (this.dialog2)?Number(this.editingAwayGoals):Number(this.awayGoals)
+          localTeamStats.homeAgainstGoals= (this.dialog2)?Number(this.editingAwayGoals):Number(this.awayGoals)
           localTeamStats.awayAgainstGoals= 0
+          if(this.dialog2) {
+            awayTeamStats._id= this.editingTeam2.stats[this.editingTeam2.stats.length -1]
+          }
           awayTeamStats.gamesPlayed= 1,
           awayTeamStats.homeGamesPlayed= 0,
           awayTeamStats.awayGamesPlayed= 1,
@@ -418,12 +503,12 @@ import { mapGetters } from 'vuex'
           awayTeamStats.loses= 0
           awayTeamStats.homeLoses= 0
           awayTeamStats.awayLoses= 0
-          awayTeamStats.goals= Number(this.awayGoals)
+          awayTeamStats.goals= (this.dialog2)?Number(this.editingAwayGoals):Number(this.awayGoals)
           awayTeamStats.homeGoals= 0
-          awayTeamStats.awayGoals= Number(this.awayGoals)
-          awayTeamStats.againstGoals= Number(this.localGoals)
+          awayTeamStats.awayGoals= (this.dialog2)?Number(this.editingAwayGoals):Number(this.awayGoals)
+          awayTeamStats.againstGoals= (this.dialog2)?Number(this.editingLocalGoals):Number(this.localGoals)
           awayTeamStats.homeAgainstGoals= 0
-          awayTeamStats.awayAgainstGoals= Number(this.localGoals)
+          awayTeamStats.awayAgainstGoals= (this.dialog2)?Number(this.editingLocalGoals):Number(this.localGoals)
         }
         else{
           alert("Ojo porque algo ha salido mal, se recomienda borrar el partido")
@@ -432,10 +517,11 @@ import { mapGetters } from 'vuex'
         stats.awayTeamStats = awayTeamStats
         return stats
       },
-      changeResultRound(){
-        console.log(this.round);
-
-        this.changeRound(this.round)
+      changeResultRound(item){
+        //coger el numero de round y ponerlo en selectedRound
+        let str = item.name
+        var res = str.split(" ")
+        this.changeRound(res[1])
       },
       resultClass(goals1, goals2){
         if(goals1==goals2) return 'draw'
@@ -447,16 +533,25 @@ import { mapGetters } from 'vuex'
         'addNoManagerTeam',
         'addRound',
         'addMatch',
-        'changeRound'
+        'changeRound',
+        'updateMatch',
+        'deleteMatch'
       ])
     },
     computed: {
       ...mapGetters([
         'competition',
-        'roundTeams'
+        'roundTeams',
+        'selectedRound'
       ]),
-      round() {
-        return this.competition.rounds[this.competition.rounds.length -1]
+      round:{
+        get: function() {
+          return this.competition.rounds[this.selectedRound -1]
+        },
+        // setter
+        set: function(newValue) {
+          return this.competition.rounds[this.selectedRound -1]
+        }
       }
     }
   }
@@ -474,17 +569,28 @@ import { mapGetters } from 'vuex'
   text-align:center;
 }
 .victory{
-  background-color: rgba(117, 255, 131, 0.55)
+  background-color: rgba(117, 255, 131, 0.55);
+  height: 100%;
+  width: 100%;
 }
 .draw{
-  background-color: rgba(255, 216, 117, 0.55)
+  background-color: rgba(255, 216, 117, 0.55);
+  height: 100%;
+  width: 100%;
 }
 .lose{
-  background-color: rgba(255, 117, 117, 0.55)
+  background-color: rgba(255, 117, 117, 0.55);
+  height: 100%;
+  width: 100%;
 }
 .editingTeam{
   align-items: center;
   justify-content: center;
   text-align:center;
+}
+.result{
+  background-color: rgba(199, 199, 199, 0.55);
+  height: 100%;
+  width: 100%;
 }
 </style>

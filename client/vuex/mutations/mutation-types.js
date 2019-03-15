@@ -29,3 +29,6 @@ export const GET_COMPETITIONS = 'GET_COMPETITIONS'
 export const ADD_ROUND = 'ADD_ROUND'
 export const ADD_MATCH = 'ADD_MATCH'
 export const CHANGE_ROUND = 'CHANGE_ROUND'
+export const UPDATE_MATCH = 'UPDATE_MATCH'
+export const DELETE_MATCH = 'DELETE_MATCH'
+

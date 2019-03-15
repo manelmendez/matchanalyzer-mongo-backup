@@ -21,8 +21,9 @@ const TeamSchema = new Schema({
  */
 TeamSchema.pre('save', function(next) {
   let team = this
+  console.log(this);
   //if (!team.isModified('password')) return next()
-  if(!team.avatar) {
+  if(team.avatar==null) {
     //add avatar to team
     team.avatar = team.gravatar();
   }

@@ -26,6 +26,17 @@ export const competitionMutations = {
   },
 
   [types.CHANGE_ROUND] (state, round) {
-    state.selectedRound = round
+    state.selectedRound = Number(round)
+  },
+
+  [types.UPDATE_MATCH] (state, match) {
+    // for (var i = 0; i < state.competition.rounds.length; i++) {
+    //   if (state.competition.rounds[i]._id == match.round) {
+    //     state.competition.rounds[i].matches = [...state.competition.rounds[i].matches, match]
+    //   }
+    // }
+  },
+  [types.DELETE_MATCH] (state, match) {
+    
   },
 }

@@ -34,6 +34,54 @@ function addTeamStats(req, res, next) {
   })
 }
 
+function updateTeamStats (req, res) {
+  let localTeamStats = req.localTeamStats
+  let awayTeamStats = req.awayTeamStats
+  const localId= req.localTeamStats._id
+  const awayId= req.awayTeamStats._id
+
+
+  delete localTeamStats._id;
+  delete awayTeamStats._id;
+
+  console.log(localId);
+  console.log(awayId);
+  console.log("Actualizar stats...")
+  // para los dos equipos, 2 parametros? 2 peticiones?
+  TeamStats.updateOne({_id: localId}, {$set:localTeamStats})
+  .then((value) => {
+    console.log(value);
+    TeamStats.updateOne({_id: awayId}, {$set:awayTeamStats})
+    .then((value2) => {
+      console.log(value2);
+      res.status(200).send()
+    })
+    .catch((err2) => {
+      console.log(err2);
+      res.status(500).send({message: `Error al actualizar team stats: ${err2}`})
+    })
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).send({message: `Error al actualizar team stats: ${err}`})
+  })
+}
+
+function deleteTeamStats (req, res, next) {
+  TeamStats.deleteMany({_id:[req.body.localTeamStatsId,req.body.awayTeamStatsId]})
+  .then((value) => {
+    console.log("Paso 2 - Eliminar stats de lista de teamStats");
+    console.log(value);
+    next()
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).send({message: `Error al borrar team stats: ${err}`})
+  })
+}
+
 module.exports = {
   addTeamStats,
+  updateTeamStats,
+  deleteTeamStats
 }
