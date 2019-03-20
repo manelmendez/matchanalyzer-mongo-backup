@@ -35,7 +35,8 @@ PlayerSchema.pre('save', function(next) {
   //if (!player.isModified('password')) return next()
   if(!player.avatar) {
     //add avatar to player
-    player.avatar = player.gravatar();
+    //player.avatar = player.gravatar();
+    player.avatar = "assets/images/person_icon.png"
   }
   next()
 })

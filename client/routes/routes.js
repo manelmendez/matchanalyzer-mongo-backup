@@ -78,7 +78,7 @@ router.beforeEach((to, from, next) => {
     const authUser = JSON.parse(window.localStorage.getItem('authUser'))
     console.log("Requires Auth");
     if(!authUser) {
-      next({name:'Welcome'})
+      next({name:'Index'})
     }
     else {
       isAuth()
@@ -102,7 +102,7 @@ router.beforeEach((to, from, next) => {
   }
 })
 function isAuth() {
-  axios.post(constants.LOCAL_ADDRESS+'private', null)
+  axios.post(constants.LOCAL_API_ADDRESS+'private', null)
   .then(response => {
     if(response.status === 200) {
       console.log("Autorizado")

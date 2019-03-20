@@ -7,15 +7,15 @@
     icons-and-text >
       <v-tabs-slider color="yellow"></v-tabs-slider>
 
-      <v-tab to="summary">
+      <v-tab class="compTab" to="summary">
         Resumen
         <v-icon>far fa-chart-bar</v-icon>
       </v-tab>
-      <v-tab to="results">
+      <v-tab class="compTab" to="results">
         Resultados
         <v-icon>fas fa-list</v-icon>
       </v-tab>
-      <v-tab to="rankings">
+      <v-tab class="compTab" to="rankings">
         Clasificación
         <v-icon>fas fa-trophy</v-icon>
       </v-tab>
@@ -57,3 +57,8 @@ import constants from '../../assets/constants/constants'
     }
   }
 </script>
+<style>
+.compTab:hover{
+  color: rgb(255, 255, 255)
+}
+</style>

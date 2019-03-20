@@ -8,7 +8,7 @@ import store from '../store/store'
 
 // SETTING UP AXIOS IN VUEX
 axios.create()
-axios.defaults.baseURL = constants.LOCAL_ADDRESS
+axios.defaults.baseURL = constants.LOCAL_API_ADDRESS
 // add token to Auth header if onceLogged
 if (JSON.parse(window.localStorage.getItem('authUser'))!= null)
 {
@@ -81,6 +81,18 @@ export const uploadTeamImage = ({commit}, formData) => {
     return response
   })
   .catch((err) => {
+    return err.response
+  })
+}
+
+export const updateTeam = ({commit}, data) => {
+  console.log("ACTION -- updateTeam")
+  return axios.put('updateTeam/'+data.id, data.body).then(response => {
+    if(response.status === 200) {
+      commit(types.UPDATE_TEAM)//TODO de momento no se devuelve nada desde el servidor
+    }
+    return response
+  }).catch((err) => {
     return err.response
   })
 }

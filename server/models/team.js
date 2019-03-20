@@ -25,7 +25,8 @@ TeamSchema.pre('save', function(next) {
   //if (!team.isModified('password')) return next()
   if(team.avatar==null) {
     //add avatar to team
-    team.avatar = team.gravatar();
+    //team.avatar = team.gravatar();
+    team.avatar = "assets/images/escudo-vacio.png"
   }
   next()
 })

@@ -8,7 +8,7 @@ import store from '../store/store'
 
 // SETTING UP AXIOS IN VUEX
 axios.create()
-axios.defaults.baseURL = constants.LOCAL_ADDRESS
+axios.defaults.baseURL = constants.LOCAL_API_ADDRESS
 // add token to Auth header if onceLogged
 if (JSON.parse(window.localStorage.getItem('authUser'))!= null)
 {

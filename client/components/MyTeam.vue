@@ -3,7 +3,7 @@
     <v-card>
       <v-card-title>
         <v-list-tile-avatar>
-          <v-img :src="team.avatar">
+          <v-img :src="constants.LOCAL_ADDRESS+team.avatar" contain="true">
         </v-list-tile-avatar>
         {{this.team.name}}
         <v-btn flat icon color="blue lighten-2" @click="click">
@@ -22,7 +22,7 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">
             <v-list-tile-avatar>
-              <img :src="props.item.avatar" alt="avatar">
+              <img :src="constants.LOCAL_ADDRESS+props.item.avatar" alt="avatar" contain="true">
             </v-list-tile-avatar>
           </td>
           <td class="text-xs-center">{{ props.item.name }}</td>
@@ -96,9 +96,11 @@
 <script>
 import { mapActions } from 'vuex'
 import { mapGetters } from 'vuex'
+import constants from '../assets/constants/constants'
   export default {
     name: "MyTeam",
     data: () => ({
+      constants: constants,
       dialog: false,
       name: '',
       position: '',

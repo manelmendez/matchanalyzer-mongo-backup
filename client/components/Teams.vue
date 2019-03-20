@@ -14,7 +14,7 @@
           </v-list-tile-content>
 
           <v-list-tile-avatar>
-            <v-img :src="team.avatar">
+            <v-img :src="constants.LOCAL_ADDRESS+team.avatar">
           </v-list-tile-avatar>
         </v-list-tile>
       </v-list>
@@ -72,10 +72,11 @@
 <script>
 import { mapActions } from 'vuex'
 import { mapGetters } from 'vuex'
-
+import constants from '../assets/constants/constants'
   export default {
     name: "Teams",
     data: () => ({
+      constants: constants,
       image:null,
       file: null,
       dialog: false,

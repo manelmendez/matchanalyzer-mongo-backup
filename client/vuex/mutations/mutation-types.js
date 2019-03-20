@@ -13,6 +13,7 @@ export const GET_TEAM = 'GET_TEAM'
 export const GET_TEAMS = 'GET_TEAMS'
 export const GET_MYTEAMS = 'GET_MYTEAMS'
 export const ADD_TEAM_TO_COMPETITION = 'ADD_TEAM_TO_COMPETITION'
+export const UPDATE_TEAM = 'UPDATE_TEAM'
 /*
 *   PLAYER
 */

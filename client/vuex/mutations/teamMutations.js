@@ -20,4 +20,7 @@ export const teamMutations = {
   [types.ADD_TEAM_TO_COMPETITION] (state, team) {
     state.competition.teams = [...state.competition.teams, team]
   },
+
+  [types.UPDATE_TEAM] (state, team) {
+  },
 }

@@ -16,7 +16,7 @@ async function uploadImage (req, res) {
       if (err) {
         return res.status(500).send('Fail!')
       } else {
-        return res.status(200).send("http://localhost:9000/"+req.file.path)
+        return res.status(200).send(req.file.path)
       }
     })
   }

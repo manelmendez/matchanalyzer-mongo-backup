@@ -9,7 +9,7 @@ function addTeam(req, res) {
     name: req.body.name,
     manager: req.body.manager,
     players: [],
-    season: req.body.temporada,
+    season: req.body.season,
     avatar: req.body.avatar
   })
   console.log("Registrando equipo con nombre: " + team.name + "...");
@@ -242,6 +242,18 @@ function deleteStatsOfTeam(req, res, next) {
   // }
 }
 
+function updateTeam(req, res) {
+  let team = req.body.team
+  Team.updateOne({_id:req.params.id}, { $set: {name: team.name, season: team.season, avatar: team.avatar } } )
+  .then((value) => {
+    res.status(200).send({team: value})
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).send({message: `Error al editar team: ${err}`})
+  })
+}
+
 module.exports = {
   addTeam,
   getTeam,
@@ -250,5 +262,6 @@ module.exports = {
   addPlayerToTeam,
   addNoManagerTeam,
   addStatsToTeam,
-  deleteStatsOfTeam
+  deleteStatsOfTeam,
+  updateTeam
 }

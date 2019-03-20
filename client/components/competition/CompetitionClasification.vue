@@ -18,6 +18,11 @@
       <template slot="items" slot-scope="props" >
         <tr :class="setClass(props)">
           <td class="text-xs-center">{{ props.index+1 }}</td>
+          <td class="text-xs-center">
+            <v-list-tile-avatar tile="true">
+              <v-img :src="constants.LOCAL_ADDRESS+props.item.avatar" contain="true">
+            </v-list-tile-avatar>
+          </td>
           <td class="text-xs-center">{{ props.item.name }}</td>
           <td class="text-xs-center">{{ props.item.stats.points }}</td>
           <td class="text-xs-center">{{ props.item.stats.gamesPlayed }}</td>
@@ -57,11 +62,14 @@
 <script>
 import { mapActions } from 'vuex'
 import { mapGetters } from 'vuex'
+import constants from '../../assets/constants/constants'
   export default {
     name: "CompetitionClasification",
     data: () => ({
+      constants: constants,
       headers: [
           { text: 'P', align: 'center', sortable: false, value: 'name'},
+          { text: '', align: 'center', sortable: false, value: ''},
           { text: 'Nombre', align: 'center', sortable: false, value: 'name'},
           { text: 'PTS', value: 'points', align: 'center', sortable: false,},
           { text: 'PJ', value: 'gamesPlayed', align: 'center', sortable: false,},
