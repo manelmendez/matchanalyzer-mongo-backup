@@ -60,6 +60,20 @@ function deleteMatchOfRound(req, res, next) {
   })
 }
 
+function deleteRound(req, res, next) {
+  let roundId = req.params.id
+  Match.deleteOne({_id:roundId})
+  .then((value) => {
+    console.log("Paso 1 - Eliminar la jornada de lista de jornadas");
+    console.log(value);
+    next()
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).send({message: `Error al borrar la jornada: ${err}`})
+  })
+}
+
 module.exports = {
   addRound,
   addMatchToRound,

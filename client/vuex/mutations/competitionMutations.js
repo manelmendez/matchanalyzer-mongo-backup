@@ -37,6 +37,10 @@ export const competitionMutations = {
     // }
   },
   [types.DELETE_MATCH] (state, match) {
-    
+
+  },
+
+  [types.DELETE_ROUND] (state, match) {
+
   },
 }

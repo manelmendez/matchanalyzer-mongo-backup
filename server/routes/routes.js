@@ -46,6 +46,7 @@ api.get('/getUserCompetitions/:id', auth.checkAuth, competitionCtrl.getUserCompe
 
 // ROUND
 api.post('/addRound', auth.checkAuth, roundCtrl.addRound, competitionCtrl.addRoundToCompetition)
+api.post('/deleteRound/:id', auth.checkAuth, matchCtrl.deleteAllMatchsOfRound, statsCtrl.deleteAllTeamStatsOfRound, teamCtrl.deleteStatsOfRoundTeams, roundCtrl.deleteRound)
 
 // MATCH
 api.post('/addMatch', auth.checkAuth, matchCtrl.addMatch, statsCtrl.addTeamStats, teamCtrl.addStatsToTeam, roundCtrl.addMatchToRound)
