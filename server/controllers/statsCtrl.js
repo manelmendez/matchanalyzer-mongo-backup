@@ -48,13 +48,18 @@ function updateTeamStats (req, res) {
   console.log(awayId);
   console.log("Actualizar stats...")
   // para los dos equipos, 2 parametros? 2 peticiones?
-  TeamStats.updateOne({_id: localId}, {$set:localTeamStats})
+  TeamStats.findOneAndUpdate({_id: localId}, {$set:localTeamStats}, {new:true})
   .then((value) => {
     console.log(value);
-    TeamStats.updateOne({_id: awayId}, {$set:awayTeamStats})
+    TeamStats.findOneAndUpdate({_id: awayId}, {$set:awayTeamStats}, {new:true})
     .then((value2) => {
       console.log(value2);
-      res.status(200).send()
+      let data = {
+        match: req.match,
+        localTeamStats: value,
+        awayTeamStats: value2
+      }
+      res.status(200).send(data)
     })
     .catch((err2) => {
       console.log(err2);

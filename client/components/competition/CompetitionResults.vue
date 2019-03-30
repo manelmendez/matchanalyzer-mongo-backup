@@ -275,7 +275,6 @@ import { mapGetters } from 'vuex'
         else {
           this.addMatch(body).then((response) => {
             if (response.status == 200) {
-              this.getCompetition(this.$route.params.id)
               this.clearDialog()
               this.dialog = false
             }
@@ -315,7 +314,7 @@ import { mapGetters } from 'vuex'
         }
         this.updateMatch(data).then((response) => {
           if (response.status == 200) {
-            this.getCompetition(this.$route.params.id)
+            // this.getCompetition(this.$route.params.id)
             this.clearDialog()
           }
         })

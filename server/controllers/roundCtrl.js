@@ -25,7 +25,9 @@ function addRound(req, res, next) {
 function addMatchToRound(req, res) {
   let round = req.round
   let match = req.match
-  Round.findByIdAndUpdate(round,{ "$push": {"matches": match._id}}, function(err, round) {
+  let localTeamStats = req.localTeamStats
+  let awayTeamStats = req.awayTeamStats
+  Round.findOneAndUpdate({_id:round},{ "$push": {"matches": match._id}}, function(err, round) {
     if (err) {
       console.log(`Error: ${err}`)
       return res.status(500).send({
@@ -40,7 +42,9 @@ function addMatchToRound(req, res) {
     if (round) {
       console.log("Partido añadido a la competición...")
       return res.status(200).send({
-        match: match
+        match: match,
+        localTeamStats: localTeamStats,
+        awayTeamStats: awayTeamStats
       })
     }
   })

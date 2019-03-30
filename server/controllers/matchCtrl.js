@@ -20,11 +20,20 @@ function addMatch(req, res, next) {
       message: `Error al crear competición: ${err}`
     })
     else {
-      req.match = match
-      req.round = req.body.match.round
-      req.localTeamStats = req.body.localTeamStats
-      req.awayTeamStats = req.body.awayTeamStats
-      next()
+      match.populate([{path: 'localTeam'},{path: 'awayTeam'}]).execPopulate(function(err2, match2) {
+        if(err2){
+          return res.status(500).send({
+            message: `Error al crear competición: ${err2}`
+          })
+        }
+        else{
+          req.match = match2
+          req.round = req.body.match.round
+          req.localTeamStats = req.body.localTeamStats
+          req.awayTeamStats = req.body.awayTeamStats
+          next()
+        }
+      })
     }
   })
 }
@@ -67,11 +76,12 @@ function updateMatch (req, res, next) {
     round: req.body.match.round
   }
   console.log("Actualizar partido");
-  Match.updateOne({_id:id}, {$set:match})
+  // Match.updateOne({_id:id}, {$set:match})    LA FUNCION UPDATEONE() NO DEVUELVE EL DOC EDITADO
+  Match.findByIdAndUpdate({_id:id}, {$set:match}, {new:true}).populate([{path: 'localTeam'},{path: 'awayTeam'}])
   .then((value) => {
     console.log("Partido actualizado");
-    console.log("datos: ");
-    req.match = match
+    console.log(value);
+    req.match = value
     req.round = req.body.match.round
     req.localTeamStats = req.body.localTeamStats
     req.awayTeamStats = req.body.awayTeamStats

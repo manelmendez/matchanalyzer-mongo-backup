@@ -11,7 +11,7 @@
           <v-img justify-center
             :src="constants.LOCAL_ADDRESS+team.avatar"
             aspect-ratio="1"
-            contain="true"
+            :contain="true"
           ></v-img>
           <v-card-title primary-title>
             <div>
@@ -36,8 +36,8 @@
                   <v-icon>add_a_photo</v-icon>
                   <input type="file" ref="file" @change="onFileChanged" style="display:none">
                 </v-avatar>
-                <v-avatar size="100px" tile="true" v-else @click="launchFilePicker">
-                  <v-img :src="this.image" contains="true">
+                <v-avatar size="100px" :tile="true" v-else @click="launchFilePicker">
+                  <v-img :src="this.image" :contains="true">
                 </v-avatar>
               </v-flex>
               <v-flex xs12 md4>
@@ -69,10 +69,10 @@
           <v-container grid-list-md>
             <v-layout wrap>
               <v-flex xs12 md4 class="text-xs-center">
-                <v-avatar size="100px" tile="true" @click="launchFilePicker">
+                <v-avatar size="100px" :tile="true" @click="launchFilePicker">
                   <input type="file" ref="editingFile" @change="onFileChanged" style="display:none">
-                  <v-img v-if="editingFile==null" :src="constants.LOCAL_ADDRESS+editingTeam.avatar" aspect-ratio="1" contains="true"></v-img>
-                  <v-img v-else :src="editingTeam.avatar" aspect-ratio="1" contains="true"></v-img>
+                  <v-img v-if="editingFile==null" :src="constants.LOCAL_ADDRESS+editingTeam.avatar" aspect-ratio="1" :contains="true"></v-img>
+                  <v-img v-else :src="editingTeam.avatar" aspect-ratio="1" :contains="true"></v-img>
                 </v-avatar>
               </v-flex>
               <v-flex xs12 md4>

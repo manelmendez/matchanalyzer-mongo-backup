@@ -63,7 +63,7 @@ export const addMatch = ({commit}, body) => {
   console.log("ACTION -- addMatch")
   return axios.post('addMatch', body).then(response => {
     if(response.status === 200) {
-      commit(types.ADD_MATCH, response.data.match)
+      commit(types.ADD_MATCH, response.data)
     }
     return response
   }).catch((err) => {
@@ -98,7 +98,7 @@ export const updateMatch = ({commit}, data) => {
   console.log("ACTION -- updateMatch")
   return axios.put('updateMatch/'+data.id, data.body).then(response => {
     if(response.status === 200) {
-      commit(types.UPDATE_MATCH)//TODO de momento no se devuelve nada desde el servidor
+      commit(types.UPDATE_MATCH, response.data)
     }
     return response
   }).catch((err) => {

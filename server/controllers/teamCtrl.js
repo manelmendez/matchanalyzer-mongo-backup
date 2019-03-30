@@ -180,30 +180,24 @@ function addStatsToTeam(req, res, next) {
   let localStats = req.localTeamStats._id
   let awayStats = req.awayTeamStats._id
 
-  Team.findByIdAndUpdate(match.localTeam,{ "$push": {"stats": localStats}}, function(err, stats) {
-    if (err) {
-      console.log(`Error: ${err}`)
+  Team.findOneAndUpdate({_id:match.localTeam._id},{ "$push": {"stats": localStats}},{new:true})
+  .then((stats)=>{
+    console.log("Stats local añadidos al equipo...")
+    Team.findOneAndUpdate({_id:match.awayTeam._id},{ "$push": {"stats": awayStats}}, {new:true})
+    .then((stats2)=>{
+      console.log("Stats visitante añadidos al equipo...")
+      next()
+    }).catch((err2)=>{
+      console.log(`Error: ${err2}`)
       return res.status(500).send({
-        message: `Error al insertar stats al equipo: ${err}`
+        message: `Error al insertar stats al equipo: ${err2}`
       })
-    }
-    if (stats) {
-      console.log("Stats local añadidos al equipo...")
-      Team.findByIdAndUpdate(match.awayTeam,{ "$push": {"stats": awayStats}}, function(err, stats2) {
-        if (err) {
-          console.log(`Error: ${err}`)
-          return res.status(500).send({
-            message: `Error al insertar stats al equipo: ${err}`
-          })
-        }
-        if (stats2) {
-          console.log("Stats visitante añadidos al equipo...")
-          req.round = req.round
-          req.match = req.match
-          next()
-        }
-      })
-    }
+    })
+  }).catch((err)=>{
+    console.log(`Error: ${err}`)
+    return res.status(500).send({
+      message: `Error al insertar stats al equipo: ${err}`
+    })
   })
 }
 
