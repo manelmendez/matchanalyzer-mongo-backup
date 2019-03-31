@@ -3,6 +3,8 @@ const app = require('./app')
 const config = require('./config/config');
 
 let options = {
+  useCreateIndex: true,
+  useNewUrlParser: true,
   //retry to connect for 60 times
   reconnectTries: 60,
   //wait 1 second before retrying
