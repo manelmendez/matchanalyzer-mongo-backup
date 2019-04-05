@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@vue/component-compiler-utils": "latest",
-    "babel-core": "^6.26.3",
+    "babel-core": "latest",
     "babel-preset-env": "latest",
     "parcel-bundler": "latest",
     "vue-template-compiler": "latest"

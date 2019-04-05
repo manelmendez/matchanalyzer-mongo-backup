@@ -58,7 +58,6 @@ export const competitionMutations = {
       }
     }    
     for (let x = 0; x < state.competition.teams.length; x++) {  
-          
       if (state.competition.teams[x]._id == state.competition.rounds[round].matches[match].localTeam._id) {
         for (let y = 0; y < state.competition.teams[x].stats.length; y++) {
 
@@ -76,8 +75,34 @@ export const competitionMutations = {
       } 
     }    
   },
-  [types.DELETE_MATCH] (state, match) {
-
+  [types.DELETE_MATCH] (state, data) {    
+    //eliminar partido de la jornada
+    for (let i = 0; i < state.competition.rounds.length; i++) {
+      if (state.competition.rounds[i]._id == data.body.roundId) {
+        for (let x = 0; x < state.competition.rounds[i].matches.length; x++) {
+          if(state.competition.rounds[i].matches[x]._id == data.id){
+            state.competition.rounds[i].matches.splice(x,1)
+          }
+        }
+      }
+    }
+    //eliminar stats de ambos equipos
+    for (let x = 0; x < state.competition.teams.length; x++) {  
+      if (state.competition.teams[x]._id == data.body.localTeamId) {
+        for (let y = 0; y < state.competition.teams[x].stats.length; y++) {
+          if (state.competition.teams[x].stats[y]._id == data.body.localTeamStatsId) {
+            state.competition.teams[x].stats.splice(y,1)
+          }
+        }
+      }     
+      else if (state.competition.teams[x]._id == data.body.awayTeamId) {
+        for (let z = 0; z < state.competition.teams[x].stats.length; z++) {  
+          if (state.competition.teams[x].stats[z]._id == data.body.awayTeamStatsId) {
+            state.competition.teams[x].stats.splice(z,1)
+          }
+        }
+      } 
+    }    
   },
 
   [types.DELETE_ROUND] (state, match) {

@@ -1,7 +1,7 @@
 {
-  "name": "matchanalyzer",
+  "name": "matchanalyzer-server",
   "version": "0.0.0",
-  "description": "Software to control match stats",
+  "description": "Server of MatchAnalyzer App",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js"

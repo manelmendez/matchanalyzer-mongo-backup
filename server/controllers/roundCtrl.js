@@ -66,11 +66,10 @@ function deleteMatchOfRound(req, res, next) {
 
 function deleteRound(req, res, next) {
   let roundId = req.params.id
-  Match.deleteOne({_id:roundId})
+  Round.deleteOne({_id:roundId})
   .then((value) => {
-    console.log("Paso 1 - Eliminar la jornada de lista de jornadas");
     console.log(value);
-    next()
+    res.status(200).send({message: `Jornada borrada`})
   })
   .catch((err) => {
     console.log(err);
@@ -81,5 +80,6 @@ function deleteRound(req, res, next) {
 module.exports = {
   addRound,
   addMatchToRound,
-  deleteMatchOfRound
+  deleteMatchOfRound,
+  deleteRound
 }

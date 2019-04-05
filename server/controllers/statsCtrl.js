@@ -85,8 +85,31 @@ function deleteTeamStats (req, res, next) {
   })
 }
 
+function deleteAllTeamStatsOfRound(req, res, next) {
+  console.log(req.params.id);
+  TeamStats.find({round: req.params.id})
+  .then((value) => {    
+    let deletedTeamStats = value
+    TeamStats.deleteMany({round: req.params.id})
+    .then((value2) => {
+      req.deletedTeamStats = deletedTeamStats
+      console.log(value2);
+      next()
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({message: `Error al borrar team stats de jornada: ${err}`})
+    })
+  })
+  .catch((err)=>{
+    res.status(500).send({message: `Error al buscar team stats de jornada: ${err}`})
+  })
+  
+}
+
 module.exports = {
   addTeamStats,
   updateTeamStats,
-  deleteTeamStats
+  deleteTeamStats,
+  deleteAllTeamStatsOfRound
 }

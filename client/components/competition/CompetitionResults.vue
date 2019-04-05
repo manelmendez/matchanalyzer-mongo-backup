@@ -18,27 +18,37 @@
       <v-card>
         <v-card-title>
           <v-layout row justify-space-between>
-          <v-flex xs3>
-            <v-select
-              :items="competition.rounds"
-              item-text="name"
-              required
-              v-model="round"
-              class="headline"
-              return-object
-              @change="changeResultRound"
-            ></v-select>
+            <v-flex xs3>
+              <v-select
+                :items="competition.rounds"
+                item-text="name"
+                required
+                v-model="round"
+                class="headline"
+                return-object
+                @change="changeResultRound"
+              ></v-select>
             </v-flex>
             <v-flex xs3>
-            <v-btn v-if="roundTeams.length == 0"
-              color="blue-grey"
-              class="white--text"
-              @click="createRound()"
-            >
-              Nueva Jornada
-              <v-icon right dark>add</v-icon>
-            </v-btn>
-          </v-flex>
+              <v-btn
+                round
+                color="blue-grey"
+                class="white--text"
+                @click="createRound()"
+              >
+                Nueva Jornada
+                <v-icon right dark>add</v-icon>
+              </v-btn>
+              <v-btn v-if="round._id == competition.rounds[competition.rounds.length -1]._id"
+                round
+                color="red lighten-2"
+                class="white--text"
+                @click="deleteRoundFunction()"
+              >
+                Borrar Jornada
+                <v-icon right dark>delete</v-icon>
+              </v-btn>
+            </v-flex>
           </v-layout>
         </v-card-title>
         <v-card-text class="text-xs-center">
@@ -77,7 +87,7 @@
                       </v-btn>
                       <v-btn flat icon color="red lighten-2" @click="delMatch(match)">
                         <v-icon size="18">delete</v-icon>
-                    </v-btn>
+                      </v-btn>
                     </div>
                   </v-flex>
                 </v-layout>
@@ -154,7 +164,7 @@
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12 md4 class="text-xs-center align-self-center">
-                  <div v-model="editingTeam">
+                  <div>
                     {{editingTeam.name}}
                   </div>
                 </v-flex>
@@ -173,7 +183,7 @@
                 </v-layout>
                 </v-flex>
                 <v-flex xs12 md4 class="text-xs-center align-self-center">
-                  <div v-model="editingTeam2">
+                  <div>
                     <p>{{editingTeam2.name}}</p>
                   </div>
                 </v-flex>
@@ -334,7 +344,6 @@ import { mapGetters } from 'vuex'
         console.log(data);
         this.deleteMatch(data).then((response) => {
           if (response.status == 200) {
-            this.getCompetition(this.$route.params.id)
             this.clearDialog()
           }
         })
@@ -527,6 +536,21 @@ import { mapGetters } from 'vuex'
         else if(goals1>goals2) return 'victory'
         else return 'lose'
       },
+      deleteRoundFunction(){
+        let body = {
+          round: this.round
+        }
+        let data={
+          id: this.round._id,
+          body: body
+        }
+        console.log(data);
+        this.deleteRound(data).then((response) => {
+          if (response.status == 200) {
+            this.getCompetition(this.$route.params.id)
+          }
+        })
+      },
       ...mapActions([
         'getCompetition',
         'addNoManagerTeam',
@@ -534,7 +558,8 @@ import { mapGetters } from 'vuex'
         'addMatch',
         'changeRound',
         'updateMatch',
-        'deleteMatch'
+        'deleteMatch',
+        'deleteRound'
       ])
     },
     computed: {

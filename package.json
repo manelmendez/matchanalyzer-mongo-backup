@@ -1,0 +1,15 @@
+{
+  "name": "matchanalyzer",
+  "version": "1.0.0",
+  "description": "Software to control match stats",
+  "main": "server/index.js",
+  "scripts": {
+    "installClient": "cd client && npm i",
+    "installServer": "cd server && npm i",
+    "build": "cd client && npm run build",
+    "serve": "cd server && npm start",
+    "start": "npm run installClient && npm run installServer && npm run build && npm run serve"
+  },
+  "author": "maneeel93@gmail.com",
+  "license": "MIT"
+}

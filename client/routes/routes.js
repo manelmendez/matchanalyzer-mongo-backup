@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Welcome from '../components/Welcome.vue'
-import Teams from '../components/Teams.vue'
+import MyTeams from '../components/MyTeams.vue'
 import MyTeam from '../components/MyTeam.vue'
 import CompetitionBase from '../components/competition/CompetitionBase.vue'
-import CompetitionList from '../components/competition/CompetitionList.vue'
+import MyCompetitions from '../components/MyCompetitions.vue'
 import CompetitionSummary from '../components/competition/CompetitionSummary.vue'
 import CompetitionResults from '../components/competition/CompetitionResults.vue'
 import CompetitionClasification from '../components/competition/CompetitionClasification.vue'
@@ -25,8 +25,8 @@ const router = new VueRouter({
     },
     {
       path: '/teams',
-      name: 'Teams',
-      component: Teams,
+      name: 'MyTeams',
+      component: MyTeams,
       meta: { requiresAuth: true }
     },
     {
@@ -37,8 +37,8 @@ const router = new VueRouter({
     },
     {
       path: '/competition',
-      name: 'CompetitionList',
-      component: CompetitionList,
+      name: 'MyCompetitions',
+      component: MyCompetitions,
       meta: { requiresAuth: true }
     },
     {

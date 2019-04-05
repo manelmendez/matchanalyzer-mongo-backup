@@ -70,7 +70,7 @@
 import { mapActions } from 'vuex'
 import { mapGetters } from 'vuex'
   export default {
-    name: "CompetitionList",
+    name: "MyCompetitions",
     data: () => ({
       dialog: false,
       name: '',

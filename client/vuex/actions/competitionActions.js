@@ -108,10 +108,9 @@ export const updateMatch = ({commit}, data) => {
 
 export const deleteMatch = ({commit}, data) => {
   console.log("ACTION -- deleteMatch")
-  console.log(data);
   return axios.delete('deleteMatch/'+data.id, { data: data.body }).then(response => {
     if(response.status === 200) {
-      commit(types.DELETE_MATCH)
+      commit(types.DELETE_MATCH, data)
     }
     return response
   }).catch((err) => {

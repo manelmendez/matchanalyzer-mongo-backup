@@ -248,6 +248,25 @@ function updateTeam(req, res) {
   })
 }
 
+function deleteStatsOfRoundTeams(req, res, next) {
+  let teamStatsIds = []
+  for (let i = 0; i < req.deletedTeamStats.length; i++) {
+    teamStatsIds.push(req.deletedTeamStats[i]._id)
+  }
+  // Team.updateMany({stats:{ $contains :{$in:{teamStatsIds}}}}, { $pullAll: {stats: [req.deletedTeamStats] } } )
+  // Team.updateMany({stats:{ $contains:{$in:{teamStatsIds}}}}, { $pop: {stats: 1 } } )
+  Team.updateMany({stats:{ $in: teamStatsIds}}, { $pop: {stats: 1 } } )
+  .then((value) => {
+    console.log("Eliminar stats de lista de stats de los equipos");
+    console.log(value);
+    next()
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).send({message: `Error al borrar team stats: ${err}`})
+  })
+}
+
 module.exports = {
   addTeam,
   getTeam,
@@ -257,5 +276,6 @@ module.exports = {
   addNoManagerTeam,
   addStatsToTeam,
   deleteStatsOfTeam,
-  updateTeam
+  updateTeam,
+  deleteStatsOfRoundTeams
 }

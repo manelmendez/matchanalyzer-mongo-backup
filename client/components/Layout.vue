@@ -19,10 +19,11 @@
         clipped
         fixed
         v-model="drawer"
+        width="200"
         app
       >
       <v-list dense>
-        <v-list-tile @click="goTo('Teams')">
+        <v-list-tile @click="goTo('MyTeams')">
           <v-list-tile-action>
             <v-icon>fas fa-futbol</v-icon>
           </v-list-tile-action>
@@ -30,7 +31,7 @@
             <v-list-tile-title>Mis equipos</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click="goTo('CompetitionList')">
+        <v-list-tile @click="goTo('MyCompetitions')">
           <v-list-tile-action>
             <v-icon>fas fa-trophy</v-icon>
           </v-list-tile-action>

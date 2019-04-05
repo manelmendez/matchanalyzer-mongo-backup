@@ -74,7 +74,7 @@ import { mapActions } from 'vuex'
 import { mapGetters } from 'vuex'
 import constants from '../assets/constants/constants'
   export default {
-    name: "Teams",
+    name: "MyTeams",
     data: () => ({
       constants: constants,
       image:null,
