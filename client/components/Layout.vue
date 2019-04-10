@@ -9,7 +9,7 @@
           <v-icon>account_circle</v-icon>
         </v-btn>
         <v-list>
-          <v-list-tile v-for="(item, i) in items" :key="i" @click="">
+          <v-list-tile v-for="(item, i) in items" :key="i">
             <v-list-tile-title @click="logOut()">{{ item.title }}</v-list-tile-title>
           </v-list-tile>
         </v-list>
