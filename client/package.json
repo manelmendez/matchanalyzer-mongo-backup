@@ -17,6 +17,7 @@
     "@mdi/font": "latest",
     "animate.css": "latest",
     "axios": "latest",
+    "chart.js": "latest",
     "font-awesome": "latest",
     "moment": "latest",
     "vue": "latest",

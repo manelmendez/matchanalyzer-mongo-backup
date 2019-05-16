@@ -4,14 +4,16 @@ import Vuetify from 'vuetify'
 import GSignInButton from 'vue-google-signin-button'
 import FBSignInButton from 'vue-facebook-signin-button'
 
-import constants from './assets/constants/constants'
-import router from './routes/routes'
-import App from './components/App.vue'
-import store from './vuex/store/store'
+import constants from './src/assets/constants/constants'
+import router from './src/routes/routes'
+import App from './src/pages/App.vue'
+import store from './src/vuex/store/store'
 
 Vue.use(Vuetify)
 Vue.use(GSignInButton)
 Vue.use(FBSignInButton)
+const isDev = process.env.NODE_ENV != "production"
+Vue.config.performance = isDev
 
 // Vue.prototype.$axios = axios.create()
 // Vue.prototype.$axios.defaults.baseURL = constants.LOCAL_ADDRESS
