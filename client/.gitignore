@@ -66,6 +66,7 @@ typings/
 
 # next.js build output
 .next
+.nuxt
 
 # npm
 package-lock.json
