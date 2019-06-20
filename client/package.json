@@ -23,7 +23,6 @@
     "vue": "latest",
     "vue-chartjs": "latest",
     "vue-facebook-signin-button": "latest",
-    "vue-google-charts": "latest",
     "vue-google-signin-button": "latest",
     "vue-hot-reload-api": "latest",
     "vue-router": "latest",
