@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="show" width="70%" persistent>
+    <v-dialog v-if="show" v-model="show" width="70%" persistent>
         <v-card>
           <v-card-title>
             <span class="headline">{{headline}}</span>
@@ -70,62 +70,11 @@ export default {
     },
     data(){
         return{
-            localGoalsFix: 0,
-            awayGoalsFix: 0,
-            teamSelected: {},
-            team2Selected: {}
-        }
-    },
-    computed: {
-        headline() {
-            if(this.type == "new") return "Añadir Partido"
-            else if(this.type == "edit") return "Editar Partido"
-        },
-        team:{
-            get(){ 
-                if(this.type == "new") return {}
-                else if(this.type == "edit") return this.match.localTeam
-            },
-            set(value){
-                this.teamSelected = value
-                return value
-            }
-        },
-        team2:{
-            get(){ 
-                if(this.type == "new") return {}
-                else if(this.type == "edit") return this.match.awayTeam
-            },
-            set(value){
-                this.team2Selected = value
-                return value
-            }
-        },
-        localGoals: {
-            get() {
-                if(this.type == "new") return 0
-                else if(this.type == "edit") {
-                    this.localGoalsFix = Number(this.match.localTeamGoals)
-                    return this.match.localTeamGoals
-                }
-            },
-            set(value) {
-                this.localGoalsFix = Number(value)
-                return Number(value)
-            }
-        },
-        awayGoals:{
-            get(){
-                if(this.type == "new") return 0
-                else if(this.type == "edit") {
-                    this.awayGoalsFix = Number(this.match.awayTeamGoals)
-                    return this.match.awayTeamGoals  
-                }
-            },
-            set(value){
-                this.awayGoalsFix = Number(value)
-                return Number(value)
-            }
+            localGoals: (this.type == "new") ? 0 : Number(this.match.localTeamGoals),
+            awayGoals: (this.type == "new") ? 0 : Number(this.match.awayTeamGoals),
+            team: (this.type == "new") ? "" : this.match.localTeam,
+            team2: (this.type == "new") ? "" : this.match.awayTeam,
+            headline: (this.type == "new") ? "Añadir Partido" : "Editar Partido"
         }
     },
     methods: {

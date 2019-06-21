@@ -77,7 +77,12 @@ export default {
             };
             this.deleteMatch(data).then(response => {
                 if (response.status == 200) {
+                    this.getCompetition(this.$route.params.id)
                     this.deleteDialog=false
+                }
+                else{
+                    this.deleteDialog=false
+                    this.$emit('loading')
                 }
             });
         },
@@ -99,18 +104,23 @@ export default {
                 id: this.match._id,
                 body: body
             };
-            
+            this.$emit('loading')
             this.updateMatch(data).then(response => {
                 if (response.status == 200) {
-                    // this.getCompetition(this.$route.params.id)
-                    this.roundDialog=false;
+                    this.getCompetition(this.$route.params.id)
+                    this.roundDialog=false
+                    this.$emit('loading')
+                }
+                else{
+                    this.roundDialog=false
+                    this.$emit('loading')
                 }
             });
         },
         ...mapActions([
-            "addMatch",
             "updateMatch",
             "deleteMatch",
+            "getCompetition"
         ])
     },
     computed: {

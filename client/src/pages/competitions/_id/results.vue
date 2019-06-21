@@ -1,5 +1,6 @@
 <template>
   <div v-if="competition.rounds && selectedRound!=null">
+    <v-progress-linear :indeterminate="true" v-if="loading"></v-progress-linear>
     <div v-if="competition.rounds.length == 0">
       <v-card>
         <v-card-text class="text-xs-center">
@@ -49,7 +50,7 @@
             v-if="competition.rounds[selectedRound -1].matches.length == 0"
           >Aún no has añadido partidos en esta jornada</div>
           <div v-else>
-            <RoundMatches></RoundMatches>
+            <RoundMatches @loading="loading=!loading"></RoundMatches>
           </div>
           <br>
           <v-btn v-if="roundTeams.length != 0" fab color="pink" dark @click.stop="roundDialog=!roundDialog, roundType='new'">
@@ -88,7 +89,8 @@ export default {
     editingLocalGoals: 0,
     editingAwayGoals: 0,
     editingMatch: "",
-    deletingMatch: ""
+    deletingMatch: "",
+    loading: false
   }),
   methods: {
     createRound() {
@@ -113,11 +115,22 @@ export default {
       //   alert("Uno de ellos es tu equipo, rellena las estadísticas")
       // }
       else {
+        this.loading=true
         this.addMatch(body).then(response => {
           if (response.status == 200) {
-            this.roundDialog = false;
+            this.roundDialog = false
+            this.loading = false
           }
-        });
+          else {
+            this.roundDialog = false
+            this.loading = false
+          }
+        })
+        .catch((e)=>{
+          console.log(e)
+          this.roundDialog = false
+          this.loading = false
+        })
       }
     },
     
@@ -136,21 +149,24 @@ export default {
         id: this.round._id,
         body: body
       };
+      this.loading = true
       this.deleteRound(data).then(response => {
         if (response.status == 200) {
           this.getCompetition(this.$route.params.id);
           this.deleteDialog=false
+          this.loading = false
+        }
+        else {
+          this.deleteDialog = false
+          this.loading = false
         }
       });
     },
     ...mapActions([
       "getCompetition",
-      "addNoManagerTeam",
       "addRound",
       "addMatch",
       "changeRound",
-      "updateMatch",
-      "deleteMatch",
       "deleteRound"
     ])
   },

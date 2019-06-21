@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="show" max-width="290" persistent>
+  <v-dialog v-if="show" v-model="show" max-width="290" persistent>
     <v-card>
       <v-card-title class="headline" v-model="title">{{title}}</v-card-title>
       <v-card-text>{{text}}</v-card-text>

@@ -1,7 +1,7 @@
 <template>
     <div class="roundResults">
         <v-container grid-list-md v-for="match in matches" :key="match._id">
-            <RoundMatch :match="match"></RoundMatch>
+            <RoundMatch :match="match" @loading="loading"></RoundMatch>
         </v-container>
     </div>
 </template>
@@ -13,6 +13,11 @@ export default {
     name: "RoundMatches",
     components:{
         RoundMatch
+    },
+    methods: {
+        loading(){
+            this.$emit('loading')
+        }
     },
     computed: {
         ...mapGetters(["matches"])
