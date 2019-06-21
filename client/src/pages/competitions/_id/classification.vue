@@ -15,10 +15,10 @@
 <script>
 import { mapActions } from 'vuex'
 import { mapGetters } from 'vuex'
-import constants from '../../assets/constants/constants'
-import ClassificationTable from '../../components/ClassificationTable'
+import constants from '../../../assets/constants/constants'
+import ClassificationTable from '../../../components/ClassificationTable'
   export default {
-    name: "CompetitionClasification",
+    name: "classification",
     components: {
       ClassificationTable
     },

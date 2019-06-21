@@ -33,24 +33,23 @@
                 </v-btn>
             </div>
         </v-flex>
-        <RoundModal v-if="roundDialog" :show="roundDialog" type="edit" :roundTeams="newRoundTeams" :match="match" @close="roundDialog=!roundDialog" @confirm="updateMatchFunction"></RoundModal>
+        <RoundModal v-if="roundDialog" :show="roundDialog" type="edit" :roundTeams="newRoundTeams" :match="match" @close="roundDialog=!roundDialog" @edit="updateMatchFunction"></RoundModal>
         <DeleteModal v-if="deleteDialog" :show="deleteDialog" type="match" @close="deleteDialog=!deleteDialog" @delete="deleteMatchFunction"></DeleteModal>
     </v-layout>
 </template>
 <script>
 import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
-import RoundModal from './modals/RoundModal'
-import DeleteModal from './modals/DeleteModal'
+import RoundModal from "../components/modals/RoundModal";
+import DeleteModal from "../components/modals/DeleteModal";
 export default {
     name: "RoundMatch",
     components:{
-        DeleteModal,
-        RoundModal
+        RoundModal,
+        DeleteModal
     }, 
     props: {
         match: Object,
-        roundTeams: Array
     },
     data(){
         return{
@@ -64,38 +63,24 @@ export default {
             else if (goals1 > goals2) return "victory";
             else return "lose";
         },
-        deleteMatchFunction() {
+        deleteMatchFunction() {            
             let body = {
-                localTeamId: this.deletingMatch.localTeam._id,
-                awayTeamId: this.deletingMatch.awayTeam._id,
-                localTeamStatsId: this.deletingMatch.localTeam.stats[
-                this.selectedRound - 1
-                ],
-                awayTeamStatsId: this.deletingMatch.awayTeam.stats[
-                this.selectedRound - 1
-                ],
-                roundId: this.competition.rounds[this.selectedRound - 1]._id
-            };
+                localTeamId: this.match.localTeam._id,
+                awayTeamId: this.match.awayTeam._id,
+                localTeamStatsId: this.match.localTeam.stats[this.selectedRound - 1],
+                awayTeamStatsId: this.match.awayTeam.stats[this.selectedRound - 1],
+                roundId: this.match.round
+            };            
             let data = {
-                id: this.deletingMatch._id,
+                id: this.match._id,
                 body: body
             };
-            console.log(data);
             this.deleteMatch(data).then(response => {
                 if (response.status == 200) {
-                    deleteDialog=false
+                    this.deleteDialog=false
                 }
             });
         },
-        editMatch(match) {
-            this.editingTeam = match.localTeam;
-            this.editingTeam2 = match.awayTeam;
-            this.editingLocalGoals = match.localTeamGoals;
-            this.editingAwayGoals = match.awayTeamGoals;
-            this.editingMatch = match._id;
-            this.dialog2 = true;
-        },
-        
         updateMatchFunction(stats) {
             let body = {
                 match: {
@@ -114,7 +99,6 @@ export default {
                 id: this.match._id,
                 body: body
             };
-            console.log(data);
             
             this.updateMatch(data).then(response => {
                 if (response.status == 200) {
@@ -130,6 +114,7 @@ export default {
         ])
     },
     computed: {
+        ...mapGetters(['selectedRound','roundTeams']),
         newRoundTeams() {
             return [...this.roundTeams, this.match.localTeam, this.match.awayTeam]
         }

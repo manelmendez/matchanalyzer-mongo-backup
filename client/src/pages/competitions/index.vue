@@ -87,7 +87,7 @@ import { mapGetters } from 'vuex'
     methods: {
       goTo(id) {
         this.$router.push({
-          name: "CompetitionBase",
+          name: "summary",
           params: {
             id: id
           }

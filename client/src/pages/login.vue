@@ -97,7 +97,7 @@
 import { mapActions } from 'vuex'
 
   export default {
-    name: 'Welcome',
+    name: 'login',
     data () {
       return {
         login: true,
@@ -141,7 +141,7 @@ import { mapActions } from 'vuex'
             if(response.status === 200) {
               setTimeout(() => {
                 this.$router.push({
-                  name: "MyTeams" //si uso path: "/mainpage" el params (props) no funciona -- params: { user: response.data.user } --
+                  name: "index" //si uso path: "/mainpage" el params (props) no funciona -- params: { user: response.data.user } --
                 })
               }, 2000);
             }
@@ -155,7 +155,7 @@ import { mapActions } from 'vuex'
           if(response.status === 200) {
             setTimeout(() => {
               this.$router.push({
-                name: "MyTeams" //si uso path: "/mainpage" el params (props) no funciona -- params: { user: response.data.user } --
+                name: "index" //si uso path: "/mainpage" el params (props) no funciona -- params: { user: response.data.user } --
               })
             }, 2000);
           }
@@ -186,7 +186,7 @@ import { mapActions } from 'vuex'
             if(response.status === 200) {
               setTimeout(() => {
                 this.$router.push({
-                  name: "MyTeams" //si uso path: "/mainpage" el params (props) no funciona -- params: { user: response.data.user } --
+                  name: "index" //si uso path: "/mainpage" el params (props) no funciona -- params: { user: response.data.user } --
                 })
               }, 2000);
             }

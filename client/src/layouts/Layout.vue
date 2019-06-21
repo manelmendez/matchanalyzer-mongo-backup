@@ -23,7 +23,7 @@
         app
       >
       <v-list dense>
-        <v-list-tile @click="goTo('MyTeams')">
+        <v-list-tile @click="goTo('teams')">
           <v-list-tile-action>
             <v-icon>fas fa-futbol</v-icon>
           </v-list-tile-action>
@@ -31,7 +31,7 @@
             <v-list-tile-title>Mis equipos</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click="goTo('MyCompetitions')">
+        <v-list-tile @click="goTo('competitions')">
           <v-list-tile-action>
             <v-icon>fas fa-trophy</v-icon>
           </v-list-tile-action>

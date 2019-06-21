@@ -44,16 +44,12 @@
             </v-flex>
           </v-layout>
         </v-card-title>
-        <v-card-text class="text-xs-center">
+        <v-card-text class="text-xs-center" v-if="competition.rounds">
           <div
             v-if="competition.rounds[selectedRound -1].matches.length == 0"
           >Aún no has añadido partidos en esta jornada</div>
           <div v-else>
-            {{matches}}
-            ------
-            ------
-            ------
-            <RoundMatches :matches="matches" :roundTeams="roundTeams"></RoundMatches>
+            <RoundMatches></RoundMatches>
           </div>
           <br>
           <v-btn v-if="roundTeams.length != 0" fab color="pink" dark @click.stop="roundDialog=!roundDialog, roundType='new'">
@@ -61,8 +57,8 @@
           </v-btn>
         </v-card-text>
       </v-card>
-      <RoundModal :show="roundDialog" type="new" :roundTeams="roundTeams" @close="roundDialog=!roundDialog"></RoundModal>
-      <DeleteModal :show="deleteDialog" type="jornada" @close="deleteDialog=!deleteDialog" @confirm="deleteRoundFunction"></DeleteModal>
+      <RoundModal :show="roundDialog" type="new" :competition="competition" :roundTeams="roundTeams" :round="competition.rounds[selectedRound -1]._id" @close="roundDialog=!roundDialog" @confirm="createMatch"></RoundModal>
+      <DeleteModal :show="deleteDialog" type="jornada" @close="deleteDialog=!deleteDialog" @delete="deleteRoundFunction"></DeleteModal>
     </div>
   </div>
 </template>
@@ -70,11 +66,10 @@
 <script>
 import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
-import RoundMatches from "../../components/RoundMatches"
-import DeleteModal from "../../components/modals/DeleteModal"
-import RoundModal from "../../components/modals/RoundModal"
+import RoundMatches from "../../../components/RoundMatches"
+import DeleteModal from "../../../components/modals/DeleteModal"
+import RoundModal from "../../../components/modals/RoundModal"
 export default {
-  name: "CompetitionResults",
   components: {
     RoundMatches,
     DeleteModal,
@@ -85,6 +80,7 @@ export default {
     deleteDialog: false,
     localGoals: 0,
     awayGoals: 0,
+    match: "",
     team: "",
     team2: "",
     editingTeam: "",
@@ -104,23 +100,13 @@ export default {
       };
       this.addRound(body);
     },
-    createMatch() {
-      let stats = this.setStats(this.team, this.team2);
+    createMatch(newMatch) {
       let body = {
-        match: {
-          localTeam: this.team._id,
-          awayTeam: this.team2._id,
-          localTeamGoals: this.localGoals,
-          awayTeamGoals: this.awayGoals,
-          matchDay: Date.now(),
-          competition: this.competition._id,
-          round: this.competition.rounds[this.selectedRound - 1]._id
-        },
-        localTeamStats: stats.localTeamStats,
-        awayTeamStats: stats.awayTeamStats
-      };
-      console.log(body);
-      if (this.team._id == this.team2._id) {
+        match: newMatch.match,
+        localTeamStats: newMatch.localTeamStats,
+        awayTeamStats: newMatch.awayTeamStats
+      }
+      if (newMatch.match.localTeam == newMatch.match.awayTeam) {
         alert("No puedes seleccionar el mismo equipo en ambos lados");
       }
       // else if (this.team._id == this.competition.myTeam._id || this.team2._id == this.competition.myTeam._id) {
@@ -129,8 +115,7 @@ export default {
       else {
         this.addMatch(body).then(response => {
           if (response.status == 200) {
-            this.clearDialog();
-            this.dialog = false;
+            this.roundDialog = false;
           }
         });
       }
@@ -151,7 +136,6 @@ export default {
         id: this.round._id,
         body: body
       };
-      console.log(data);
       this.deleteRound(data).then(response => {
         if (response.status == 200) {
           this.getCompetition(this.$route.params.id);
@@ -172,9 +156,7 @@ export default {
   },
   computed: {
     ...mapGetters(["competition", "roundTeams", "selectedRound"]),
-    matches() {
-      console.log(this.$store.getters.matches);
-      
+    matches() {      
       return this.$store.getters.matches
     },
     round: {

@@ -2,7 +2,7 @@
     <v-dialog v-model="show" width="70%" persistent>
         <v-card>
           <v-card-title>
-            <span class="headline">Añadir Partido</span>
+            <span class="headline">{{headline}}</span>
           </v-card-title>
           <v-card-text>
             <v-container grid-list-md>
@@ -52,7 +52,7 @@
               </v-layout>
             </v-container>
           </v-card-text>
-          <v-btn color="primary" @click.native="confirm()">Continue</v-btn>
+          <v-btn color="primary" @click.native="(type=='new')?confirm():edit()">Continue</v-btn>
           <v-btn flat @click="close()">Cancel</v-btn>
         </v-card>
       </v-dialog>
@@ -64,12 +64,16 @@ export default {
         show: Boolean,
         type: String,
         roundTeams: Array,
-        match: Object
+        match: Object,
+        round: String,
+        competition: Object
     },
     data(){
         return{
             localGoalsFix: 0,
-            awayGoalsFix: 0
+            awayGoalsFix: 0,
+            teamSelected: {},
+            team2Selected: {}
         }
     },
     computed: {
@@ -80,10 +84,10 @@ export default {
         team:{
             get(){ 
                 if(this.type == "new") return {}
-                else if(this.type == "edit") {
-                    return this.match.localTeam}
+                else if(this.type == "edit") return this.match.localTeam
             },
             set(value){
+                this.teamSelected = value
                 return value
             }
         },
@@ -93,6 +97,7 @@ export default {
                 else if(this.type == "edit") return this.match.awayTeam
             },
             set(value){
+                this.team2Selected = value
                 return value
             }
         },
@@ -128,19 +133,38 @@ export default {
             this.$emit('close');
         },
         confirm(){
-            this.$emit('confirm', this.setStats(this.team,this.team2))
+            let stats = this.setStats(this.teamSelected,this.team2Selected)            
+            let match= {
+                localTeam: this.teamSelected._id,
+                awayTeam: this.team2Selected._id,
+                localTeamGoals: Number(this.localGoalsFix),
+                awayTeamGoals: Number(this.awayGoalsFix),
+                matchDay: Date.now(),
+                competition: this.competition._id,
+                round: this.round
+            }
+            let newMatch = {
+                match : match,
+                localTeamStats : stats.localTeamStats,
+                awayTeamStats : stats.awayTeamStats
+            }
+            this.$emit('confirm', newMatch)
         },
-        setStats(team1, team2) {            
+        edit(){
+            let stats = this.setStats(this.team,this.team2)            
+            this.$emit('edit', stats)
+        },
+        setStats(team1, team2) {                        
             let stats = {
                 localTeamStats: {},
                 awayTeamStats: {}
-            };
+            }
             let localTeamStats = {
-                round: this.match.round
-            };
+                round: (this.type == "new")? this.round : this.match.round
+            }
             let awayTeamStats = {
-                round: this.match.round
-            };
+                round: (this.type == "new")? this.round : this.match.round
+            }
           
             if ((Number(this.localGoalsFix)) > Number(this.awayGoalsFix))
             {
@@ -298,8 +322,6 @@ export default {
             }
             stats.localTeamStats = localTeamStats;
             stats.awayTeamStats = awayTeamStats;
-            console.log(stats);
-            
             return stats;
         },
     }

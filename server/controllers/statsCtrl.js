@@ -73,6 +73,9 @@ function updateTeamStats (req, res) {
 }
 
 function deleteTeamStats (req, res, next) {
+  console.log(req.body);
+  console.log(req.body.localTeamStatsId);
+  
   TeamStats.deleteMany({_id:[req.body.localTeamStatsId,req.body.awayTeamStatsId]})
   .then((value) => {
     console.log("Paso 2 - Eliminar stats de lista de teamStats");

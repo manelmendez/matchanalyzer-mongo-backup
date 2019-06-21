@@ -34,8 +34,8 @@
 <script>
 import { mapActions } from 'vuex'
 import { mapGetters } from 'vuex'
-import constants from '../assets/constants/constants'
-import LineChart from '../components/charts/LineChart.js'
+import constants from '../../assets/constants/constants'
+import LineChart from '../../components/charts/LineChart.js'
 
   export default {
     name: "TeamGlobal",

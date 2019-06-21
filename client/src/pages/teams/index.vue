@@ -72,9 +72,8 @@
 <script>
 import { mapActions } from 'vuex'
 import { mapGetters } from 'vuex'
-import constants from '../assets/constants/constants'
+import constants from '../../assets/constants/constants'
   export default {
-    name: "MyTeams",
     data: () => ({
       constants: constants,
       image:null,
@@ -93,7 +92,7 @@ import constants from '../assets/constants/constants'
     methods: {
       goTo(id) {
         this.$router.push({
-          name: "MyTeam",
+          name: "teams-id",
           params: {
             id: id
           }

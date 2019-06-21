@@ -4,20 +4,20 @@
       <Layout>
     </div>
     <div v-else>
-      <Welcome>
+      <Login>
     </div>
   </v-app>
 </template>
 
 <script>
 import Layout from '../layouts/Layout.vue'
-import Welcome from './Welcome.vue'
+import Login from './login.vue'
   import { mapGetters } from 'vuex'
   export default {
     name: "App",
     components: {
       Layout,
-      Welcome
+      Login
     },
     data: () => ({
       drawer: true,

@@ -1,13 +1,14 @@
 import Vue from 'vue'
-import Welcome from '../pages/Welcome.vue'
-import MyTeams from '../pages/MyTeams.vue'
-import MyTeam from '../pages/MyTeam.vue'
-import CompetitionBase from '../pages/competition/CompetitionBase.vue'
-import MyCompetitions from '../pages/MyCompetitions.vue'
-import CompetitionSummary from '../pages/competition/CompetitionSummary.vue'
-import CompetitionResults from '../pages/competition/CompetitionResults.vue'
-import CompetitionClasification from '../pages/competition/CompetitionClasification.vue'
-import TeamGlobal from '../pages/TeamGlobal.vue'
+import login from '../pages/login.vue'
+import index from '../pages/index.vue'
+import teams from '../pages/teams/index.vue'
+import team from '../pages/teams/team.vue'
+import competitionList from '../pages/competitions/index.vue'
+import competitionBase from '../pages/competitions/_id/index.vue'
+import summary from '../pages/competitions/_id/summary.vue'
+import results from '../pages/competitions/_id/results.vue'
+import classification from '../pages/competitions/_id/classification.vue'
+import TeamGlobal from '../pages/teams/TeamGlobal.vue'
 
 import constants from '../assets/constants/constants'
 
@@ -20,59 +21,66 @@ const router = new VueRouter({
   mode: 'history',
   routes: [
     {
+      path: '/login',
+      name: 'login',
+      component: login,
+    },
+    {
       path: '/',
-      name: 'Index',
-      redirect: '/teams',
+      name: 'index',
+      component: index,
+      meta: { requiresAuth: true }
     },
     {
       path: '/teams',
-      name: 'MyTeams',
-      component: MyTeams,
+      name: 'teams',
+      component: teams,
       meta: { requiresAuth: true }
     },
     {
-      path: '/teams/:id',
-      name: 'MyTeam',
-      component: MyTeam,
+      path: '/teams/:id?',
+      name: 'teams-id',
+      component: team,
       meta: { requiresAuth: true }
     },
     {
-      path: '/competition',
-      name: 'MyCompetitions',
-      component: MyCompetitions,
-      meta: { requiresAuth: true }
-    },
-    {
-      path: '/competition/:id',
-      component: CompetitionBase,
-      meta: { requiresAuth: true },
-      children: [
-        {
-          path: 'summary',
-          name: 'CompetitionBase',
-          component: CompetitionSummary,
-          meta: { requiresAuth: true }
-        },
-        {
-          path: 'results',
-          name: 'CompetitionResults',
-          component: CompetitionResults,
-          meta: { requiresAuth: true }
-        },
-        {
-          path: 'rankings',
-          name: 'CompetitionClasification',
-          component: CompetitionClasification,
-          meta: { requiresAuth: true }
-        }
-      ]
-    },
-    {
-      path: '/teamGlobal/:id',
+      path: '/teams/:id?/global',
       name: 'TeamGlobal',
       component: TeamGlobal,
       meta: { requiresAuth: true }
     },
+    {
+      path: '/competitions',
+      name: 'competitions',
+      component: competitionList,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/competitions/:id',
+      name: "competition-id",
+      component: competitionBase,
+      meta: { requiresAuth: true },
+      children: [
+        {
+          path: 'summary',
+          name: 'summary',
+          component: summary,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: 'results',
+          name: 'results',
+          component: results,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: 'rankings',
+          name: 'classification',
+          component: classification,
+          meta: { requiresAuth: true }
+        }
+      ]
+    }
   ]
 })
 /**
@@ -85,7 +93,7 @@ router.beforeEach((to, from, next) => {
     const authUser = JSON.parse(window.localStorage.getItem('authUser'))
     console.log("Requires Auth");
     if(!authUser) {
-      next({name:'Index'})
+      next({name:'login'})
     }
     else {
       isAuth()
@@ -97,7 +105,7 @@ router.beforeEach((to, from, next) => {
     const authUser = JSON.parse(window.localStorage.getItem('authUser'))
     if(authUser) {
       console.log("Logged")
-      next({name:'MyTeams'})
+      next({name:'index'})
     }
     else {
       console.log("Not Logged")

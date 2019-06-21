@@ -17,7 +17,9 @@ export const competitionMutations = {
     state.competition.rounds = [...state.competition.rounds, round]
   },
 
-  [types.ADD_MATCH] (state, data) {    
+  [types.ADD_MATCH] (state, data) {  
+    data.match.localTeam.stats.push(data.localTeamStats)
+    data.match.awayTeam.stats.push(data.awayTeamStats)
     for (var i = 0; i < state.competition.rounds.length; i++) {      
       if (state.competition.rounds[i]._id == data.match.round) {
         state.competition.rounds[i].matches = [...state.competition.rounds[i].matches, data.match]
@@ -44,6 +46,16 @@ export const competitionMutations = {
     console.log(updatedMatch);
     let round = null
     let match = null
+    for (let a = 0; a < data.match.localTeam.stats.length; a++) {
+      if (data.match.localTeam.stats[a]._id == updatedLocalStats._id) {
+        data.match.localTeam.stats[a] = updatedLocalStats
+      }
+    }
+    for (let b = 0; b < data.match.awayTeam.stats.length; b++) {
+      if (data.match.awayTeam.stats[b]._id == updatedAwayStats._id) {
+        data.match.awayTeam.stats[b] = updatedAwayStats
+      }
+    }
     for (var i = 0; i < state.competition.rounds.length; i++) {
       if (state.competition.rounds[i]._id == updatedMatch.round) {  
         round = i      

@@ -53,7 +53,7 @@ export default {
             this.$emit('close');
         },
         confirm(){
-            this.$emit('confirm');
+            this.$emit('delete');
         }
     }
 }

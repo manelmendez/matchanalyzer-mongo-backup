@@ -112,7 +112,7 @@
 <script>
 import { mapActions } from 'vuex'
 import { mapGetters } from 'vuex'
-import constants from '../../assets/constants/constants'
+import constants from '../../../assets/constants/constants'
   export default {
     name: "CompetitionSummary",
     data: () => ({
@@ -134,14 +134,6 @@ import constants from '../../assets/constants/constants'
       editingFile: null
     }),
     methods: {
-      goTo(id) {
-        this.$router.push({
-          name: "CompeticionEquipos",
-          params: {
-            id: id
-          }
-        })
-      },
       createCompetitionTeam(){
         if(this.file!=null){
           const fd = new FormData()
@@ -207,17 +199,6 @@ import constants from '../../assets/constants/constants'
             id: team._id
           }
         })
-        // console.log(team);
-        // this.editingTeam = {
-        //   _id: team._id,
-        //   name: team.name,
-        //   avatar: team.avatar,
-        //   season: team.season
-        // }
-        // console.log(this.editingTeam);
-
-        // this.editDialog = true
-        // console.log(this.editingTeam);
       },
       clearEdit() {
         this.editDialog= false
