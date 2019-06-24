@@ -32,9 +32,9 @@
           <v-container grid-list-md>
             <v-layout wrap>
               <v-flex xs12 md4 class="text-xs-center">
+                <input type="file" ref="file" @change="onFileChanged" style="display:none">
                 <v-avatar size="100px" v-if="!image" class="uploadPhoto" @click="launchFilePicker">
                   <v-icon>add_a_photo</v-icon>
-                  <input type="file" ref="file" @change="onFileChanged" style="display:none">
                 </v-avatar>
                 <v-avatar size="100px" :tile="true" v-else @click="launchFilePicker">
                   <v-img :src="this.image" :contains="true">
@@ -50,7 +50,6 @@
                   v-model="season"
                   required
                 ></v-select>
-
               </v-flex>
             </v-layout>
           </v-container>

@@ -10,6 +10,8 @@ function addCompetition(req, res) {
     teams: [req.body.team],
     season: req.body.season,
     manager: req.body.manager,
+    discipline: req.body.discipline,
+    category: req.body.category,
     rounds: []
   })
   console.log("Registrando competicion con nombre: " + competition.name + "...")
@@ -107,7 +109,7 @@ function getUserCompetitions(req, res) {
         competitions: competitions
       })
     }
-  })
+  }).populate('myTeam')
 }
 
 function addTeamToCompetition(req, res) {

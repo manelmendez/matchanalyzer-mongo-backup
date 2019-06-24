@@ -12,7 +12,8 @@ module.exports = {
   },
   theme2: {
     PRIMARY_COLOR : '#0b5a6b',
-    PRIMARY_DARK_COLOR: '#074350'
+    PRIMARY_DARK_COLOR: '#074350',
+    PRIMARY_LIGHT_COLOR : '#187388',
   },
   theme3: {
     

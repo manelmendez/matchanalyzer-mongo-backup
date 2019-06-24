@@ -6,6 +6,7 @@
           <v-img :src="constants.LOCAL_ADDRESS+team.avatar" :contain="true">
         </v-list-tile-avatar>
         {{this.team.name}}
+        <v-spacer></v-spacer>
         <v-btn flat icon color="blue lighten-2" @click="click">
           <v-icon size="18">edit</v-icon>
         </v-btn>
@@ -14,7 +15,6 @@
         </v-btn>
       </v-card-title>
       <v-data-table
-        v-if="teamPlayers.length!=0"
         :headers="headers"
         :items="teamPlayers"
         class="elevation-1 text-xs-center"
@@ -23,7 +23,7 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">
             <v-list-tile-avatar>
-              <img :src="constants.LOCAL_ADDRESS+props.item.avatar" alt="avatar" :contain="true">
+              <v-img :src="constants.LOCAL_ADDRESS+props.item.avatar" alt="avatar" :contain="true">
             </v-list-tile-avatar>
           </td>
           <td class="text-xs-center">{{ props.item.name }}</td>
@@ -93,10 +93,8 @@
     </v-btn>
   </v-container>
 </template>
-
 <script>
-import { mapActions } from 'vuex'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import constants from '../../assets/constants/constants'
   export default {
     name: "team",
@@ -128,20 +126,20 @@ import constants from '../../assets/constants/constants'
         '2014',
       ],
       headers: [
-          {
-            text: '',
-            sortable: false
-          },
-          {
-            text: 'Nombre',
-            align: 'center',
-            sortable: true,
-            value: 'name'
-          },
-          { text: 'Posición', value: 'position', align: 'center', },
-          { text: 'Año de nacimiento', value: 'year', align: 'center', },
-          { text: 'Acciones', value: 'actions', align: 'center', }
-        ],
+        {
+          text: '',
+          sortable: false
+        },
+        {
+          text: 'Nombre',
+          align: 'center',
+          sortable: true,
+          value: 'name'
+        },
+        { text: 'Posición', value: 'position', align: 'center', },
+        { text: 'Año de nacimiento', value: 'year', align: 'center', },
+        { text: 'Acciones', value: 'actions', align: 'center', }
+      ],
     }),
     methods: {
       createPlayer(){

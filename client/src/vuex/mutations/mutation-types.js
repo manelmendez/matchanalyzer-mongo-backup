@@ -9,6 +9,7 @@ export const SIGN_OUT = 'SIGN_OUT'
 *   TEAM
 */
 export const ADD_TEAM = 'ADD_TEAM'
+export const ADD_MYTEAM = 'ADD_MYTEAM'
 export const GET_TEAM = 'GET_TEAM'
 export const GET_TEAMS = 'GET_TEAMS'
 export const GET_MYTEAMS = 'GET_MYTEAMS'

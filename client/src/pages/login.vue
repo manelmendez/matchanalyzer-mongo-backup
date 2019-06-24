@@ -139,11 +139,9 @@ import { mapActions } from 'vuex'
           }
           this.signIn(body).then((response) => {
             if(response.status === 200) {
-              setTimeout(() => {
-                this.$router.push({
-                  name: "index" //si uso path: "/mainpage" el params (props) no funciona -- params: { user: response.data.user } --
-                })
-              }, 2000);
+              this.$router.push({
+                name: "index" //si uso path: "/mainpage" el params (props) no funciona -- params: { user: response.data.user } --
+              })
             }
           })
         }

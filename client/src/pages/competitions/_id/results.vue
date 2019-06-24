@@ -58,7 +58,7 @@
           </v-btn>
         </v-card-text>
       </v-card>
-      <RoundModal :show="roundDialog" type="new" :competition="competition" :roundTeams="roundTeams" :round="competition.rounds[selectedRound -1]._id" @close="roundDialog=!roundDialog" @confirm="createMatch"></RoundModal>
+      <RoundModal v-if="roundDialog" :show="roundDialog" type="new" :competition="competition" :roundTeams="roundTeams" :round="competition.rounds[selectedRound -1]._id" @close="roundDialog=!roundDialog" @confirm="createMatch"></RoundModal>
       <DeleteModal :show="deleteDialog" type="jornada" @close="deleteDialog=!deleteDialog" @delete="deleteRoundFunction"></DeleteModal>
     </div>
   </div>

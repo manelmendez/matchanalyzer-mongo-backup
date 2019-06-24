@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-tabs
     centered
-    :color="constants.theme2.PRIMARY_DARK_COLOR"
+    :color="constants.theme2.PRIMARY_LIGHT_COLOR"
     dark
     icons-and-text >
       <v-tabs-slider color="yellow"></v-tabs-slider>
@@ -52,5 +52,8 @@ import constants from '../../../assets/constants/constants'
 <style>
 .compTab:hover{
   color: rgb(255, 255, 255)
+}
+.nothing {
+  color: #187388
 }
 </style>

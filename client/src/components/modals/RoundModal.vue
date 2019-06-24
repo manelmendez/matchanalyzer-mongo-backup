@@ -82,12 +82,12 @@ export default {
             this.$emit('close');
         },
         confirm(){
-            let stats = this.setStats(this.teamSelected,this.team2Selected)            
+            let stats = this.setStats(this.team,this.team2)            
             let match= {
-                localTeam: this.teamSelected._id,
-                awayTeam: this.team2Selected._id,
-                localTeamGoals: Number(this.localGoalsFix),
-                awayTeamGoals: Number(this.awayGoalsFix),
+                localTeam: this.team._id,
+                awayTeam: this.team2._id,
+                localTeamGoals: Number(this.localGoals),
+                awayTeamGoals: Number(this.awayGoals),
                 matchDay: Date.now(),
                 competition: this.competition._id,
                 round: this.round
@@ -115,7 +115,7 @@ export default {
                 round: (this.type == "new")? this.round : this.match.round
             }
           
-            if ((Number(this.localGoalsFix)) > Number(this.awayGoalsFix))
+            if ((Number(this.localGoals)) > Number(this.awayGoals))
             {
                 if ((this.type=="edit")) {
                     localTeamStats._id = team1.stats[team1.stats.length - 1];
@@ -135,11 +135,11 @@ export default {
                 localTeamStats.loses = 0;
                 localTeamStats.homeLoses = 0;
                 localTeamStats.awayLoses = 0;
-                localTeamStats.goals = Number(this.localGoalsFix);
-                localTeamStats.homeGoals = Number(this.localGoalsFix);
+                localTeamStats.goals = Number(this.localGoals);
+                localTeamStats.homeGoals = Number(this.localGoals);
                 localTeamStats.awayGoals = 0;
-                localTeamStats.againstGoals = Number(this.awayGoalsFix);
-                localTeamStats.homeAgainstGoals = Number(this.awayGoalsFix);
+                localTeamStats.againstGoals = Number(this.awayGoals);
+                localTeamStats.homeAgainstGoals = Number(this.awayGoals);
                 localTeamStats.awayAgainstGoals = 0;
                 if ((this.type=="edit")) {
                     awayTeamStats._id = team2.stats[team2.stats.length - 1];
@@ -159,14 +159,14 @@ export default {
                 awayTeamStats.loses = 1;
                 awayTeamStats.homeLoses = 0;
                 awayTeamStats.awayLoses = 1;
-                awayTeamStats.goals = Number(this.awayGoalsFix);
+                awayTeamStats.goals = Number(this.awayGoals);
                 awayTeamStats.homeGoals = 0;
-                awayTeamStats.awayGoals = Number(this.awayGoalsFix);
-                awayTeamStats.againstGoals = Number(this.localGoalsFix);
+                awayTeamStats.awayGoals = Number(this.awayGoals);
+                awayTeamStats.againstGoals = Number(this.localGoals);
                 awayTeamStats.homeAgainstGoals = 0;
-                awayTeamStats.awayAgainstGoals = Number(this.localGoalsFix);
+                awayTeamStats.awayAgainstGoals = Number(this.localGoals);
             } 
-            else if (Number(this.localGoalsFix) == Number(this.awayGoalsFix)) {
+            else if (Number(this.localGoals) == Number(this.awayGoals)) {
                 if ((this.type=="edit")) {
                     localTeamStats._id = team1.stats[team1.stats.length - 1];
                 }
@@ -185,11 +185,11 @@ export default {
                 localTeamStats.loses = 0;
                 localTeamStats.homeLoses = 0;
                 localTeamStats.awayLoses = 0;
-                localTeamStats.goals = Number(this.localGoalsFix);
-                localTeamStats.homeGoals = Number(this.localGoalsFix);
+                localTeamStats.goals = Number(this.localGoals);
+                localTeamStats.homeGoals = Number(this.localGoals);
                 localTeamStats.awayGoals = 0;
-                localTeamStats.againstGoals = Number(this.awayGoalsFix);
-                localTeamStats.homeAgainstGoals = Number(this.awayGoalsFix);
+                localTeamStats.againstGoals = Number(this.awayGoals);
+                localTeamStats.homeAgainstGoals = Number(this.awayGoals);
                 localTeamStats.awayAgainstGoals = 0;
                 if ((this.type=="edit")) {
                     awayTeamStats._id = team2.stats[team2.stats.length - 1];
@@ -209,14 +209,14 @@ export default {
                 awayTeamStats.loses = 0;
                 awayTeamStats.homeLoses = 0;
                 awayTeamStats.awayLoses = 0;
-                awayTeamStats.goals = Number(this.awayGoalsFix);
+                awayTeamStats.goals = Number(this.awayGoals);
                 awayTeamStats.homeGoals = 0;
-                awayTeamStats.awayGoals = Number(this.awayGoalsFix);
-                awayTeamStats.againstGoals = Number(this.localGoalsFix);
+                awayTeamStats.awayGoals = Number(this.awayGoals);
+                awayTeamStats.againstGoals = Number(this.localGoals);
                 awayTeamStats.homeAgainstGoals = 0;
-                awayTeamStats.awayAgainstGoals = Number(this.localGoalsFix);
+                awayTeamStats.awayAgainstGoals = Number(this.localGoals);
             } 
-            else if (Number(this.localGoalsFix) < Number(this.awayGoalsFix)){
+            else if (Number(this.localGoals) < Number(this.awayGoals)){
                 if ((this.type=="edit")) {
                     localTeamStats._id = team1.stats[team1.stats.length - 1];
                 }
@@ -235,11 +235,11 @@ export default {
                 localTeamStats.loses = 1;
                 localTeamStats.homeLoses = 1;
                 localTeamStats.awayLoses = 0;
-                localTeamStats.goals = Number(this.localGoalsFix);
-                localTeamStats.homeGoals = Number(this.localGoalsFix);
+                localTeamStats.goals = Number(this.localGoals);
+                localTeamStats.homeGoals = Number(this.localGoals);
                 localTeamStats.awayGoals = 0;
-                localTeamStats.againstGoals = Number(this.awayGoalsFix);
-                localTeamStats.homeAgainstGoals = Number(this.awayGoalsFix);
+                localTeamStats.againstGoals = Number(this.awayGoals);
+                localTeamStats.homeAgainstGoals = Number(this.awayGoals);
                 localTeamStats.awayAgainstGoals = 0;
                 if ((this.type=="edit")) {
                     awayTeamStats._id = team2.stats[team2.stats.length - 1];
@@ -259,12 +259,12 @@ export default {
                 awayTeamStats.loses = 0;
                 awayTeamStats.homeLoses = 0;
                 awayTeamStats.awayLoses = 0;
-                awayTeamStats.goals = Number(this.awayGoalsFix);
+                awayTeamStats.goals = Number(this.awayGoals);
                 awayTeamStats.homeGoals = 0;
-                awayTeamStats.awayGoals = Number(this.awayGoalsFix);
-                awayTeamStats.againstGoals = Number(this.localGoalsFix);
+                awayTeamStats.awayGoals = Number(this.awayGoals);
+                awayTeamStats.againstGoals = Number(this.localGoals);
                 awayTeamStats.homeAgainstGoals = 0;
-                awayTeamStats.awayAgainstGoals = Number(this.localGoalsFix);
+                awayTeamStats.awayAgainstGoals = Number(this.localGoals);
             } 
             else {
                 alert("Ojo porque algo ha salido mal, se recomienda borrar el partido");

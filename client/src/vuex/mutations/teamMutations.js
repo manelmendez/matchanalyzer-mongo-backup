@@ -13,6 +13,10 @@ export const teamMutations = {
     state.teams = teams
   },
 
+  [types.ADD_MYTEAM] (state, team) {
+    state.myTeams = [...state.myTeams, team]
+  },
+
   [types.GET_MYTEAMS] (state, teams) {
     state.myTeams = teams
   },

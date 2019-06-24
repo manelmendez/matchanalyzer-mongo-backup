@@ -1,8 +1,8 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
 import Vuetify from 'vuetify'
 import GSignInButton from 'vue-google-signin-button'
 import FBSignInButton from 'vue-facebook-signin-button'
+import axios from 'axios'
 
 import constants from './src/assets/constants/constants'
 import router from './src/routes/routes'
@@ -15,13 +15,13 @@ Vue.use(FBSignInButton)
 const isDev = process.env.NODE_ENV != "production"
 Vue.config.performance = isDev
 
-// Vue.prototype.$axios = axios.create()
-// Vue.prototype.$axios.defaults.baseURL = constants.LOCAL_ADDRESS
-// // add token to Auth header if onceLogged
-// if (JSON.parse(window.localStorage.getItem('authUser'))!= null)
-// {
-//   Vue.prototype.$axios.defaults.headers.common['Authorization'] = 'Bearer '+JSON.parse(window.localStorage.getItem('authUser')).token
-// }
+Vue.prototype.$axios = axios
+Vue.prototype.$axios.defaults.baseURL = constants.LOCAL_API_ADDRESS
+// add token to Auth header if onceLogged
+if (JSON.parse(window.localStorage.getItem('authUser'))!= null)
+{
+  Vue.prototype.$axios.defaults.headers.common['Authorization'] = 'Bearer '+JSON.parse(window.localStorage.getItem('authUser')).token
+}
 
 new Vue({
   el: '#app',

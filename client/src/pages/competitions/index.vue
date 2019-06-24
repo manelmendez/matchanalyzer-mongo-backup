@@ -11,47 +11,10 @@
         @click="goTo(competition._id)"
       >
         <v-list-tile-content>
-          <v-list-tile-title v-text="competition.name"></v-list-tile-title>
+          <v-list-tile-title v-text="competition.myTeam.name + ' - ' + competition.discipline + ' - ' + competition.category + ' - ' + competition.name"></v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
-    <v-dialog v-model="dialog" width="70%" persistent>
-      <v-card>
-        <v-card-title>
-          <span class="headline">Datos de la competición:</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container grid-list-md>
-            <v-layout wrap>
-              <v-flex xs12 md4>
-                <v-text-field label="Nombre de la competición" v-model="name" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 md4>
-                <v-select
-                  :items="myTeams"
-                  item-text="name"
-                  item-value="_id"
-                  label="Equipo que participa"
-                  v-model="team"
-                  required
-                ></v-select>
-              </v-flex>
-              <v-flex xs12 md4>
-                <v-select
-                  :items="seasons"
-                  label="Temporada de la competición"
-                  v-model="season"
-                  required
-                ></v-select>
-              </v-flex>
-            </v-layout>
-          </v-container>
-          <small>*indicates required field</small>
-        </v-card-text>
-        <v-btn color="primary" @click.native="createCompetition()">Continue</v-btn>
-        <v-btn flat @click.native="dialog=!dialog">Cancel</v-btn>
-      </v-card>
-    </v-dialog>
     <v-btn
       fab
       color="pink"
@@ -63,26 +26,19 @@
     >
       <i class="material-icons">add</i>
     </v-btn>
+    <CreateCompetition v-if="dialog" :show="dialog" @confirm="confirmCreate" @close="dialog=!dialog"></CreateCompetition>
   </v-container>
 </template>
-
 <script>
-import { mapActions } from 'vuex'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+import CreateCompetition from '../../components/modals/CreateCompetition'
   export default {
     name: "MyCompetitions",
+    components: {
+      CreateCompetition
+    },
     data: () => ({
       dialog: false,
-      name: '',
-      team: '',
-      season: '',
-      seasons: [
-        "14/15",
-        "15/16",
-        "16/17",
-        "17/18",
-        "18/19"
-      ],
     }),
     methods: {
       goTo(id) {
@@ -93,23 +49,14 @@ import { mapGetters } from 'vuex'
           }
         })
       },
-      createCompetition(){
-        let competition = {
-          name: this.name,
-          season: this.season,
-          team: this.team,
-          manager: this.user._id
-        }
-        this.addCompetition(competition).then((value) => {
-          console.log(value);
-          this.dialog = false
-        })
+      confirmCreate(){        
+        this.getUserCompetitions(this.user._id)
+        this.dialog = false
       },
       ...mapActions([
-        'addCompetition',
         'getUserCompetitions',
         'getUserTeams'
-      ])
+      ]),
     },
     computed: {
       ...mapGetters([

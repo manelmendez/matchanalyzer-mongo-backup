@@ -1,60 +1,21 @@
 <template>
   <v-container>
     <p v-if="this.myTeams.length == 0">Aún no tienes equipos. Dale al botón para crear uno</p>
-    <div v-else >
-      <v-list>
-        <v-list-tile
-          v-for="team in this.myTeams"
-          :key="team._id"
-          avatar
-          @click="goTo(team._id)"
-        >
-          <v-list-tile-content>
-            <v-list-tile-title v-text="team.name"></v-list-tile-title>
-          </v-list-tile-content>
-
-          <v-list-tile-avatar>
-            <v-img :src="constants.LOCAL_ADDRESS+team.avatar">
-          </v-list-tile-avatar>
-        </v-list-tile>
-      </v-list>
-    </div>
-    <v-dialog v-model="dialog" width="50%" persistent>
-      <v-card>
-        <v-card-title>
-          <span class="headline">Datos del equipo:</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container grid-list-md>
-            <v-layout wrap>
-              <v-flex xs12 md4 class="text-xs-center">
-                <v-avatar size="100px" v-if="!image" class="uploadPhoto" @click="launchFilePicker">
-                  <v-icon>add_a_photo</v-icon>
-                  <input type="file" ref="file" @change="onFileChanged" style="display:none">
-                </v-avatar>
-                <v-avatar size="100px" v-else class="uploadPhoto" @click="launchFilePicker">
-                  <img :src="this.image" alt="avatar">
-                </v-avatar>
-              </v-flex>
-              <v-flex xs12 md4>
-                <v-text-field label="Nombre del equipo" v-model="name" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 md4>
-                <v-select
-                  :items="temporada"
-                  label="Temporada"
-                  v-model="season"
-                  required
-                ></v-select>
-
-              </v-flex>
-            </v-layout>
-          </v-container>
-        </v-card-text>
-        <v-btn color="primary" @click.native="createTeam()">Continue</v-btn>
-        <v-btn flat @click.native="dialog=!dialog">Cancel</v-btn>
-      </v-card>
-    </v-dialog>
+    <v-list v-else>
+      <v-list-tile
+        v-for="team in this.myTeams"
+        :key="team._id"
+        avatar
+        @click="goTo(team._id)"
+      >
+        <v-list-tile-content>
+          <v-list-tile-title v-text="team.name"></v-list-tile-title>
+        </v-list-tile-content>
+        <v-list-tile-avatar>
+          <v-img :src="constants.LOCAL_ADDRESS+team.avatar">
+        </v-list-tile-avatar>
+      </v-list-tile>
+    </v-list>
     <v-btn
       fab
       color="pink"
@@ -66,28 +27,21 @@
     >
       <i class="material-icons">add</i>
     </v-btn>
+    <CreateMyTeam v-if="dialog" :show="dialog" @confirm="confirmCreate" @close="dialog=!dialog"></CreateMyTeam>
   </v-container>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+import CreateMyTeam from '../../components/modals/CreateMyTeam'
 import constants from '../../assets/constants/constants'
   export default {
+    components: {
+      CreateMyTeam
+    },
     data: () => ({
       constants: constants,
-      image:null,
-      file: null,
       dialog: false,
-      temporada: [
-        "14/15",
-        "15/16",
-        "16/17",
-        "17/18",
-        "18/19"
-      ],
-      name: '',
-      season: ''
     }),
     methods: {
       goTo(id) {
@@ -98,54 +52,12 @@ import constants from '../../assets/constants/constants'
           }
         })
       },
-      launchFilePicker(){
-        this.$refs.file.click();
-      },
-      onFileChanged (event) {
-        this.image = URL.createObjectURL(event.target.files[0])
-        this.file = event.target.files[0]
-      },
-      createTeam() {
-        if(this.file!=null){
-          const fd = new FormData()
-          fd.append('image', this.file, this.file.name)
-          this.uploadTeamImage(fd).then((response) => {
-            console.log(response);
-            let body = {
-                season: this.season,
-                name: this.name,
-                avatar: response.data,
-                manager: this.user._id
-            }
-            if (response.status == 200) {
-              body.avatar = response.data
-            }
-            this.addTeam(body).then((response) => {
-              if(response.status === 200) {
-                this.dialog=false
-              }
-            })
-          })
-        }
-        else {
-          let body = {
-              season: this.season,
-              name: this.name,
-              avatar: null,
-              manager: this.user._id
-          }
-          this.addTeam(body).then((response) => {
-            if(response.status === 200) {
-              this.dialog=false
-            }
-          })
-        }
+      confirmCreate() {
+        this.dialog = false
       },
       ...mapActions([
         'getUserTeams',
-        'addTeam',
         'selectTeam',
-        'uploadTeamImage'
       ])
     },
     computed:{

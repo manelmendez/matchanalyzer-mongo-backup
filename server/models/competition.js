@@ -31,7 +31,9 @@ const CompetitionSchema = new Schema({
     }
   ],
   manager: String,
-  season: String
+  season: String,
+  discipline: String,
+  category: String
 })
 
 /**
