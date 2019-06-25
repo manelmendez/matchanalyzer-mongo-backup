@@ -2,10 +2,14 @@
   <v-container fluid>
     <v-card>
       <v-card-title>
-        <v-list-tile-avatar>
-          <v-img :src="constants.LOCAL_ADDRESS+team.avatar" :contain="true">
-        </v-list-tile-avatar>
-        {{this.team.name}}
+        <v-layout align-center>
+          <v-flex xs1>
+            <v-img :src="constants.LOCAL_ADDRESS+team.avatar" alt="avatar" :contain="true" height="40" width="40">
+          </v-flex>
+          <v-flex>  
+            {{this.team.name}}
+          </v-flex>
+        </v-layout>
         <v-spacer></v-spacer>
         <v-btn flat icon color="blue lighten-2" @click="click">
           <v-icon size="18">edit</v-icon>
@@ -22,9 +26,7 @@
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">
-            <v-list-tile-avatar>
-              <v-img :src="constants.LOCAL_ADDRESS+props.item.avatar" alt="avatar" :contain="true">
-            </v-list-tile-avatar>
+            <v-img :src="constants.LOCAL_ADDRESS+props.item.avatar" alt="avatar" :contain="true">
           </td>
           <td class="text-xs-center">{{ props.item.name }}</td>
           <td class="text-xs-center">{{ props.item.position }}</td>
@@ -45,41 +47,6 @@
         </template>
       </v-data-table>
     </v-card>
-    <v-dialog v-model="dialog" width="70%" persistent>
-      <v-card>
-        <v-card-title>
-          <span class="headline">Datos del jugador:</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container grid-list-md>
-            <v-layout wrap>
-              <v-flex xs12 md4>
-                <v-text-field label="Nombre y apellidos" v-model="name" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 md4>
-                <v-select
-                  :items="positions"
-                  label="Posicion"
-                  v-model="position"
-                  required
-                ></v-select>
-              </v-flex>
-              <v-flex xs12 md4>
-                <v-select
-                  :items="years"
-                  label="Año de nacimiento"
-                  v-model="year"
-                  required
-                ></v-select>
-              </v-flex>
-            </v-layout>
-          </v-container>
-          <small>*indicates required field</small>
-        </v-card-text>
-        <v-btn color="primary" @click.native="createPlayer()">Continue</v-btn>
-        <v-btn flat @click.native="dialog=!dialog">Cancel</v-btn>
-      </v-card>
-    </v-dialog>
     <v-btn
       fab
       color="pink"
@@ -91,40 +58,21 @@
     >
       <i class="material-icons">add</i>
     </v-btn>
+    <CreatePlayer v-if="dialog" :show="dialog" @confirm="createPlayer" @close="dialog=!dialog"></CreatePlayer>
   </v-container>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import CreatePlayer from '../../components/modals/CreatePlayer'
 import constants from '../../assets/constants/constants'
   export default {
     name: "team",
+    components: {
+      CreatePlayer
+    },
     data: () => ({
       constants: constants,
       dialog: false,
-      name: '',
-      position: '',
-      year: '',
-      positions: [
-        'PT',
-        'LD',
-        'LI',
-        'CT',
-        'MCD',
-        'MC',
-        'MP',
-        'ED',
-        'EI',
-        'DC'
-      ],
-      years: [
-        '2007',
-        '2008',
-        '2009',
-        '2011',
-        '2012',
-        '2013',
-        '2014',
-      ],
       headers: [
         {
           text: '',
@@ -143,16 +91,7 @@ import constants from '../../assets/constants/constants'
     }),
     methods: {
       createPlayer(){
-        let player = {
-          name: this.name,
-          position: this.position,
-          year: this.year,
-          team: this.$route.params.id,
-          actions: null
-        }
-        this.addPlayer(player).then((value) => {
-          this.dialog = false 
-        })
+        this.dialog = false
       },
       click(){
         alert("gilipolias")
@@ -174,3 +113,5 @@ import constants from '../../assets/constants/constants'
     }
   }
 </script>
+<style scoped>
+</style>

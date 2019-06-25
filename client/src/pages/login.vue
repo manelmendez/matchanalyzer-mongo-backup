@@ -73,7 +73,6 @@
                     min="8"
                     :append-icon="e2 ? 'visibility' : 'visibility_off'"
                     @click:append="() => (e2 = !e2)"
-                    :type="e2 ? 'password' : 'text'"
                     counter
                     :rules="passwordRules"
                     required>
@@ -95,9 +94,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-
   export default {
-    name: 'login',
     data () {
       return {
         login: true,
@@ -139,6 +136,8 @@ import { mapActions } from 'vuex'
           }
           this.signIn(body).then((response) => {
             if(response.status === 200) {
+              let snackbar={show:true, color:"success", text:"Logueado correctamente"}
+              this.$store.commit('SNACKBAR', snackbar)
               this.$router.push({
                 name: "index" //si uso path: "/mainpage" el params (props) no funciona -- params: { user: response.data.user } --
               })

@@ -22,7 +22,12 @@ const state = {
   myTeams: [],
   competitions: [],
   competition: {},
-  selectedRound: null
+  selectedRound: null,
+  snackbar: {
+    show: false,
+    color: "",
+    text: ""
+  }
 }
 
 const getters = {
@@ -52,6 +57,9 @@ const getters = {
   },
   rounds: state => {
     return state.competition.rounds
+  },
+  snackbar: state => {
+    return state.snackbar
   },
   selectedRound: state => {
     if (state.selectedRound==null) {

@@ -36,7 +36,7 @@
   </v-dialog>
 </template>
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   props:{
     show: Boolean
@@ -69,15 +69,17 @@ export default {
         this.uploadTeamImage(fd).then((response) => {
           console.log(response);
           let body = {
+            team: {
               season: this.season,
               name: this.name,
-              avatar: response.data,
-              manager: this.user._id
+              avatar: null
+            },
+            competition: this.competition._id
           }
           if (response.status == 200) {
-            body.avatar = response.data
+            body.team.avatar = response.data
           }
-          this.addTeam(body).then((response) => {
+          this.addNoManagerTeam(body).then((response) => {
             if(response.status === 200) {
               this.$emit("confirm")
             }
@@ -86,33 +88,83 @@ export default {
       }
       else {
         let body = {
+          team: {
             season: this.season,
             name: this.name,
-            avatar: null,
-            manager: this.user._id
+            avatar: null
+          },
+          competition: this.competition._id
         }
-        this.addTeam(body).then((response) => {
+        this.addNoManagerTeam(body).then((response) => {
           if(response.status === 200) {
             this.$emit("confirm")
           }
         })
       }
     },
+    // editCompetitionTeam() {
+    //   if(this.editingFile!=null){
+    //     const fd = new FormData()
+    //     fd.append('image', this.editingFile, this.editingFile.name)
+    //     this.uploadTeamImage(fd).then((response) => {
+    //       let body = {
+    //         team: {
+    //           season: this.editingTeam.season,
+    //           name: this.editingTeam.name,
+    //           avatar: this.editingTeam.avatar
+    //         },
+    //         competition: this.competition._id
+    //       }
+    //       if (response.status == 200) {
+    //         body.team.avatar = response.data
+    //       }
+    //       let data = {
+    //         body: body,
+    //         id: this.editingTeam._id
+    //       }
+    //       this.updateTeam(data).then((response) => {
+    //         if(response.status === 200) {
+    //           this.getCompetition(this.$route.params.id)
+    //         }
+    //       })
+    //     })
+    //   }
+    //   else {
+    //     let body = {
+    //       team: {
+    //         season: this.editingTeam.season,
+    //         name: this.editingTeam.name,
+    //         avatar: this.editingTeam.avatar
+    //       },
+    //       competition: this.competition._id
+    //     }
+    //     let data = {
+    //       body: body,
+    //       id: this.editingTeam._id
+    //     }
+    //     this.updateTeam(data).then((response) => {
+    //       if(response.status === 200) {
+    //         this.getCompetition(this.$route.params.id)
+    //       }
+    //     })
+    //   }
+    // },
     close(){
       this.$emit("close")
     },
     ...mapActions([
-      'getUserTeams',
-      'addTeam',
+      'addNoManagerTeam',
       'selectTeam',
-      'uploadTeamImage'
+      'uploadTeamImage',
+      'updateTeam',
     ])
   },
   computed:{
     ...mapGetters([
-      'user'
+      'competition'
     ])
-  },
+  }
+
 }
 </script>
 <style scoped>
