@@ -13,7 +13,7 @@
 </template>
 <script>
 export default {
-    name: "DeleteModal",
+    name: "DeleteMatch",
     props: {
         type: String,
         show: Boolean

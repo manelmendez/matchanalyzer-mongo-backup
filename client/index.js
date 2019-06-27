@@ -7,7 +7,7 @@ import axios from 'axios'
 import constants from './src/assets/constants/constants'
 import router from './src/routes/routes'
 import App from './src/pages/App.vue'
-import store from './src/vuex/store/store'
+import store from './src/store/store'
 
 Vue.use(Vuetify)
 Vue.use(GSignInButton)

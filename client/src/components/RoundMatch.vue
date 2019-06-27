@@ -33,20 +33,20 @@
                 </v-btn>
             </div>
         </v-flex>
-        <RoundModal v-if="roundDialog" :show="roundDialog" type="edit" :roundTeams="newRoundTeams" :match="match" @close="roundDialog=!roundDialog" @edit="updateMatchFunction"></RoundModal>
-        <DeleteModal v-if="deleteDialog" :show="deleteDialog" type="match" @close="deleteDialog=!deleteDialog" @delete="deleteMatchFunction"></DeleteModal>
+        <CreateMatch v-if="roundDialog" :show="roundDialog" type="edit" :roundTeams="newRoundTeams" :match="match" @close="roundDialog=!roundDialog" @edit="updateMatchFunction"></CreateMatch>
+        <DeleteMatch v-if="deleteDialog" :show="deleteDialog" type="match" @close="deleteDialog=!deleteDialog" @delete="deleteMatchFunction"></DeleteMatch>
     </v-layout>
 </template>
 <script>
 import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
-import RoundModal from "../components/modals/RoundModal";
-import DeleteModal from "../components/modals/DeleteModal";
+import CreateMatch from "../components/modals/CreateMatch";
+import DeleteMatch from "../components/modals/DeleteMatch";
 export default {
     name: "RoundMatch",
     components:{
-        RoundModal,
-        DeleteModal
+        CreateMatch,
+        DeleteMatch
     }, 
     props: {
         match: Object,

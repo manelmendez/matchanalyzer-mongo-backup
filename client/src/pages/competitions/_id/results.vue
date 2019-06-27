@@ -58,8 +58,8 @@
           </v-btn>
         </v-card-text>
       </v-card>
-      <RoundModal v-if="roundDialog" :show="roundDialog" type="new" :competition="competition" :roundTeams="roundTeams" :round="competition.rounds[selectedRound -1]._id" @close="roundDialog=!roundDialog" @confirm="createMatch"></RoundModal>
-      <DeleteModal :show="deleteDialog" type="jornada" @close="deleteDialog=!deleteDialog" @delete="deleteRoundFunction"></DeleteModal>
+      <CreateMatch v-if="roundDialog" :show="roundDialog" type="new" :roundTeams="roundTeams" :round="competition.rounds[selectedRound -1]._id" @close="roundDialog=!roundDialog" @confirm="createMatch"></CreateMatch>
+      <DeleteMatch :show="deleteDialog" type="jornada" @close="deleteDialog=!deleteDialog" @delete="deleteRoundFunction"></DeleteMatch>
     </div>
   </div>
 </template>
@@ -68,13 +68,13 @@
 import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
 import RoundMatches from "../../../components/RoundMatches"
-import DeleteModal from "../../../components/modals/DeleteModal"
-import RoundModal from "../../../components/modals/RoundModal"
+import DeleteMatch from "../../../components/modals/DeleteMatch"
+import CreateMatch from "../../../components/modals/CreateMatch"
 export default {
   components: {
     RoundMatches,
-    DeleteModal,
-    RoundModal
+    DeleteMatch,
+    CreateMatch
   },
   data: () => ({
     roundDialog: false,
@@ -185,7 +185,7 @@ export default {
       }
     }
   }
-};
+}
 </script>
 <style>
 .centered-input input {
