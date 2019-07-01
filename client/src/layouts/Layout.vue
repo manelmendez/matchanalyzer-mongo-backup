@@ -2,7 +2,9 @@
   <v-content>
     <v-toolbar app fixed clipped-left :color="constants.theme2.PRIMARY_COLOR">
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-toolbar-title>MatchAnalyzer</v-toolbar-title>
+      <router-link to='/' class="toolbar-title">
+        <v-toolbar-title>MatchAnalyzer</v-toolbar-title>
+      </router-link>
       <v-spacer></v-spacer>
       <v-menu open-on-hover offset-y>
         <v-btn slot="activator" icon dark>
@@ -10,7 +12,7 @@
         </v-btn>
         <v-list>
           <v-list-tile v-for="(item, i) in items" :key="i">
-            <v-list-tile-title @click="logOut()">{{ item.title }}</v-list-tile-title>
+            <v-list-tile-title @click="logOut()" class="logout">{{ item.title }}</v-list-tile-title>
           </v-list-tile>
         </v-list>
       </v-menu>
@@ -76,8 +78,12 @@ import constants from '../assets/constants/constants'
   }
 </script>
 <style scoped>
-  l{
-    background-color: #074350
-  }
+.toolbar-title {
+  color: inherit;
+  text-decoration: inherit;
+}
+.logout{
+  cursor: pointer;
+}
 </style>
 

@@ -16,8 +16,9 @@
       <v-card>
         <v-card-title>
           <v-layout row justify-space-between>
-            <v-flex xs3>
+            <v-flex xs5 md3>
               <v-select
+                small
                 :items="competition.rounds"
                 item-text="name"
                 required
@@ -27,12 +28,13 @@
                 @change="changeResultRound"
               ></v-select>
             </v-flex>
-            <v-flex xs3>
-              <v-btn round color="blue-grey" class="white--text" @click="createRound()">
+            <v-flex xs7 md3>
+              <v-btn small round color="blue-grey" class="white--text" @click="createRound()">
                 Nueva Jornada
                 <v-icon right dark>add</v-icon>
               </v-btn>
               <v-btn
+                small
                 v-if="round._id == competition.rounds[competition.rounds.length -1]._id"
                 round
                 color="red lighten-2"
@@ -79,17 +81,6 @@ export default {
   data: () => ({
     roundDialog: false,
     deleteDialog: false,
-    localGoals: 0,
-    awayGoals: 0,
-    match: "",
-    team: "",
-    team2: "",
-    editingTeam: "",
-    editingTeam2: "",
-    editingLocalGoals: 0,
-    editingAwayGoals: 0,
-    editingMatch: "",
-    deletingMatch: "",
     loading: false
   }),
   methods: {
@@ -100,7 +91,7 @@ export default {
         },
         competition: this.competition._id
       };
-      this.addRound(body);
+      this.addRound(body)
     },
     createMatch(newMatch) {
       let body = {
@@ -189,11 +180,6 @@ export default {
 </script>
 <style>
 .centered-input input {
-  text-align: center;
-}
-.editingTeam {
-  align-items: center;
-  justify-content: center;
   text-align: center;
 }
 </style>

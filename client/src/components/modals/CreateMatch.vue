@@ -46,8 +46,7 @@
       </v-card-text>
       <v-btn color="primary" @click.native="(type=='new')?confirm():edit()">Continue</v-btn>
       <v-btn flat @click="close()">Cancel</v-btn>
-          <CreateMatchDetails v-if="detailsModal" :show="detailsModal"></CreateMatchDetails>
-
+      <CreateMatchDetails v-if="detailsModal" :show="detailsModal"></CreateMatchDetails>
     </v-card>
   </v-dialog>
   
@@ -79,15 +78,15 @@ export default {
   },
   methods: {
     checkTeam(team) {
-      console.log(team);
+      // console.log(team);
      
-        if (team._id == this.competition.myTeam._id) {
-          console.log("HOLA");
+      //   if (team._id == this.competition.myTeam._id) {
+      //     console.log("HOLA");
           
-                    this.detailsModal=false
+      //               this.detailsModal=false
 
-          this.detailsModal=true
-        }
+      //     this.detailsModal=true
+      //   }
       
     },
     close() {
