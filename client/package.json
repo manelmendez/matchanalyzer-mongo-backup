@@ -17,12 +17,9 @@
     "@mdi/font": "latest",
     "animate.css": "latest",
     "axios": "latest",
-    "@babel/core": "latest",
-    "@babel/preset-env": "latest",
     "chart.js": "latest",
     "font-awesome": "latest",
     "moment": "latest",
-    "parcel-bundler": "latest",
     "vue": "latest",
     "vue-chartjs": "latest",
     "vue-facebook-signin-button": "latest",
@@ -34,6 +31,9 @@
   },
   "devDependencies": {
     "@vue/component-compiler-utils": "latest",
+    "@babel/core": "latest",
+    "@babel/preset-env": "latest",
+    "parcel-bundler": "latest",
     "vue-template-compiler": "latest"
   }
 }
