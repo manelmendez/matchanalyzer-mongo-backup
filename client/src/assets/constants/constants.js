@@ -3,7 +3,7 @@ module.exports = {
   LOCAL_ADDRESS : 'http://127.0.0.1:9000/',
   // LOCAL_API_ADDRESS : 'http://37.133.124.200:9000/api/',
   // LOCAL_ADDRESS : 'http://37.133.124.200:9000/',
-  HEROKU_API_ADDRESS: 'https://matchanalyzer.herokuapp.com/api',
+  HEROKU_API_ADDRESS: 'https://matchanalyzer.herokuapp.com/api/',
   HEROKU_ADDRESS: 'https://matchanalyzer.herokuapp.com',
   theme1: {
     PRIMARY_COLOR : '#6200EE',
