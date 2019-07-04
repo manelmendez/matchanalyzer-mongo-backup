@@ -135,7 +135,7 @@ import { mapActions } from 'vuex'
             password: this.password
           }
           this.signIn(body).then((response) => {
-            console.log(response);
+            console.log(response)
             if(response.status === 200) {
               let snackbar={show:true, color:"success", text:"Logueado correctamente"}
               this.$store.commit('SNACKBAR', snackbar)
