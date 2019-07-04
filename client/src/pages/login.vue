@@ -144,6 +144,9 @@ import { mapActions } from 'vuex'
               })
             }
           })
+          .catch((err) => {
+            console.log(err);
+          })
         }
       },
       onSignInSuccess (googleUser) {
