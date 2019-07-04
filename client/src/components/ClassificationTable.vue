@@ -10,7 +10,7 @@
           <td class="text-xs-center">{{ props.index+1 }}</td>
           <td class="text-xs-center">
             <v-list-tile-avatar :tile="true">
-              <v-img :src="constants.LOCAL_ADDRESS+props.item.avatar" :contain="true">
+              <v-img :src="constants.ADDRESS+props.item.avatar" :contain="true">
             </v-list-tile-avatar>
           </td>
           <td class="text-xs-center">{{ props.item.name }}</td>
