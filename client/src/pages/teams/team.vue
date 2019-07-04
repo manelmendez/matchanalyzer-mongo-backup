@@ -4,7 +4,7 @@
       <v-card-title>
         <v-layout align-center>
           <v-flex xs1>
-            <v-img :src="constants.LOCAL_ADDRESS+team.avatar" alt="avatar" :contain="true" height="40" width="40">
+            <v-img :src="constants.ADDRESS+team.avatar" alt="avatar" :contain="true" height="40" width="40">
           </v-flex>
           <v-flex>  
             {{this.team.name}}
@@ -26,7 +26,7 @@
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">
-            <v-img :src="constants.LOCAL_ADDRESS+props.item.avatar" alt="avatar" :contain="true">
+            <v-img :src="constants.ADDRESS+props.item.avatar" alt="avatar" :contain="true">
           </td>
           <td class="text-xs-center">{{ props.item.name }}</td>
           <td class="text-xs-center">{{ props.item.position }}</td>

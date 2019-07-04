@@ -9,7 +9,7 @@
               v-for="team in competition.teams" :key="team._id">
         <v-card class="teamCard">
           <v-img justify-center
-            :src="constants.LOCAL_ADDRESS+team.avatar"
+            :src="constants.ADDRESS+team.avatar"
             aspect-ratio="1"
             :contain="true"
           ></v-img>
