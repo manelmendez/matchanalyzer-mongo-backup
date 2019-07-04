@@ -12,8 +12,6 @@ import store from './src/store/store'
 Vue.use(Vuetify)
 Vue.use(GSignInButton)
 Vue.use(FBSignInButton)
-const isDev = process.env.NODE_ENV != "production"
-Vue.config.performance = isDev
 
 Vue.prototype.$axios = axios
 Vue.prototype.$axios.defaults.baseURL = constants.LOCAL_API_ADDRESS
