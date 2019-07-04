@@ -14,7 +14,7 @@ Vue.use(GSignInButton)
 Vue.use(FBSignInButton)
 
 Vue.prototype.$axios = axios
-Vue.prototype.$axios.defaults.baseURL = constants.LOCAL_API_ADDRESS
+Vue.prototype.$axios.defaults.baseURL = (process.env.HEROKU == true) ? constants.HEROKU_API_ADDRESS : constants.LOCAL_API_ADDRESS
 // add token to Auth header if onceLogged
 if (JSON.parse(window.localStorage.getItem('authUser'))!= null)
 {
