@@ -117,7 +117,7 @@ router.beforeEach((to, from, next) => {
   }
 })
 function isAuth() {
-  axios.post(constants.LOCAL_API_ADDRESS+'private', null)
+  axios.post('private', null)
   .then(response => {
     if(response.status === 200) {
       console.log("Autorizado")
