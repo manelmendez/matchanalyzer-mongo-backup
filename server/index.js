@@ -15,6 +15,7 @@ const reconnectTimeout = 5000; // ms.
 
 // conectar el servidor
 app.listen(config.port, () => {
+  connect();
   console.log(`API corriendo en http://localhost:${config.port}`)
 })
 
@@ -53,5 +54,3 @@ db.on('disconnected', () => {
   console.error(`MongoDB can't connect or disconnected! Reconnecting in ${reconnectTimeout / 1000}s...`);
   setTimeout(() => connect(), reconnectTimeout);
 });
-
-connect();
