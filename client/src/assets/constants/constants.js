@@ -1,6 +1,6 @@
 module.exports = {
   ADDRESS : process.env.HEROKU ? 'https://matchanalyzer.herokuapp.com/' : 'http://127.0.0.1:9000/',
-  API_ADDRESS : ADDRESS+'api/',
+  API_ADDRESS : process.env.HEROKU ? 'https://matchanalyzer.herokuapp.com/api/' : 'http://127.0.0.1:9000/api/',
   // LOCAL_API_ADDRESS : 'http://37.133.124.200:9000/api/',
   // LOCAL_ADDRESS : 'http://37.133.124.200:9000/',
   theme1: {
