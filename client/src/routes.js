@@ -1,16 +1,16 @@
 import Vue from 'vue'
-import login from '../pages/login.vue'
-import index from '../pages/index.vue'
-import teams from '../pages/teams/index.vue'
-import team from '../pages/teams/team.vue'
-import competitionList from '../pages/competitions/index.vue'
-import competitionBase from '../pages/competitions/_id/index.vue'
-import summary from '../pages/competitions/_id/summary.vue'
-import results from '../pages/competitions/_id/results.vue'
-import classification from '../pages/competitions/_id/classification.vue'
-import TeamGlobal from '../pages/teams/TeamGlobal.vue'
+import login from './pages/login.vue'
+import index from './pages/index.vue'
+import teams from './pages/teams/index.vue'
+import team from './pages/teams/team.vue'
+import competitionList from './pages/competitions/index.vue'
+import competitionBase from './pages/competitions/_id/index.vue'
+import summary from './pages/competitions/_id/summary.vue'
+import results from './pages/competitions/_id/results.vue'
+import classification from './pages/competitions/_id/classification.vue'
+import TeamGlobal from './pages/teams/TeamGlobal.vue'
 
-import constants from '../assets/constants/constants'
+import constants from './assets/constants/constants'
 
 import VueRouter from 'vue-router'
 import axios from 'axios'
@@ -24,60 +24,61 @@ const router = new VueRouter({
       path: '/login',
       name: 'login',
       component: login,
+      meta: { requiresAuth: false, layout: 'empty' }
     },
     {
       path: '/',
       name: 'index',
       component: index,
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true, layout: 'default' }
     },
     {
       path: '/teams',
       name: 'teams',
       component: teams,
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true, layout: 'default' }
     },
     {
       path: '/teams/:id?',
       name: 'teams-id',
       component: team,
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true, layout: 'default' }
     },
     {
       path: '/teams/:id?/global',
       name: 'TeamGlobal',
       component: TeamGlobal,
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true, layout: 'default' }
     },
     {
       path: '/competitions',
       name: 'competitions',
       component: competitionList,
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true, layout: 'default' }
     },
     {
       path: '/competitions/:id',
       name: "competition-id",
       component: competitionBase,
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, layout: 'default' },
       children: [
         {
           path: 'summary',
           name: 'summary',
           component: summary,
-          meta: { requiresAuth: true }
+          meta: { requiresAuth: true, layout: 'default' }
         },
         {
           path: 'results',
           name: 'results',
           component: results,
-          meta: { requiresAuth: true }
+          meta: { requiresAuth: true, layout: 'default' }
         },
         {
           path: 'rankings',
           name: 'classification',
           component: classification,
-          meta: { requiresAuth: true }
+          meta: { requiresAuth: true, layout: 'default' }
         }
       ]
     }

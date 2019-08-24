@@ -50,7 +50,7 @@
         <small>*indicates required field</small>
       </v-card-text>
       <v-btn color="primary" @click.native="confirm">Continue</v-btn>
-      <v-btn flat @click.native="close">Cancel</v-btn>
+      <v-btn text @click.native="close">Cancel</v-btn>
     </v-card>
   </v-dialog>
 </template>

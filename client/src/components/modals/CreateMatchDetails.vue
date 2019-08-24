@@ -10,7 +10,7 @@
         </v-container>
       </v-card-text>
       <v-btn color="primary">Continue</v-btn>
-      <v-btn flat>Cancel</v-btn>
+      <v-btn text>Cancel</v-btn>
     </v-card>
   </v-dialog>
 </template>

@@ -1,5 +1,6 @@
 export const INITIALIZE = 'INITIALIZE'
 export const SNACKBAR = 'SNACKBAR'
+export const SNACKBAR_OFF = 'SNACKBAR_OFF'
 /*
 *   USER
 */

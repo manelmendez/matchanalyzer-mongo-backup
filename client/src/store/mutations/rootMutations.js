@@ -17,5 +17,12 @@ export const rootMutations = {
       }
       state.snackbar = snackoff
     }, 4000);
+  },
+  [types.SNACKBAR_OFF] (state) {
+    state.snackbar ={
+      color : "",
+      text : "", 
+      show : false
+    }
   }
 }

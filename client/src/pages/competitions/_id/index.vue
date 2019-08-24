@@ -1,12 +1,13 @@
 <template>
   <v-container fluid>
     <v-tabs
-    centered
-    :color="constants.theme2.PRIMARY_LIGHT_COLOR"
-    dark
-    icons-and-text >
+      centered
+      :background-color="constants.theme2.PRIMARY_LIGHT_COLOR"
+      dark
+      grow
+      icons-and-text 
+    >
       <v-tabs-slider color="yellow"></v-tabs-slider>
-
       <v-tab class="compTab" to="summary">
         Resumen
         <v-icon>far fa-chart-bar</v-icon>

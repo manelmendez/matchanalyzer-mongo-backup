@@ -25,10 +25,10 @@
         </v-flex>
         <v-flex xs2>
             <div class="match elevation-2">
-                <v-btn flat icon color="blue lighten-2" @click="roundDialog=!roundDialog">
+                <v-btn text icon color="blue lighten-2" @click="roundDialog=!roundDialog">
                     <v-icon size="18">edit</v-icon>
                 </v-btn>
-                <v-btn flat icon color="red lighten-2" @click="deleteDialog=!deleteDialog">
+                <v-btn text icon color="red lighten-2" @click="deleteDialog=!deleteDialog">
                     <v-icon size="18">delete</v-icon>
                 </v-btn>
             </div>

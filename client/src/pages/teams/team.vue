@@ -11,10 +11,10 @@
           </v-flex>
         </v-layout>
         <v-spacer></v-spacer>
-        <v-btn flat icon color="blue lighten-2" @click="click">
+        <v-btn text icon color="blue lighten-2" @click="click">
           <v-icon size="18">edit</v-icon>
         </v-btn>
-        <v-btn flat icon color="red lighten-2">
+        <v-btn text icon color="red lighten-2">
           <v-icon size="18">delete</v-icon>
         </v-btn>
       </v-card-title>
@@ -22,7 +22,7 @@
         :headers="headers"
         :items="teamPlayers"
         class="elevation-1 text-xs-center"
-        hide-actions
+        hide-default-footer
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">
@@ -32,10 +32,10 @@
           <td class="text-xs-center">{{ props.item.position }}</td>
           <td class="text-xs-center">{{ props.item.year }}</td>
           <td class="text-xs-center align-center">
-            <v-btn flat icon color="blue lighten-2" @click="click">
+            <v-btn text icon color="blue lighten-2" @click="click">
               <v-icon size="18">edit</v-icon>
             </v-btn>
-            <v-btn flat icon color="red lighten-2">
+            <v-btn text icon color="red lighten-2">
               <v-icon size="18">delete</v-icon>
             </v-btn>
           </td>

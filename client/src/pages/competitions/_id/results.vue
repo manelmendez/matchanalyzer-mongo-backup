@@ -29,14 +29,14 @@
               ></v-select>
             </v-flex>
             <v-flex xs7 md3>
-              <v-btn small round color="blue-grey" class="white--text" @click="createRound()">
+              <v-btn small rounded color="blue-grey" class="white--text" @click="createRound()">
                 Nueva Jornada
                 <v-icon right dark>add</v-icon>
               </v-btn>
               <v-btn
                 small
                 v-if="round._id == competition.rounds[competition.rounds.length -1]._id"
-                round
+                rounded
                 color="red lighten-2"
                 class="white--text"
                 @click.stop="deleteDialog=!deleteDialog"

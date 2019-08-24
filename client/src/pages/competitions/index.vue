@@ -1,19 +1,18 @@
 <template>
   <v-container fluid>
-    <div v-if="this.competitions.length == 0">
+    <v-layout v-if="this.competitions.length == 0">
       No tienes competiciones
-    </div>
+    </v-layout>
     <v-list v-else>
-      <v-list-tile
+      <v-list-item
         v-for="competition in this.competitions"
         :key="competition._id"
-        avatar
         @click="goTo(competition._id)"
       >
-        <v-list-tile-content>
-          <v-list-tile-title v-text="competition.myTeam.name + ' - ' + competition.discipline + ' - ' + competition.category + ' - ' + competition.name"></v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
+        <v-list-item-content>
+          <v-list-item-title v-text="competition.myTeam.name + ' - ' + competition.discipline + ' - ' + competition.category + ' - ' + competition.name"></v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
     </v-list>
     <v-btn
       fab

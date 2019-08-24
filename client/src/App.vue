@@ -1,34 +1,32 @@
 <template>
-  <v-app dark>
-    <div v-if="isLogged">
-      <Layout>
-    </div>
-    <div v-else>
-      <Login>
-    </div>
+  <v-app>
+    <Default v-if="isLogged"></Default>
+    <Empty v-else></Empty>
     <Snackbar v-if="snackbar.show" :show="snackbar.show" :color="snackbar.color" :text="snackbar.text"></Snackbar>
   </v-app>
 </template>
 
 <script>
-import Layout from '../layouts/Layout.vue'
-import Login from './login.vue'
-import Snackbar from '../components/flashmessages/Snackbar'
+import Default from './layouts/default.vue'
+import Empty from './layouts/empty.vue'
+import Snackbar from './components/flashmessages/Snackbar'
 
 import { mapGetters } from 'vuex'
 export default {
   name: "App",
   components: {
-    Layout,
-    Login,
+    Empty,
+    Default,
     Snackbar
   },
   data: () => ({
     drawer: true,
   }),
   computed: {
+    isLogged(){
+      return this.$route.meta.layout == "default" ? true : false
+    },
     ...mapGetters([
-      'isLogged',
       'snackbar'
     ]),
 

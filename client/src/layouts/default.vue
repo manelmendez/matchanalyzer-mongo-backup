@@ -1,46 +1,48 @@
 <template>
   <v-content>
-    <v-toolbar app fixed clipped-left :color="constants.theme2.PRIMARY_COLOR">
-      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+    <v-app-bar app fixed clipped-left :color="constants.theme2.PRIMARY_COLOR">
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <router-link to='/' class="toolbar-title">
         <v-toolbar-title>MatchAnalyzer</v-toolbar-title>
       </router-link>
       <v-spacer></v-spacer>
       <v-menu open-on-hover offset-y>
-        <v-btn slot="activator" icon dark>
-          <v-icon>account_circle</v-icon>
-        </v-btn>
+        <template v-slot:activator="{ on }">
+          <v-btn v-on="on" icon dark>
+            <v-icon>account_circle</v-icon>
+          </v-btn>
+        </template>
         <v-list>
-          <v-list-tile v-for="(item, i) in items" :key="i">
-            <v-list-tile-title @click="logOut()" class="logout">{{ item.title }}</v-list-tile-title>
-          </v-list-tile>
+          <v-list-item v-for="(item, i) in items" :key="i">
+            <v-list-item-title @click="logOut()" class="logout">{{ item.title }}</v-list-item-title>
+          </v-list-item>
         </v-list>
       </v-menu>
-    </v-toolbar>
+    </v-app-bar>
     <v-navigation-drawer
-        clipped
-        fixed
-        v-model="drawer"
-        width="200"
-        app
-      >
+      clipped
+      fixed
+      v-model="drawer"
+      width="200"
+      app
+    >
       <v-list dense>
-        <v-list-tile @click="goTo('teams')">
-          <v-list-tile-action>
+        <v-list-item @click="goTo('teams')">
+          <v-list-item-action>
             <v-icon>fas fa-futbol</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Mis equipos</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile @click="goTo('competitions')">
-          <v-list-tile-action>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Mis equipos</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item @click="goTo('competitions')">
+          <v-list-item-action>
             <v-icon>fas fa-trophy</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Mis competicones</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Mis competicones</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <router-view></router-view>
@@ -69,7 +71,7 @@ import constants from '../assets/constants/constants'
         this.signOut()
         let snackbar={show:true, color:"success", text:"Sesión cerrada"}
         this.$store.commit('SNACKBAR', snackbar)
-        this.$router.push('/')
+        this.$router.push('/login')
       },
       ...mapActions([
         'signOut',

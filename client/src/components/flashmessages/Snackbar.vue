@@ -8,7 +8,7 @@
     {{ text }}
     <v-btn
       color="black"
-      flat
+      text
       @click="close"
     >
       Close
@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     close() {
-      this.$emit('close')
+      this.$store.commit('SNACKBAR_OFF')
     }
   },
   created() {

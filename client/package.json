@@ -4,8 +4,8 @@
   "description": "VueJS client to use MatchAnalyzer software",
   "main": "index.js",
   "scripts": {
-    "start": "parcel -p 9999 ./index.html",
-    "build": "parcel build ./index.html --no-minify"
+    "start": "parcel -p 9999 ./src/index.html",
+    "build": "parcel build ./src/index.html --no-minify"
   },
   "keywords": [
     "node",

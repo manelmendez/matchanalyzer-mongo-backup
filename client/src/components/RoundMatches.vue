@@ -1,9 +1,7 @@
 <template>
-    <div class="roundResults">
-        <v-container grid-list-md v-for="match in matches" :key="match._id">
-            <RoundMatch :match="match" @loading="loading"></RoundMatch>
-        </v-container>
-    </div>
+    <v-container grid-list-md >
+        <RoundMatch v-for="match in matches" :key="match._id" :match="match" @loading="loading"></RoundMatch>
+    </v-container>
 </template>
 <script>
 import RoundMatch from "./RoundMatch"

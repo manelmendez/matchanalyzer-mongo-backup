@@ -4,10 +4,10 @@ import GSignInButton from 'vue-google-signin-button'
 import FBSignInButton from 'vue-facebook-signin-button'
 import axios from 'axios'
 
-import constants from './src/assets/constants/constants'
-import router from './src/routes/routes'
-import App from './src/pages/App.vue'
-import store from './src/store/store'
+import constants from './assets/constants/constants'
+import router from './routes'
+import App from './App.vue'
+import store from './store/store'
 
 Vue.use(Vuetify)
 Vue.use(GSignInButton)
@@ -26,6 +26,11 @@ new Vue({
   el: '#app',
   router,
   store,
+  vuetify: new Vuetify({
+    theme: {
+      dark: true
+    }
+  }),
   beforeCreate() {
     //do something before creating vue instance
     this.$store.dispatch('initializeStore')

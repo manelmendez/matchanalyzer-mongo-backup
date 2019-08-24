@@ -2,19 +2,18 @@
   <v-container>
     <p v-if="this.myTeams.length == 0">Aún no tienes equipos. Dale al botón para crear uno</p>
     <v-list v-else>
-      <v-list-tile
+      <v-list-item
         v-for="team in this.myTeams"
         :key="team._id"
-        avatar
         @click="goTo(team._id)"
       >
-        <v-list-tile-content>
-          <v-list-tile-title v-text="team.name"></v-list-tile-title>
-        </v-list-tile-content>
-        <v-list-tile-avatar>
+        <v-list-item-content>
+          <v-list-item-title v-text="team.name"></v-list-item-title>
+        </v-list-item-content>
+        <v-list-item-avatar>
           <v-img :src="constants.ADDRESS+team.avatar" :contain="true">
-        </v-list-tile-avatar>
-      </v-list-tile>
+        </v-list-item-avatar>
+      </v-list-item>
     </v-list>
     <v-btn
       fab
