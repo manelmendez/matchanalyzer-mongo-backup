@@ -6,6 +6,7 @@
       dark
       grow
       icons-and-text 
+      color="white"
     >
       <v-tabs-slider color="yellow"></v-tabs-slider>
       <v-tab class="compTab" to="summary">
@@ -51,7 +52,7 @@ import constants from '../../../assets/constants/constants'
   }
 </script>
 <style>
-.compTab:hover{
+.compTab:hover {
   color: rgb(255, 255, 255)
 }
 .nothing {

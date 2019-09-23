@@ -7,19 +7,21 @@
               lg2
               xl1
               v-for="team in competition.teams" :key="team._id">
-        <v-card class="teamCard">
-          <v-img justify-center
+        <v-card class="teamCard" min-height="100%">
+          <v-col>
+          <v-img 
+            justify="center"
             :src="constants.ADDRESS+team.avatar"
-            aspect-ratio="1"
-            :contain="true"
+            aspect-ratio="2"
+            contain
           ></v-img>
-          <v-card-title primary-title>
-            <div>
-              <h4>{{team.name}}</h4>
-              <div v-if="competition.myTeam._id == team._id">Nº de jugadores: {{team.players.length}}</div>
-              <div v-else><br></div>
-            </div>
+          </v-col>
+          <v-card-title class="title-card">
+            {{team.name}}
           </v-card-title>
+          <v-card-text v-if="competition.myTeam._id == team._id">
+            Nº de jugadores: {{team.players.length}}  
+          </v-card-text>
         </v-card>
       </v-flex>
     </v-layout>
@@ -74,6 +76,9 @@ import CreateTeam from '../../../components/modals/CreateTeam'
   justify-content: center;
   background-color: rgba(255, 209, 89, 0.44);
   cursor: pointer;
+}
+.title-card{
+  font-size: 18px;
 }
 </style>
 

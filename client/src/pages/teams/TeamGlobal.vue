@@ -1,35 +1,21 @@
 <template>
   <v-container fluid>
-    <v-layout>
-        <v-card
-          class="mt-2"
-          max-width="25%"
-          max-height="25%"
-        >
-          <v-sheet
-            class="v-sheet--offset mx-auto"
-            color="cyan"
-            elevation="12"
-            max-width="calc(100% - 32px)"
-            max-height="calc(100% - 32px)"
-          >
-            <line-chart :chart-data="datacollection"></line-chart>
-          </v-sheet>
-
-          <v-card-text class="pt-0">
-            <div class="title font-weight-light mb-2">Recorrido del equipo</div>
-            <div class="subheading font-weight-light grey--text">Temporada 2018/19</div>
-            <v-divider class="my-2"></v-divider>
-            <v-icon
-              class="mr-2"
-              small
-            >
-              mdi-clock
-            </v-icon>
-            <span class="caption grey--text font-weight-light">Último partido 8 Abril 2019</span>
-          </v-card-text>
-        </v-card>
-    </v-layout>
+      <v-row>
+        <v-col>
+          <statscard :chart-data="datacollection" :height="100"/>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols=4>
+          <statscard :chart-data="datacollection" :height="200"/>
+        </v-col>
+        <v-col cols=4>
+          <statscard :chart-data="datacollection" :height="200"/>
+        </v-col>
+        <v-col cols=4>
+          <statscard :chart-data="datacollection" :height="200"/>
+        </v-col>
+      </v-row>
   </v-container>
 </template>
 
@@ -37,18 +23,19 @@
 import { mapActions } from 'vuex'
 import { mapGetters } from 'vuex'
 import constants from '../../assets/constants/constants'
-import LineChart from '../../components/charts/LineChart.js'
+import statscard from '../../components/statscard'
 
   export default {
     name: "TeamGlobal",
-    components: { LineChart },
+    components: {
+      statscard
+    },
     data: () => ({
       constants: constants,
-      
     }),
     methods: {
       getRandomInt () {
-        return Math.floor(Math.random() * (50 - 5 + 1)) + 5
+        return Math.floor(Math.random() * (16 - 1)) + 1
       },
       ...mapActions([
         'getTeam',
@@ -63,7 +50,7 @@ import LineChart from '../../components/charts/LineChart.js'
           labels: ["J1","J2","J3","J4","J5","J6","J7","J8","J9","J10","J11","J12","J13","J14","J15","J16","J17","J18"],
           datasets: [
             {
-              label: 'Puntos',
+              label: 'Posición',
               data: [this.getRandomInt(), this.getRandomInt(),this.getRandomInt(),this.getRandomInt(),this.getRandomInt(),this.getRandomInt(),this.getRandomInt(), this.getRandomInt(),this.getRandomInt(),this.getRandomInt(),this.getRandomInt(),this.getRandomInt(),this.getRandomInt(), this.getRandomInt(),this.getRandomInt(),this.getRandomInt(),this.getRandomInt(),this.getRandomInt()]
             }, 
           ]

@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <p v-if="this.myTeams.length == 0">Aún no tienes equipos. Dale al botón para crear uno</p>
     <v-list v-else>
       <v-list-item

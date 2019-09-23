@@ -4,39 +4,40 @@
       :items="rankedTeams"
       class="elevation-1 text-xs-center"
       hide-default-footer
+      :items-per-page="-1"
     >
-      <template slot="items" slot-scope="props" >
-        <tr :class="setClass(props)">
-          <td class="text-xs-center">{{ props.index+1 }}</td>
+      <template v-slot:item="{ item, index }">
+        <tr :class="setClass(index)">
+          <td class="text-xs-center">{{ index+1 }}</td>
           <td class="text-xs-center">
-            <v-list-tile-avatar :tile="true">
-              <v-img :src="constants.ADDRESS+props.item.avatar" :contain="true">
-            </v-list-tile-avatar>
+            <v-list-item-avatar :tile="true">
+              <v-img :src="constants.ADDRESS+item.avatar" contain>
+            </v-list-item-avatar>
           </td>
-          <td class="text-xs-center">{{ props.item.name }}</td>
-          <td class="text-xs-center">{{ props.item.stats.points }}</td>
-          <td class="text-xs-center">{{ props.item.stats.gamesPlayed }}</td>
-          <td class="text-xs-center">{{ props.item.stats.wins }}</td>
-          <td class="text-xs-center">{{ props.item.stats.draws }}</td>
-          <td class="text-xs-center">{{ props.item.stats.loses }}</td>
-          <td class="text-xs-center">{{ props.item.stats.goals }}</td>
-          <td class="text-xs-center">{{ props.item.stats.againstGoals }}</td>
+          <td class="text-xs-center">{{ item.name }}</td>
+          <td class="text-xs-center">{{ item.stats.points }}</td>
+          <td class="text-xs-center">{{ item.stats.gamesPlayed }}</td>
+          <td class="text-xs-center">{{ item.stats.wins }}</td>
+          <td class="text-xs-center">{{ item.stats.draws }}</td>
+          <td class="text-xs-center">{{ item.stats.loses }}</td>
+          <td class="text-xs-center">{{ item.stats.goals }}</td>
+          <td class="text-xs-center">{{ item.stats.againstGoals }}</td>
           <td class="text-xs-center"></td>
-          <td class="text-xs-center">{{ props.item.stats.homePoints }}</td>
-          <td class="text-xs-center">{{ props.item.stats.homeGamesPlayed }}</td>
-          <td class="text-xs-center">{{ props.item.stats.homeWins }}</td>
-          <td class="text-xs-center">{{ props.item.stats.homeDraws }}</td>
-          <td class="text-xs-center">{{ props.item.stats.homeLoses }}</td>
-          <td class="text-xs-center">{{ props.item.stats.homeGoals }}</td>
-          <td class="text-xs-center">{{ props.item.stats.homeAgainstGoals }}</td>
+          <td class="text-xs-center">{{ item.stats.homePoints }}</td>
+          <td class="text-xs-center">{{ item.stats.homeGamesPlayed }}</td>
+          <td class="text-xs-center">{{ item.stats.homeWins }}</td>
+          <td class="text-xs-center">{{ item.stats.homeDraws }}</td>
+          <td class="text-xs-center">{{ item.stats.homeLoses }}</td>
+          <td class="text-xs-center">{{ item.stats.homeGoals }}</td>
+          <td class="text-xs-center">{{ item.stats.homeAgainstGoals }}</td>
           <td class="text-xs-center"></td>
-          <td class="text-xs-center">{{ props.item.stats.awayPoints }}</td>
-          <td class="text-xs-center">{{ props.item.stats.awayGamesPlayed }}</td>
-          <td class="text-xs-center">{{ props.item.stats.awayWins }}</td>
-          <td class="text-xs-center">{{ props.item.stats.awayDraws }}</td>
-          <td class="text-xs-center">{{ props.item.stats.awayLoses }}</td>
-          <td class="text-xs-center">{{ props.item.stats.awayGoals }}</td>
-          <td class="text-xs-center">{{ props.item.stats.awayAgainstGoals }}</td>
+          <td class="text-xs-center">{{ item.stats.awayPoints }}</td>
+          <td class="text-xs-center">{{ item.stats.awayGamesPlayed }}</td>
+          <td class="text-xs-center">{{ item.stats.awayWins }}</td>
+          <td class="text-xs-center">{{ item.stats.awayDraws }}</td>
+          <td class="text-xs-center">{{ item.stats.awayLoses }}</td>
+          <td class="text-xs-center">{{ item.stats.awayGoals }}</td>
+          <td class="text-xs-center">{{ item.stats.awayAgainstGoals }}</td>
         </tr>
       </template>
       <template slot="no-data">
@@ -88,10 +89,10 @@ export default {
         }
     },
     methods:{
-        setClass(props) {
-            if(props.index==0) return 'first'
-            else if(props.index==1) return 'second'
-            else if(props.index==this.rankedTeams.length-1||props.index==this.rankedTeams.length-2||props.index==this.rankedTeams.length-3) return 'descending'
+        setClass(index) {
+            if(index==0) return 'first'
+            else if(index==1) return 'second'
+            else if(index==this.rankedTeams.length-1||index==this.rankedTeams.length-2||index==this.rankedTeams.length-3) return 'descending'
         }
     }
 }

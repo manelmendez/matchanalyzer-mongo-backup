@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <p>HI</p>
   </v-container>
 </template>

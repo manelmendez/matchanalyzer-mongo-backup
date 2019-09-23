@@ -1,6 +1,6 @@
 <template>
   <v-content>
-    <v-app-bar app fixed clipped-left :color="constants.theme2.PRIMARY_COLOR">
+    <v-app-bar app fixed clipped-left :color="constants.theme2.PRIMARY_COLOR" class="elevation-0">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <router-link to='/' class="toolbar-title">
         <v-toolbar-title>MatchAnalyzer</v-toolbar-title>
