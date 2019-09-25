@@ -8,7 +8,7 @@
         @click="goTo(team._id)"
       >
         <v-list-item-content>
-          <v-list-item-title v-text="team.name"></v-list-item-title>
+          <v-list-item-title>{{team.name}}</v-list-item-title>
         </v-list-item-content>
         <v-list-item-avatar>
           <v-img :src="constants.ADDRESS+team.avatar" :contain="true">

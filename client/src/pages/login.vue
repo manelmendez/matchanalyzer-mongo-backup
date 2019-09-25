@@ -12,7 +12,6 @@
               <v-card-text>
                 <v-form v-model="valid" ref="form" lazy-validation>
                   <v-text-field 
-                    background-color="transparent"
                     prepend-icon="person" 
                     ref="email" 
                     label="Email" 
@@ -22,6 +21,7 @@
                     :rules="emailRules" 
                     required></v-text-field>
                   <v-text-field 
+                    autocomplete="new-password"
                     prepend-icon="lock" 
                     ref="password" 
                     label="Contraseña"
