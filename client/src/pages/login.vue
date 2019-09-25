@@ -150,7 +150,7 @@ import { mapActions } from 'vuex'
             console.log(response)
             if(response.status === 200) {
               let snackbar={show:true, color:"success", text:"Logueado correctamente"}
-              this.$store.commit('SNACKBAR', snackbar)
+              this.$store.commit('root/SNACKBAR', snackbar)
               this.$router.push({
                 name: "index" //si uso path: "/mainpage" el params (props) no funciona -- params: { user: response.data.user } --
               })
@@ -205,7 +205,7 @@ import { mapActions } from 'vuex'
           })
         }
       },
-      ...mapActions([
+      ...mapActions("user",[
         'signIn',
         'signUp',
         'signInGoogle'

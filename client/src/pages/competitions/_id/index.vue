@@ -36,12 +36,12 @@ import constants from '../../../assets/constants/constants'
       constants: constants,
     }),
     methods: {
-      ...mapActions([
+      ...mapActions("competition",[
         'getCompetition',
       ])
     },
     computed: {
-      ...mapGetters([
+      ...mapGetters("competition",[
         'competition'
       ])
     },

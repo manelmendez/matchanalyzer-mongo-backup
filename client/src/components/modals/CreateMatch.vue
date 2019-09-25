@@ -282,7 +282,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["competition"])
+    ...mapGetters("competition",["competition"])
   }
 };
 </script>

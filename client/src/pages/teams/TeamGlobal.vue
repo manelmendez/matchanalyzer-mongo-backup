@@ -37,12 +37,12 @@ import statscard from '../../components/statscard'
       getRandomInt () {
         return Math.floor(Math.random() * (16 - 1)) + 1
       },
-      ...mapActions([
+      ...mapActions("team",[
         'getTeam',
       ])
     },
     computed: {
-      ...mapGetters([
+      ...mapGetters("team",[
         'team',
       ]),
       datacollection: function () {        

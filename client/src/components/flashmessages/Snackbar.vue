@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     close() {
-      this.$store.commit('SNACKBAR_OFF')
+      this.$store.commit('root/SNACKBAR_OFF')
     }
   },
   created() {

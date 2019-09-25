@@ -153,7 +153,7 @@ export default {
         }
       });
     },
-    ...mapActions([
+    ...mapActions("competition",[
       "getCompetition",
       "addRound",
       "addMatch",
@@ -162,7 +162,7 @@ export default {
     ])
   },
   computed: {
-    ...mapGetters(["competition", "roundTeams", "selectedRound"]),
+    ...mapGetters("competition",["competition", "roundTeams", "selectedRound"]),
     matches() {      
       return this.$store.getters.matches
     },

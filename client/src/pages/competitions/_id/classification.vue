@@ -26,7 +26,7 @@ import ClassificationTable from '../../../components/ClassificationTable'
       constants: constants,
     }),
     computed: {
-      ...mapGetters([
+      ...mapGetters("competition",[
         'competition',
         'selectedRound',
         'rankedTeams'

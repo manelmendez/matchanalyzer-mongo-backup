@@ -1,9 +1,9 @@
-export const INITIALIZE = 'INITIALIZE'
 export const SNACKBAR = 'SNACKBAR'
 export const SNACKBAR_OFF = 'SNACKBAR_OFF'
 /*
 *   USER
 */
+export const INITIALIZE = 'INITIALIZE'
 export const SIGN_IN = 'SIGN_IN'
 export const SIGN_UP = 'SIGN_UP'
 export const SIGN_OUT = 'SIGN_OUT'

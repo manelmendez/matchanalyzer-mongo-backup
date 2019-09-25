@@ -52,17 +52,17 @@ import CreateCompetition from '../../components/modals/CreateCompetition'
         this.getUserCompetitions(this.user._id)
         this.dialog = false
       },
-      ...mapActions([
-        'getUserCompetitions',
-        'getUserTeams'
-      ]),
+      ...mapActions({
+        getUserCompetitions:'competition/getUserCompetitions',
+        getUserTeams:'team/getUserTeams'
+      }),
     },
     computed: {
-      ...mapGetters([
-        'user',
-        'myTeams',
-        'competitions'
-      ])
+      ...mapGetters({
+        user:'user/user',
+        myTeams:'team/myTeams',
+        competitions:'competition/competitions'
+      })
     },
     created() {
       //do something after creating vue instance

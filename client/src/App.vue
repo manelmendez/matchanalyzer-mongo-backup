@@ -26,7 +26,7 @@ export default {
     isLogged(){
       return this.$route.meta.layout == "default" ? true : false
     },
-    ...mapGetters([
+    ...mapGetters("root",[
       'snackbar'
     ]),
 

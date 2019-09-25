@@ -90,10 +90,10 @@ export default {
     show: Boolean
   },
   computed: {
-    ...mapGetters([
-      'user',
-      'myTeams',
-    ])
+    ...mapGetters({
+      user:'user/user',
+      myTeam:'team/myTeams',
+    })
   },
   methods: {
     confirm() {
@@ -112,7 +112,7 @@ export default {
     close() {
       this.$emit('close')
     },
-    ...mapActions([
+    ...mapActions("competition",[
         'addCompetition',
     ])
   }

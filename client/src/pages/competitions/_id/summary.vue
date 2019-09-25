@@ -56,12 +56,12 @@ import CreateTeam from '../../../components/modals/CreateTeam'
       confirm(){
         this.dialog = false
       },
-      ...mapActions([
+      ...mapActions("competition",[
         'getCompetition'
       ])
     },
     computed: {
-      ...mapGetters([
+      ...mapGetters("competition",[
         'competition'
       ])
     }

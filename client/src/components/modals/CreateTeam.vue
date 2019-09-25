@@ -152,15 +152,14 @@ export default {
     close(){
       this.$emit("close")
     },
-    ...mapActions([
+    ...mapActions("team",[
       'addNoManagerTeam',
-      'selectTeam',
       'uploadTeamImage',
       'updateTeam',
     ])
   },
   computed:{
-    ...mapGetters([
+    ...mapGetters("competition",[
       'competition'
     ])
   }

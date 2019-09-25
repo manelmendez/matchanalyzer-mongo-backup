@@ -33,7 +33,7 @@ new Vue({
   }),
   beforeCreate() {
     //do something before creating vue instance
-    this.$store.dispatch('initializeStore')
+    this.$store.dispatch('user/initializeStore')    
   },
   render: (h) => h(App)
 })

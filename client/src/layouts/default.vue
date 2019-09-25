@@ -70,10 +70,10 @@ import constants from '../assets/constants/constants'
         window.localStorage.removeItem('authUser')
         this.signOut()
         let snackbar={show:true, color:"success", text:"Sesión cerrada"}
-        this.$store.commit('SNACKBAR', snackbar)
+        this.$store.commit('root/SNACKBAR', snackbar)
         this.$router.push('/login')
       },
-      ...mapActions([
+      ...mapActions("user",[
         'signOut',
       ])
     }

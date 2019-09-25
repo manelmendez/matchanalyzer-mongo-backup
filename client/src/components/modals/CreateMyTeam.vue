@@ -101,15 +101,14 @@ export default {
     close(){
       this.$emit("close")
     },
-    ...mapActions([
+    ...mapActions("team",[
       'getUserTeams',
       'addTeam',
-      'selectTeam',
       'uploadTeamImage'
     ])
   },
   computed:{
-    ...mapGetters([
+    ...mapGetters("user",[
       'user'
     ])
   },

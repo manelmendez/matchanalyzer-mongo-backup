@@ -54,16 +54,15 @@ import constants from '../../assets/constants/constants'
       confirmCreate() {
         this.dialog = false
       },
-      ...mapActions([
-        'getUserTeams',
-        'selectTeam',
+      ...mapActions("team",[
+        'getUserTeams'
       ])
     },
     computed:{
-      ...mapGetters([
-        'myTeams',
-        'user'
-      ])
+      ...mapGetters({
+        myTeams: 'team/myTeams',
+        user: 'user/user'
+      })
     },
     created() {
       //do something after creating vue instance

@@ -1,6 +1,10 @@
 import * as types from '../mutations/mutation-types'
 import axios from 'axios'
 
+export const initializeStore = ({commit}) => {
+  console.log("ACTION -- initializeStore")
+  commit(types.INITIALIZE)
+}
 export const signIn = ({commit}, body) => {
   console.log("ACTION -- signIn")
   return axios.post('signIn', body)

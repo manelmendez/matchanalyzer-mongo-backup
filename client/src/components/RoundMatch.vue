@@ -117,14 +117,14 @@ export default {
                 }
             });
         },
-        ...mapActions([
+        ...mapActions("competition",[
             "updateMatch",
             "deleteMatch",
             "getCompetition"
         ])
     },
     computed: {
-        ...mapGetters(['selectedRound','roundTeams']),
+        ...mapGetters("competition",['selectedRound','roundTeams']),
         newRoundTeams() {
             return [...this.roundTeams, this.match.localTeam, this.match.awayTeam]
         }

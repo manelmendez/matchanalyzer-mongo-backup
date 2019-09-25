@@ -18,7 +18,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(["matches"])
+        ...mapGetters("competition",["matches"])
     }
 }
 </script>

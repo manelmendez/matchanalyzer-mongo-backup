@@ -96,13 +96,13 @@ import constants from '../../assets/constants/constants'
       click(){
         alert("gilipolias")
       },
-      ...mapActions([
-        'getTeam',
-        'addPlayer'
-      ])
+      ...mapActions({
+        getTeam: 'team/getTeam',
+        addPlayer: 'player/addPlayer'
+      })
     },
     computed: {
-      ...mapGetters([
+      ...mapGetters("team",[
         'team',
         'teamPlayers'
       ])
