@@ -44,8 +44,10 @@
           </v-layout>
         </v-container>
       </v-card-text>
-      <v-btn color="primary" @click.native="(type=='new')?confirm():edit()">Continue</v-btn>
-      <v-btn text @click="close()">Cancel</v-btn>
+      <v-card-actions>
+        <v-btn color="primary" @click.native="(type=='new')?confirm():edit()">Continue</v-btn>
+        <v-btn text @click="close()">Cancel</v-btn>
+      <v-card-actions>
       <CreateMatchDetails v-if="detailsModal" :show="detailsModal"></CreateMatchDetails>
     </v-card>
   </v-dialog>

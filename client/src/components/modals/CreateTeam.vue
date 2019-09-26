@@ -30,8 +30,10 @@
           </v-layout>
         </v-container>
       </v-card-text>
+      <v-card-actions>
       <v-btn color="primary" @click.native="createTeam()">Continue</v-btn>
       <v-btn text @click.native="close">Cancel</v-btn>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
@@ -49,7 +51,8 @@ export default {
       "15/16",
       "16/17",
       "17/18",
-      "18/19"
+      "18/19",
+      "19/20"
     ],
     name: '',
     season: ''

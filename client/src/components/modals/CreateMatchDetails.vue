@@ -9,8 +9,10 @@
           <v-layout wrap></v-layout>
         </v-container>
       </v-card-text>
-      <v-btn color="primary">Continue</v-btn>
-      <v-btn text>Cancel</v-btn>
+      <v-card-actions>
+        <v-btn color="primary">Continue</v-btn>
+        <v-btn text>Cancel</v-btn>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>

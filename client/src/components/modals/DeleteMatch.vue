@@ -13,52 +13,51 @@
 </template>
 <script>
 export default {
-    name: "DeleteMatch",
-    props: {
-        type: String,
-        show: Boolean
+  name: "DeleteMatch",
+  props: {
+    type: String,
+    show: Boolean
+  },
+  data() {
+    return {
+      match: {
+        title: "Quieres borrar este partido?",
+        text:
+          "Si aceptas, el partido se borrará y se perderán todos sus datos. Quieres continuar?"
+      },
+      jornada: {
+        title: "Quieres borrar esta jornada?",
+        text:
+          "Si aceptas, la jornada se borrará y se perderán todos sus partidos y datos estadísticos. Quieres continuar?"
+      }
+    };
+  },
+  computed: {
+    title() {
+      if (this.type == "jornada") {
+        return this.jornada.title;
+      } else if (this.type == "match") {
+        return this.match.title;
+      }
     },
-    data() {
-        return {
-            match: {
-                title: "Quieres borrar este partido?",
-                text: "Si aceptas, el partido se borrará y se perderán todos sus datos. Quieres continuar?"
-            },
-            jornada: {
-                title: "Quieres borrar esta jornada?",
-                text: "Si aceptas, la jornada se borrará y se perderán todos sus partidos y datos estadísticos. Quieres continuar?",
-            },
-        }
-    },
-    computed:{
-        title(){
-            if(this.type=="jornada"){
-                return this.jornada.title
-            }
-            else if(this.type=="match"){
-                return this.match.title
-            }
-        },
-        text(){
-            if(this.type=="jornada"){
-                return this.jornada.text
-            }
-            else if(this.type=="match"){
-                return this.match.text
-            }
-        }
-    },
-    methods: {
-        close() {
-            this.$emit('close');
-        },
-        confirm(){
-            this.$emit('delete');
-        }
+    text() {
+      if (this.type == "jornada") {
+        return this.jornada.text;
+      } else if (this.type == "match") {
+        return this.match.text;
+      }
     }
-}
+  },
+  methods: {
+    close() {
+      this.$emit("close");
+    },
+    confirm() {
+      this.$emit("delete");
+    }
+  }
+};
 </script>
 <style scoped>
-
 </style>
 
