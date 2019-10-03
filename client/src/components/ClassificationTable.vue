@@ -1,4 +1,5 @@
 <template>
+  <v-card>
     <v-data-table v-if="rankedTeams"
       :headers="headers"
       :items="rankedTeams"
@@ -40,12 +41,15 @@
           <td class="text-xs-center">{{ item.stats.awayAgainstGoals }}</td>
         </tr>
       </template>
-      <template slot="no-data">
-        <v-alert :value="true" color="error" icon="warning">
-          Aún no están los datos de esta jornada :(
-        </v-alert>
+      <template v-slot:no-data>
+        <v-col>
+          <v-alert :value="true" type="error" icon="warning">
+            Aún no están los datos de esta jornada :(
+          </v-alert>
+        </v-col>
       </template>
     </v-data-table>
+  </v-card>
 </template>
 <script>
 import constants from '../assets/constants/constants'

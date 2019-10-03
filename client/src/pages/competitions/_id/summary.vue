@@ -16,10 +16,10 @@
             contain
           ></v-img>
           </v-col>
-          <v-card-title class="title-card">
-            {{team.name}}
-          </v-card-title>
-          <v-card-text v-if="competition.myTeam._id == team._id">
+          <v-card-text class="title-card text-center">
+            <b>{{team.name}}</b>
+          </v-card-text>
+          <v-card-text class="text-center" v-if="competition.myTeam._id == team._id">
             Nº de jugadores: {{team.players.length}}  
           </v-card-text>
         </v-card>
@@ -78,7 +78,7 @@ import CreateTeam from '../../../components/modals/CreateTeam'
   cursor: pointer;
 }
 .title-card{
-  font-size: 18px;
+  font-size: 15px;
 }
 </style>
 

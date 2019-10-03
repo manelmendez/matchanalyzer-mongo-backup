@@ -1,9 +1,9 @@
 <template>
-  <div v-if="competition.rounds && selectedRound!=null">
+  <v-container fluid v-if="competition.rounds && selectedRound!=null">
     <v-progress-linear :indeterminate="true" v-if="loading"></v-progress-linear>
-    <div v-if="competition.rounds.length == 0">
-      <v-card>
-        <v-card-text class="text-xs-center">
+    <v-row v-if="competition.rounds.length == 0">
+      <v-card class="results">
+        <v-card-text class="text-center">
           Aun no hay ninguna jornada disputada
           <br>
           <v-btn fab color="pink" dark>
@@ -11,12 +11,12 @@
           </v-btn>
         </v-card-text>
       </v-card>
-    </div>
-    <div v-else>
-      <v-card>
+    </v-row>
+    <v-row v-else>
+      <v-card class="results">
         <v-card-title>
-          <v-layout row justify-space-between>
-            <v-flex xs5 md3>
+          <v-row justify="space-between">
+            <v-col md="3">
               <v-select
                 small
                 :items="competition.rounds"
@@ -27,9 +27,9 @@
                 return-object
                 @change="changeResultRound"
               ></v-select>
-            </v-flex>
-            <v-flex xs7 md3>
-              <v-btn small rounded color="blue-grey" class="white--text" @click="createRound()">
+            </v-col>
+            <v-col md="3">
+              <v-btn small rounded color="blue-grey" class="white--text resultBtn" @click="createRound()">
                 Nueva Jornada
                 <v-icon right dark>add</v-icon>
               </v-btn>
@@ -38,22 +38,24 @@
                 v-if="round._id == competition.rounds[competition.rounds.length -1]._id"
                 rounded
                 color="red lighten-2"
-                class="white--text"
+                class="white--text resultBtn"
                 @click.stop="deleteDialog=!deleteDialog"
               >
                 Borrar Jornada
                 <v-icon right dark>delete</v-icon>
               </v-btn>
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </v-card-title>
-        <v-card-text class="text-xs-center" v-if="competition.rounds">
-          <div
-            v-if="competition.rounds[selectedRound -1].matches.length == 0"
-          >Aún no has añadido partidos en esta jornada</div>
-          <div v-else>
-            <RoundMatches @loading="loading=!loading"></RoundMatches>
-          </div>
+        <v-card-text class="text-center" v-if="competition.rounds">
+          <v-col v-if="competition.rounds[selectedRound -1].matches.length == 0">
+            Aún no has añadido partidos en esta jornada
+          </v-col>
+          <v-col v-else>
+            <v-container>
+              <RoundMatch v-for="match in matches" :key="match._id" :match="match" @loading="loading"></RoundMatch>
+            </v-container>
+          </v-col>
           <br>
           <v-btn v-if="roundTeams.length != 0" fab color="pink" dark @click.stop="roundDialog=!roundDialog, roundType='new'">
             <i class="material-icons">add</i>
@@ -62,19 +64,19 @@
       </v-card>
       <CreateMatch v-if="roundDialog" :show="roundDialog" type="new" :roundTeams="roundTeams" :round="competition.rounds[selectedRound -1]._id" @close="roundDialog=!roundDialog" @confirm="createMatch"></CreateMatch>
       <DeleteMatch :show="deleteDialog" type="jornada" @close="deleteDialog=!deleteDialog" @delete="deleteRoundFunction"></DeleteMatch>
-    </div>
-  </div>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
 import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
-import RoundMatches from "../../../components/RoundMatches"
+import RoundMatch from "../../../components/RoundMatch"
 import DeleteMatch from "../../../components/modals/DeleteMatch"
 import CreateMatch from "../../../components/modals/CreateMatch"
 export default {
   components: {
-    RoundMatches,
+    RoundMatch,
     DeleteMatch,
     CreateMatch
   },
@@ -162,10 +164,7 @@ export default {
     ])
   },
   computed: {
-    ...mapGetters("competition",["competition", "roundTeams", "selectedRound"]),
-    matches() {      
-      return this.$store.getters.matches
-    },
+    ...mapGetters("competition",["competition", "roundTeams", "selectedRound", "matches"]),
     round: {
       get: function() {
         return this.competition.rounds[this.selectedRound - 1];
@@ -181,5 +180,11 @@ export default {
 <style>
 .centered-input input {
   text-align: center;
+}
+.resultBtn{
+  width: 100%;
+}
+.results {
+  width: 100%;
 }
 </style>

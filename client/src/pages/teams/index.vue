@@ -15,17 +15,23 @@
         </v-list-item-avatar>
       </v-list-item>
     </v-list>
-    <v-btn
-      fab
-      color="pink"
-      dark
-      bottom
-      right
-      fixed
-      @click.stop="dialog=!dialog"
-    >
-      <i class="material-icons">add</i>
-    </v-btn>
+    <v-tooltip left>
+      <template v-slot:activator="{ on }">
+        <v-btn
+          fab
+          color="pink"
+          dark
+          bottom
+          right
+          fixed
+          @click.stop="dialog=!dialog"
+          v-on="on"
+        >
+          <i class="material-icons">add</i>
+        </v-btn>
+        </template>
+      <span>Añadir equipo</span>
+    </v-tooltip>
     <CreateMyTeam v-if="dialog" :show="dialog" @confirm="confirmCreate" @close="dialog=!dialog"></CreateMyTeam>
   </v-container>
 </template>

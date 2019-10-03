@@ -27,4 +27,12 @@ export const teamMutations = {
 
   [types.UPDATE_TEAM] (state, team) {
   },
+
+  [types.GET_TEAMPLAYERS] (state, players) {
+    state.team.players = players
+  },
+
+  [types.ADD_PLAYER] (state, player) {
+    state.team.players = [...state.team.players, player]
+  },
 }

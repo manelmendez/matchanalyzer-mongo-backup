@@ -85,7 +85,7 @@ export default {
     close() {
       this.$emit('close')
     },
-    ...mapActions("player",['addPlayer'])
+    ...mapActions("team",['addPlayer'])
   }
 }
 </script>

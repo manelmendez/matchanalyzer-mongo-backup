@@ -1,15 +1,17 @@
 <template>
-<div v-if="competition.rounds">
-  <div v-if="competition.rounds.length == 0">
-    <v-card>
-      <v-card-text class="text-xs-center">
+<v-container fluid v-if="competition.rounds">
+  <v-row v-if="competition.rounds.length == 0">
+    <v-card class="no-data">
+      <v-card-text class="text-center">
         Aun no hay ninguna jornada disputada
         <br>
       </v-card-text>
     </v-card>
-  </div>
-  <ClassificationTable v-else :rankedTeams="rankedTeams"></ClassificationTable>
-</div>
+  </v-row>
+  <v-row v-else>
+    <ClassificationTable :rankedTeams="rankedTeams"></ClassificationTable>
+  </v-row>
+</v-container>
 </template>
 
 <script>
@@ -35,5 +37,7 @@ import ClassificationTable from '../../../components/ClassificationTable'
   }
 </script>
 <style>
-
+.no-data {
+  width: 100%;
+}
 </style>

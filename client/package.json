@@ -26,7 +26,7 @@
     "vue-google-signin-button": "latest",
     "vue-hot-reload-api": "latest",
     "vue-router": "latest",
-    "vuetify": "latest",
+    "vuetify": "2.0.15",
     "vuex": "latest"
   },
   "devDependencies": {

@@ -68,7 +68,8 @@ export default {
         "15/16",
         "16/17",
         "17/18",
-        "18/19"
+        "18/19",
+        "19/20"
       ],
       disciplines: [
         "F7",
@@ -94,7 +95,7 @@ export default {
   computed: {
     ...mapGetters({
       user:'user/user',
-      myTeam:'team/myTeams',
+      myTeams:'team/myTeams',
     })
   },
   methods: {
