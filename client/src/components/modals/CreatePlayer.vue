@@ -31,7 +31,7 @@
         <small>*indicates required field</small>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="primary" @click.native="createPlayer()">Continue</v-btn>
+        <v-btn color="primary" @click.native="player ? editPlayer() : createPlayer()">Continue</v-btn>
         <v-btn text @click.native="close()">Cancel</v-btn>
       </v-card-actions>
     </v-card>
@@ -42,34 +42,37 @@ import { mapActions } from 'vuex'
 
 export default {
   props:{
-    show: Boolean
+    show: Boolean,
+    player: Object,
   },
-  data: () => ({
-    name: '',
-    position: '',
-    year: '',
-    positions: [
-      'PT',
-      'LD',
-      'LI',
-      'CT',
-      'MCD',
-      'MC',
-      'MP',
-      'ED',
-      'EI',
-      'DC'
-    ],
-    years: [
-      '2007',
-      '2008',
-      '2009',
-      '2011',
-      '2012',
-      '2013',
-      '2014',
-    ],
-  }),
+  data() {
+    return {
+      name: (this.player) ? this.player.name : '',
+      position: (this.player) ? this.player.position : '',
+      year: (this.player) ? this.player.year : '',
+      positions: [
+        'PT',
+        'LD',
+        'LI',
+        'CT',
+        'MCD',
+        'MC',
+        'MP',
+        'ED',
+        'EI',
+        'DC'
+      ],
+      years: [
+        '2007',
+        '2008',
+        '2009',
+        '2011',
+        '2012',
+        '2013',
+        '2014',
+      ],
+    }
+  },
   methods: {
     createPlayer() {
       let player = {
@@ -82,10 +85,21 @@ export default {
         this.$emit('confirm') 
       })
     },
+    editPlayer() {
+      let player = {
+        _id: this.player._id,
+        name: this.name,
+        position: this.position,
+        year: this.year
+      }      
+      this.updatePlayer(player).then((value) => {
+        this.$emit('confirm') 
+      })
+    },
     close() {
       this.$emit('close')
     },
-    ...mapActions("team",['addPlayer'])
+    ...mapActions("team",['addPlayer', 'updatePlayer'])
   }
 }
 </script>

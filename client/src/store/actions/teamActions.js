@@ -47,8 +47,9 @@ export const addNoManagerTeam = ({commit}, body) => {
     .then(response => {
       console.log(response.data);
       if(response.status === 200) {
-        commit(types.ADD_TEAM_TO_COMPETITION, response.data.team)
-      }
+        // ESTA USANDO UNA MUTATION DE COMPETITION DESDE TEAM por eso el root:true
+        commit('competition/'+types.ADD_TEAM_TO_COMPETITION, response.data.team, { root: true })
+      }      
       return response
     })
     .catch((err) => {
@@ -103,4 +104,31 @@ export const getPlayerByTeamId = ({commit}, id) => {
       let players = response.data
       commit(types.GET_TEAMPLAYERS, players)
     })
+}
+export const updatePlayer = ({commit}, body) => {
+  console.log("ACTION -- updatePlayer")  
+  return axios.put('updatePlayer/'+body._id, body)
+  .then(response => {
+    if(response.status === 200) {      
+      commit(types.UPDATE_PLAYER, response.data.player)
+    }
+    return response
+  })
+  .catch((err) => {
+    return err.response
+  })
+}
+export const deletePlayer = ({commit}, id) => {
+  console.log("ACTION -- deletePlayer")  
+  return axios.delete('deletePlayer/'+id)
+  .then(response => {
+    if(response.status === 200) {
+      console.log(response.data);
+      commit(types.DELETE_PLAYER, id)
+    }
+    return response
+  })
+  .catch((err) => {
+    return err.response
+  })
 }

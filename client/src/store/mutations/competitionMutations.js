@@ -88,6 +88,11 @@ export const competitionMutations = {
     //   } 
     // }
   },
+
+  [types.ADD_TEAM_TO_COMPETITION] (state, team) {
+    state.competition.teams = [...state.competition.teams, team]
+  },
+
   [types.DELETE_MATCH] (state, data) {    
     //eliminar partido de la jornada
     for (let i = 0; i < state.competition.rounds.length; i++) {

@@ -91,8 +91,32 @@ function getAllPlayers(req, res) {
   })
 }
 
+function updatePlayer(req, res) {
+  let player = req.body
+  Player.findOneAndUpdate({_id:req.params.id}, { $set: {name: player.name, position: player.position, year: player.year } }, { new: true } )
+  .then((value) => {
+    res.status(200).send({player: value})
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).send({message: `Error al editar player: ${err}`})
+  })
+}
+
+function deletePlayer (req, res) {
+  let playerId = req.params.id
+  Player.deleteOne({_id:playerId})
+  .then((value) => {
+    res.status(200).send({player: value})
+  })
+  .catch((err) => {
+    res.status(500).send({message: `Error al borrar el jugador: ${err}`})
+  })
+}
 module.exports = {
   addPlayer,
   getPlayer,
-  getAllPlayers
+  getAllPlayers,
+  updatePlayer,
+  deletePlayer
 }

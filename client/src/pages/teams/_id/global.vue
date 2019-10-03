@@ -22,11 +22,9 @@
 <script>
 import { mapActions } from 'vuex'
 import { mapGetters } from 'vuex'
-import constants from '../../assets/constants/constants'
-import statscard from '../../components/statscard'
-
+import constants from '../../../assets/constants/constants'
+import statscard from '../../../components/statscard'
   export default {
-    name: "TeamGlobal",
     components: {
       statscard
     },

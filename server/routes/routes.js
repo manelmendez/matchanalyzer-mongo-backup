@@ -38,6 +38,8 @@ api.put('/updateTeam/:id', auth.checkAuth, teamCtrl.updateTeam)
 api.post('/addPlayer', auth.checkAuth, playerCtrl.addPlayer, teamCtrl.addPlayerToTeam)
 api.get('/getPlayer/:id', auth.checkAuth, playerCtrl.getPlayer)
 api.get('/getAllPlayers', auth.checkAuth, playerCtrl.getAllPlayers)
+api.put('/updatePlayer/:id', auth.checkAuth, playerCtrl.updatePlayer)
+api.delete('/deletePlayer/:id', auth.checkAuth, playerCtrl.deletePlayer)
 
 // COMPETITIION
 api.post('/addCompetition', auth.checkAuth, competitionCtrl.addCompetition)

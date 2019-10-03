@@ -7,7 +7,7 @@
               lg2
               xl1
               v-for="team in competition.teams" :key="team._id">
-        <v-card class="teamCard" min-height="100%">
+        <v-card class="teamCard" min-height="100%" :to="'/teams/'+team._id+'/global'">
           <v-col>
           <v-img 
             justify="center"

@@ -63,7 +63,7 @@
         </v-card-text>
       </v-card>
       <CreateMatch v-if="roundDialog" :show="roundDialog" type="new" :roundTeams="roundTeams" :round="competition.rounds[selectedRound -1]._id" @close="roundDialog=!roundDialog" @confirm="createMatch"></CreateMatch>
-      <DeleteMatch :show="deleteDialog" type="jornada" @close="deleteDialog=!deleteDialog" @delete="deleteRoundFunction"></DeleteMatch>
+      <DeleteDialog :show="deleteDialog" type="jornada" @close="deleteDialog=!deleteDialog" @delete="deleteRoundFunction"></DeleteDialog>
     </v-row>
   </v-container>
 </template>
@@ -72,12 +72,12 @@
 import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
 import RoundMatch from "../../../components/RoundMatch"
-import DeleteMatch from "../../../components/modals/DeleteMatch"
+import DeleteDialog from "../../../components/modals/DeleteDialog"
 import CreateMatch from "../../../components/modals/CreateMatch"
 export default {
   components: {
     RoundMatch,
-    DeleteMatch,
+    DeleteDialog,
     CreateMatch
   },
   data: () => ({

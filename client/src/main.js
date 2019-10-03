@@ -9,6 +9,8 @@ import router from './routes'
 import App from './App.vue'
 import store from './store/store'
 
+import 'vuetify/dist/vuetify.min.css'
+
 Vue.use(Vuetify)
 Vue.use(GSignInButton)
 Vue.use(FBSignInButton)

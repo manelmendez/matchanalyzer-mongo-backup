@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-if="show" v-model="show" max-width="290" persistent>
+  <v-dialog v-if="show" v-model="show" max-width="500" persistent>
     <v-card>
       <v-card-title class="headline" v-model="title">{{title}}</v-card-title>
       <v-card-text>{{text}}</v-card-text>
@@ -13,7 +13,6 @@
 </template>
 <script>
 export default {
-  name: "DeleteMatch",
   props: {
     type: String,
     show: Boolean
@@ -29,6 +28,16 @@ export default {
         title: "Quieres borrar esta jornada?",
         text:
           "Si aceptas, la jornada se borrará y se perderán todos sus partidos y datos estadísticos. Quieres continuar?"
+      },
+      player: {
+        title: "Quieres borrar este jugador?",
+        text:
+          "Si aceptas, el jugador se borrará y se perderán todos sus datos. Quieres continuar?"
+      },
+      team: {
+        title: "Quieres borrar este equipo?",
+        text:
+          "Si aceptas, el equipo se borrará y se perderán todos sus partidos y datos estadísticos. Quieres continuar?"
       }
     };
   },
@@ -38,6 +47,10 @@ export default {
         return this.jornada.title;
       } else if (this.type == "match") {
         return this.match.title;
+      } else if (this.type == "player") {
+        return this.player.title;
+      } else if (this.type == "team") {
+        return this.team.title;
       }
     },
     text() {
@@ -45,6 +58,10 @@ export default {
         return this.jornada.text;
       } else if (this.type == "match") {
         return this.match.text;
+      } else if (this.type == "player") {
+        return this.player.text;
+      } else if (this.type == "team") {
+        return this.team.text;
       }
     }
   },

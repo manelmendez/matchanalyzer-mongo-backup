@@ -1,75 +1,64 @@
 <template>
   <v-content class="welcome-content">
     <v-container grid-list-xl text-xs-center>
-      <div class="login" v-if="login">
-        <v-layout row wrap justify-center>
-          <v-flex xs6>
-            <v-card class="elevation-0">
-              <v-toolbar dark color="primary" class="elevation-0">
-                <v-toolbar-title>Iniciar sesión</v-toolbar-title>
-                <v-spacer></v-spacer>
-              </v-toolbar>
-              <v-card-text>
-                <v-form v-model="valid" ref="form" lazy-validation>
-                  <v-text-field 
-                    prepend-icon="person" 
-                    ref="email" 
-                    label="Email" 
-                    placeholder="Email"
-                    type="text" 
-                    v-model="email" 
-                    :rules="emailRules" 
-                    required></v-text-field>
-                  <v-text-field 
-                    autocomplete="new-password"
-                    prepend-icon="lock" 
-                    ref="password" 
-                    label="Contraseña"
-                    hint="At least 8 characters"
-                    v-model="password"
-                    min="8"
-                    :append-icon="e1 ? 'visibility' : 'visibility_off'"
-                    @click:append="() => (e1 = !e1)"
-                    :type="e1 ? 'password' : 'text'"
-                    counter
-                    :rules="passwordRules"
-                    required>
-                  </v-text-field>
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <a style="padding-right:10px" @click="login=!login">Si aún no tienes cuenta</a>
-                <v-btn depressed color="primary" rounded @click="submit" :disabled="!valid">Iniciar sesión</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-        </v-layout>
-        <v-layout row wrap justify-center class="elevation-0">
-          <v-flex xs6 justify-center>
-            <g-signin-button class="googleButton"
-              :params="googleSignInParams"
-              @success="onSignInSuccess"
-              @error="onSignInError">
-              <i class="fab fa-google-plus-square"></i>
-              Inicia sesión con Google
-            </g-signin-button>
-          </v-flex>
-        </v-layout>
-        <v-layout row wrap justify-center>
-          <v-flex xs6 justify-center>
-            <fb-signin-button class="fb-signin-button"
-              :params="fbSignInParams"
-              @success="onSignInSuccessFB"
-              @error="onSignInErrorFB">
-              Sign in with Facebook
-            </fb-signin-button>
-          </v-flex>
-        </v-layout>
-      </div>
-      <div v-else class="register">
-        <v-layout row wrap justify-center>
-          <v-flex xs6>
+      <v-row class="login" v-if="login" wrap justify="center">
+        <v-col cols=6>
+          <v-card class="elevation-0">
+            <v-toolbar dark color="primary" class="elevation-0">
+              <v-toolbar-title>Iniciar sesión</v-toolbar-title>
+              <v-spacer></v-spacer>
+            </v-toolbar>
+            <v-card-text>
+              <v-form v-model="valid" ref="form" lazy-validation>
+                <v-text-field 
+                  prepend-icon="person" 
+                  ref="email" 
+                  label="Email" 
+                  placeholder="Email"
+                  type="text" 
+                  v-model="email" 
+                  :rules="emailRules" 
+                  required></v-text-field>
+                <v-text-field 
+                  autocomplete="new-password"
+                  prepend-icon="lock" 
+                  ref="password" 
+                  label="Contraseña"
+                  hint="At least 8 characters"
+                  v-model="password"
+                  min="8"
+                  :append-icon="e1 ? 'visibility' : 'visibility_off'"
+                  @click:append="() => (e1 = !e1)"
+                  :type="e1 ? 'password' : 'text'"
+                  counter
+                  :rules="passwordRules"
+                  required>
+                </v-text-field>
+              </v-form>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <a style="padding-right:10px" @click="login=!login">Si aún no tienes cuenta</a>
+              <v-btn depressed color="primary" rounded @click="submit" :disabled="!valid">Iniciar sesión</v-btn>
+            </v-card-actions>
+          </v-card>
+          <g-signin-button class="googleButton"
+            :params="googleSignInParams"
+            @success="onSignInSuccess"
+            @error="onSignInError">
+            <i class="fab fa-google-plus-square"></i>
+            Inicia sesión con Google
+          </g-signin-button>
+          <fb-signin-button class="fb-signin-button"
+            :params="fbSignInParams"
+            @success="onSignInSuccessFB"
+            @error="onSignInErrorFB">
+            Sign in with Facebook
+          </fb-signin-button>
+        </v-col>
+      </v-row>
+      <v-row v-else class="register" wrap justify="center">
+          <v-col cols=6>
             <v-card class="elevation-12">
               <v-toolbar dark color="primary">
                 <v-toolbar-title>Registrarse</v-toolbar-title>
@@ -80,6 +69,7 @@
                   <v-text-field prepend-icon="person" name="name" label="Nombre" type="text" v-model="name" required></v-text-field>
                   <v-text-field prepend-icon="person" name="email" label="Email" type="text" v-model="email2" :rules="emailRules" required></v-text-field>
                   <v-text-field prepend-icon="lock" name="password" label="Contraseña" type="password"
+                    autocomplete="new-password"
                     hint="At least 8 characters"
                     v-model="password2"
                     min="8"
@@ -97,9 +87,8 @@
                 <v-btn color="primary" @click="submit2" :disabled="!valid2">Registrarse</v-btn>
               </v-card-actions>
             </v-card>
-          </v-flex>
-        </v-layout>
-      </div>
+          </v-col>
+      </v-row>
     </v-container>
   </v-content>
 </template>
@@ -232,6 +221,7 @@ import { mapActions } from 'vuex'
   padding: 5px;
   border-radius: 3px;
   font-size: 16px;
+  margin-top: 10px;
 }
 .fb-signin-button {
   /* This is where you control how the button looks. Be creative! */
@@ -241,5 +231,6 @@ import { mapActions } from 'vuex'
   color: #fff;
   padding: 5px;
   font-size: 16px;
+  margin-top: 10px;
 }
 </style>

@@ -62,25 +62,25 @@
       @close="roundDialog=!roundDialog"
       @edit="updateMatchFunction"
     ></CreateMatch>
-    <DeleteMatch
+    <DeleteDialog
       v-if="deleteDialog"
       :show="deleteDialog"
       type="match"
       @close="deleteDialog=!deleteDialog"
       @delete="deleteMatchFunction"
-    ></DeleteMatch>
+    ></DeleteDialog>
   </v-row>
 </template>
 <script>
 import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
 import CreateMatch from "./modals/CreateMatch";
-import DeleteMatch from "./modals/DeleteMatch";
+import DeleteDialog from "./modals/DeleteDialog";
 export default {
   name: "RoundMatch",
   components: {
     CreateMatch,
-    DeleteMatch
+    DeleteDialog
   },
   props: {
     match: Object

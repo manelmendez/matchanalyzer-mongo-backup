@@ -21,11 +21,8 @@ export const teamMutations = {
     state.myTeams = teams
   },
 
-  [types.ADD_TEAM_TO_COMPETITION] (state, team) {
-    state.competition.teams = [...state.competition.teams, team]
-  },
-
   [types.UPDATE_TEAM] (state, team) {
+
   },
 
   [types.GET_TEAMPLAYERS] (state, players) {
@@ -34,5 +31,17 @@ export const teamMutations = {
 
   [types.ADD_PLAYER] (state, player) {
     state.team.players = [...state.team.players, player]
+  },
+
+  [types.UPDATE_PLAYER] (state, player) {
+    let previousPlayer = state.team.players.find(a => a._id === player._id)
+    console.log(previousPlayer);
+    
+    Object.assign(previousPlayer, player)
+  },
+
+  [types.DELETE_PLAYER] (state, playerId) {
+    let index = state.team.players.findIndex(item => item._id == playerId)
+    state.team.players.splice(index, 1)
   },
 }

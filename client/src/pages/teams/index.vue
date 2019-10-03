@@ -11,7 +11,7 @@
           <v-list-item-title>{{team.name}}</v-list-item-title>
         </v-list-item-content>
         <v-list-item-avatar>
-          <v-img :src="constants.ADDRESS+team.avatar" :contain="true">
+          <v-img lazy-src="https://picsum.photos/id/11/100/60" :src="constants.ADDRESS+team.avatar" :contain="true">
         </v-list-item-avatar>
       </v-list-item>
     </v-list>
@@ -32,17 +32,17 @@
         </template>
       <span>Añadir equipo</span>
     </v-tooltip>
-    <CreateMyTeam v-if="dialog" :show="dialog" @confirm="confirmCreate" @close="dialog=!dialog"></CreateMyTeam>
+    <CreateTeam v-if="dialog" :myTeam="true" :show="dialog" @confirm="confirmCreate" @close="dialog=!dialog"></CreateTeam>
   </v-container>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import CreateMyTeam from '../../components/modals/CreateMyTeam'
+import CreateTeam from '../../components/modals/CreateTeam'
 import constants from '../../assets/constants/constants'
   export default {
     components: {
-      CreateMyTeam
+      CreateTeam
     },
     data: () => ({
       constants: constants,
