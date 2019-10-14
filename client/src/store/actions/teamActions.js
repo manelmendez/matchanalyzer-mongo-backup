@@ -3,16 +3,17 @@ import axios from 'axios'
 
 export const addTeam = ({commit}, body) => {
   console.log("ACTION -- addTeam")
+  console.log(body);
+  
   return axios.post('addTeam', body)
     .then(response => {
-      console.log(response.data);
       if(response.status === 200) {
         commit(types.ADD_MYTEAM, response.data.team)
       }
       return response
     })
     .catch((err) => {
-      return err.response
+      throw err.response
     })
 }
 export const getTeam = ({commit}, id) => {
@@ -43,6 +44,8 @@ export const getUserTeams = ({commit}, userId) => {
 
 export const addNoManagerTeam = ({commit}, body) => {
   console.log("ACTION -- addNoManagerTeam")
+    console.log(body);
+
   return axios.post('addNoManagerTeam', body)
     .then(response => {
       console.log(response.data);
@@ -53,7 +56,7 @@ export const addNoManagerTeam = ({commit}, body) => {
       return response
     })
     .catch((err) => {
-      return err.response
+      throw err.response
     })
 }
 
@@ -68,22 +71,38 @@ export const uploadTeamImage = ({commit}, formData) => {
     return response
   })
   .catch((err) => {
-    return err.response
+    throw err.response
   })
 }
 
 export const updateTeam = ({commit}, data) => {
   console.log("ACTION -- updateTeam")
-  return axios.put('updateTeam/'+data.id, data.body).then(response => {
+  return axios.put('updateTeam/'+data.id, data.body)
+  .then(response => {
+    console.log(response)
     if(response.status === 200) {
-      commit(types.UPDATE_TEAM)//TODO de momento no se devuelve nada desde el servidor
+      commit(types.UPDATE_TEAM)
     }
     return response
   }).catch((err) => {
-    return err.response
+    console.log(err);
+    
+    throw err.response
   })
 }
-
+export const deleteTeam = ({commit}, id) => {
+  console.log("ACTION -- deleteTeam")  
+  return axios.delete('deleteTeam/'+id)
+  .then(response => {
+    if(response.status === 200) {
+      commit(types.DELETE_TEAM, id)
+    }
+    return response
+  })
+  .catch((err) => {
+    throw err.response
+  })
+}
 export const addPlayer = ({commit}, body) => {
   console.log("ACTION -- addPlayer")
   return axios.post('addPlayer', body)
@@ -94,7 +113,7 @@ export const addPlayer = ({commit}, body) => {
       return response
     })
     .catch((err) => {
-      return err.response
+      throw err.response
     })
 }
 export const getPlayerByTeamId = ({commit}, id) => {
@@ -115,7 +134,7 @@ export const updatePlayer = ({commit}, body) => {
     return response
   })
   .catch((err) => {
-    return err.response
+    throw err.response
   })
 }
 export const deletePlayer = ({commit}, id) => {
@@ -129,6 +148,6 @@ export const deletePlayer = ({commit}, id) => {
     return response
   })
   .catch((err) => {
-    return err.response
+    throw err.response
   })
 }

@@ -5,14 +5,19 @@
         <v-card-text
           class="text-center"
           :class="resultClass(match.localTeamGoals,match.awayTeamGoals)"
-        >{{match.localTeam.name}}</v-card-text>
+        ><v-img 
+          justify="center"
+          :src="constants.ADDRESS+match.localTeam.avatar"
+          aspect-ratio="10"
+          contain
+        ></v-img> {{match.localTeam.name}}</v-card-text>
       </v-card>
     </v-col>
     <v-col cols=2>
       <v-card class="match elevation-2">
         <v-card-text
-          class="text-center result"
-        >{{match.localTeamGoals}} - {{match.awayTeamGoals}}</v-card-text>
+          class="text-center align-center result"
+        ><v-col>{{match.localTeamGoals}} - {{match.awayTeamGoals}}</v-col></v-card-text>
       </v-card>
     </v-col>
     <v-col cols=4>
@@ -20,36 +25,44 @@
         <v-card-text
           class="text-center"
           :class="resultClass(match.awayTeamGoals,match.localTeamGoals)"
-        >{{match.awayTeam.name}}</v-card-text>
+        >
+        <v-img 
+          justify="center"
+          :src="constants.ADDRESS+match.awayTeam.avatar"
+          aspect-ratio="10"
+          contain
+        ></v-img>{{match.awayTeam.name}}</v-card-text>
       </v-card>
     </v-col>
     <v-col cols=2>
       <v-card class="match-actions elevation-2">
         <v-card-text class="text-center">
-          <v-tooltip top>
-            <template v-slot:activator="{ on }">
-              <v-btn x-small text icon color="green lighten-2" @click.stop="roundDialog=true" v-on="on">
-                <v-icon size="18">fa-file-alt</v-icon>
-              </v-btn>
-            </template>
-            <span>Añadir stats</span>
-          </v-tooltip>
-          <v-tooltip top>
-            <template v-slot:activator="{ on }">
-              <v-btn x-small text icon color="blue lighten-2" @click.stop="roundDialog=true" v-on="on">
-                <v-icon size="18">edit</v-icon>
-              </v-btn>
-            </template>
-            <span>Editar partido</span>
-          </v-tooltip>
-          <v-tooltip top>
-            <template v-slot:activator="{ on }">
-              <v-btn x-small text icon color="red lighten-2" @click.stop="deleteDialog=true" v-on="on">
-                <v-icon size="18">delete</v-icon>
-              </v-btn>
-            </template>
-            <span>Eliminar partido</span>
-          </v-tooltip>
+          <v-col>
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <v-btn x-small text icon color="green lighten-2" @click.stop="roundDialog=true" v-on="on">
+                  <v-icon size="18">fa-file-alt</v-icon>
+                </v-btn>
+              </template>
+              <span>Añadir stats</span>
+            </v-tooltip>
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <v-btn x-small text icon color="blue lighten-2" @click.stop="roundDialog=true" v-on="on">
+                  <v-icon size="18">edit</v-icon>
+                </v-btn>
+              </template>
+              <span>Editar partido</span>
+            </v-tooltip>
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <v-btn x-small text icon color="red lighten-2" @click.stop="deleteDialog=true" v-on="on">
+                  <v-icon size="18">delete</v-icon>
+                </v-btn>
+              </template>
+              <span>Eliminar partido</span>
+            </v-tooltip>
+          </v-col>
         </v-card-text>
       </v-card>
     </v-col>
@@ -76,6 +89,7 @@ import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
 import CreateMatch from "./modals/CreateMatch";
 import DeleteDialog from "./modals/DeleteDialog";
+import constants from "../assets/constants/constants"
 export default {
   name: "RoundMatch",
   components: {
@@ -87,6 +101,7 @@ export default {
   },
   data() {
     return {
+      constants: constants,
       roundDialog: false,
       deleteDialog: false
     };
@@ -178,7 +193,7 @@ export default {
   width: 100%;
 }
 .draw {
-  background-color: rgba(255, 216, 117, 0.55);
+  background-color: rgba(255, 212, 71, 0.55);
   height: 100%;
   width: 100%;
 }

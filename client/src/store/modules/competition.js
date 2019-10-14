@@ -29,12 +29,15 @@ export const competitionModule = {
       }
     },
     matches: state => {
-      if (state.competition.rounds) {
-        return state.competition.rounds[state.selectedRound!=null ? state.selectedRound -1 : state.competition.rounds.length -1].matches
+      if (state.competition.rounds && state.competition.rounds.length != 0) {
+          return state.competition.rounds[state.selectedRound!=null ? state.selectedRound -1 : state.competition.rounds.length -1].matches
+      }
+      else {
+        return []
       }
     },
     roundTeams: state => {
-      if (state.competition.rounds){
+      if (state.competition.rounds && state.competition.rounds.length != 0){
         let actualCompetition = {...state.competition}
         let actualRound = {...actualCompetition.rounds[state.selectedRound!=null ? state.selectedRound -1 : actualCompetition.rounds.length -1]}
         let actualRoundTeams = [...actualCompetition.teams]
@@ -56,7 +59,7 @@ export const competitionModule = {
       }
     },
     rankedTeams: state => {
-      if (state.competition.teams && state.competition.rounds){
+      if (state.competition.teams && state.competition.rounds && state.competition.rounds.length != 0){
         let teams = [...state.competition.teams]
         // console.log(teams);
         let updatedTeams = []

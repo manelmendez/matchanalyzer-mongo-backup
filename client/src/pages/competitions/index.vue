@@ -10,7 +10,7 @@
         @click="goTo(competition._id)"
       >
         <v-list-item-content>
-          <v-list-item-title v-text="competition.myTeam.name + ' - ' + competition.discipline + ' - ' + competition.category + ' - ' + competition.name"></v-list-item-title>
+          <v-list-item-title v-text="(competition.myTeam ? competition.myTeam.name : 'Equipo Borrado') + ' - ' + competition.discipline + ' - ' + competition.category + ' - ' + competition.name"></v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>

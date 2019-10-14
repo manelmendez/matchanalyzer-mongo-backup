@@ -18,14 +18,14 @@
                 required
               ></v-select>
             </v-flex>
-            <v-flex xs12 md4 class="text-xs-center">
+            <v-flex xs12 md4 class="text-center">
               Resultado
               <v-layout wrap>
-                <v-flex xs12 md4 class="text-xs-center">
+                <v-flex xs12 md4 class="text-center">
                   <v-text-field class="centered-input" type="number" v-model="localGoals" required></v-text-field>
                 </v-flex>
-                <v-flex xs12 md4 class="text-xs-center align-self-center">-</v-flex>
-                <v-flex xs12 md4 class="text-xs-center">
+                <v-flex xs12 md4 class="text-center align-self-center">-</v-flex>
+                <v-flex xs12 md4 class="text-center">
                   <v-text-field class="centered-input" type="number" v-model="awayGoals" required></v-text-field>
                 </v-flex>
               </v-layout>

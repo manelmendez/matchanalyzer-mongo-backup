@@ -67,12 +67,12 @@
         </template>
       <span>Añadir jugador</span>
     </v-tooltip>
-    <CreatePlayer v-if="dialog" :player="(editingPlayer ? editingPlayer : null)" :show="dialog" @confirm="createPlayer" @close="dialog=!dialog"></CreatePlayer>
+    <CreatePlayer v-if="dialog" :player="(editingPlayer ? editingPlayer : null)" :show="dialog" @confirm="createPlayer" @close="dialog=!dialog, editingPlayer=null"></CreatePlayer>
     <DeleteDialog
       v-if="deleteDialog"
       :show="deleteDialog"
       type="player"
-      @close="deleteDialog=!deleteDialog"
+      @close="deleteDialog=!deleteDialog, deletingPlayer=null"
       @delete="deletePlayerFunction"
     ></DeleteDialog>
   </v-container>
@@ -108,7 +108,7 @@ import constants from '../../../assets/constants/constants'
       },
       deletePlayerFunction(){
         this.deletePlayer(this.deletingPlayer).then((response) =>{
-          console.log(response);
+          this.deleteDialog = false
         })
         .catch((err) => {
 

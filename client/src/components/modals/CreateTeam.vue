@@ -12,9 +12,7 @@
               <v-avatar size="100px" v-if="!image" class="uploadPhoto" @click="launchFilePicker">
                 <v-icon>add_a_photo</v-icon>
               </v-avatar>
-              <v-avatar size="100px" v-else class="uploadPhoto" @click="launchFilePicker">
-                <img :src="this.image" alt="avatar">
-              </v-avatar>
+              <v-img height="100px" :src="team ? constants.ADDRESS+image : image" v-else @click="launchFilePicker" contain>
             </v-flex>
             <v-flex xs12 md4>
               <v-text-field label="Nombre del equipo" v-model="name" required></v-text-field>
@@ -31,7 +29,7 @@
         </v-container>
       </v-card-text>
       <v-card-actions>
-      <v-btn color="primary" @click.native="createTeam()">Continue</v-btn>
+      <v-btn color="primary" @click.native="(team) ? editCompetitionTeam() : createTeam()">Continue</v-btn>
       <v-btn text @click.native="close">Cancel</v-btn>
       </v-card-actions>
     </v-card>
@@ -39,28 +37,33 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import constants from '../../assets/constants/constants'
 export default {
   props:{
     show: Boolean,
+    team: Object,
     myTeam: {
       type: Boolean,
       default: false
     }
   },
-  data:() => ({
-    image:null,
-    file: null,
-    temporada: [
-      "14/15",
-      "15/16",
-      "16/17",
-      "17/18",
-      "18/19",
-      "19/20"
-    ],
-    name: '',
-    season: ''
-  }),
+  data() {
+    return {
+      constants:constants,
+      image: (this.team) ? this.team.avatar : null,
+      file: null,
+      temporada: [
+        "14/15",
+        "15/16",
+        "16/17",
+        "17/18",
+        "18/19",
+        "19/20"
+      ],
+      name: (this.team) ? this.team.name : '',
+      season: (this.team) ? this.team.season : ''
+    }
+  },
   methods: {
     launchFilePicker(){
       this.$refs.file.click();
@@ -79,7 +82,6 @@ export default {
             let body = {
                 season: this.season,
                 name: this.name,
-                avatar: response.data,
                 manager: this.user._id
             }
             if (response.status == 200) {
@@ -148,15 +150,15 @@ export default {
       }
     },
     editCompetitionTeam() {
-      if(this.editingFile!=null){
+      if(this.file!=null){
         const fd = new FormData()
-        fd.append('image', this.editingFile, this.editingFile.name)
+        fd.append('image', this.file, this.file.name)
         this.uploadTeamImage(fd).then((response) => {
           let body = {
             team: {
-              season: this.editingTeam.season,
-              name: this.editingTeam.name,
-              avatar: this.editingTeam.avatar
+              season: this.season,
+              name: this.name,
+              avatar: this.image
             },
             competition: this.competition._id
           }
@@ -165,11 +167,11 @@ export default {
           }
           let data = {
             body: body,
-            id: this.editingTeam._id
+            id: this.team._id
           }
           this.updateTeam(data).then((response) => {
             if(response.status === 200) {
-              this.getCompetition(this.$route.params.id)
+              this.$emit("confirm")
             }
           })
         })
@@ -177,20 +179,23 @@ export default {
       else {
         let body = {
           team: {
-            season: this.editingTeam.season,
-            name: this.editingTeam.name,
-            avatar: this.editingTeam.avatar
+            season: this.season,
+            name: this.name,
+            avatar: this.image
           },
           competition: this.competition._id
         }
         let data = {
           body: body,
-          id: this.editingTeam._id
+          id: this.team._id
         }
         this.updateTeam(data).then((response) => {
+          console.log(response);
           if(response.status === 200) {
-            this.getCompetition(this.$route.params.id)
+            this.$emit("confirm")
           }
+        }).catch((err)=>{
+          console.log(err)
         })
       }
     },

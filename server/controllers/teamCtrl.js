@@ -1,7 +1,6 @@
-'use strict'
-
 const Team = require('../models/team.js')
-
+const competitionService = require('../dao/competition-service')
+const teamService = require('../dao/team-service')
 
 function addTeam(req, res) {
   // getting data
@@ -14,34 +13,72 @@ function addTeam(req, res) {
   })
   console.log("Registrando equipo con nombre: " + team.name + "...");
   // check if team exists in database
-  Team.findOne({ name: team.name }, function(err, existingTeam) {
-    // case if error in search
-    if (err) {
-      console.log(`Error: ${err}`)
-      return res.status(500).send({
-        message: `Error al registrar equipo: ${err}`
-      })
-    }
-    // case if team not exists ==> register
-    if (!existingTeam) {
-      console.log("No existe ningún equipo con ese nombre, registrando...")
-      // saving team in DB
-      team.save((err) => {
-        if (err) return res.status(500).send({
-          message: `Error al crear el equipo: ${err}`
-        })
-        return res.status(200).send({
-          team: team
-        })
-      })
-    }
-    // case if user exists ==> RETURN Error
-    if (existingTeam) {
+  console.log(team);
+  
+  teamService.findByName(team.name).then((existingTeam) => {
+    if(existingTeam) {
       console.log("Este nombre de equipo ya está registrado, no se puede continuar.")
       return res.status(202).send({
         message: `Error. Equipo ya registrado`
       })
     }
+    else {
+      console.log("No existe ningún equipo con ese nombre, registrando...")
+      // saving team in DB
+      teamService.saveTeam(team).then((teamSaved) => {
+        return res.status(200).send({
+          team: teamSaved
+        })
+      }).catch((err) => {
+        console.log(err);
+        return res.status(500).send({
+          message: `Error al crear el equipo`
+        })
+      })
+    }
+  }).catch((err) => {
+    console.log(`Error: ${err}`)
+    return res.status(500).send({
+      message: `Error al registrar equipo`
+    })
+  })
+}
+
+function addNoManagerTeam(req, res, next) {  
+  const team = new Team({
+    name: req.body.team.name,
+    players: [],
+    season: req.body.team.season,
+    avatar: req.body.team.avatar
+  })
+  console.log("Registrando equipo con nombre: " + team.name + "...");
+  
+  teamService.findByName(team.name).then((existingTeam) => {
+    if(existingTeam) {
+      console.log("Este nombre de equipo ya está registrado, no se puede continuar.")
+      return res.status(202).send({
+        message: `Error. Equipo ya registrado`
+      })
+    }
+    else {
+      console.log("No existe ningún equipo con ese nombre, registrando...")
+      // saving team in DB
+      teamService.saveTeam(team).then((teamSaved) => {
+        req.competition = req.body.competition
+        req.team = teamSaved
+        next()
+      }).catch((err) => {
+        console.log(err);
+        return res.status(500).send({
+          message: `Error al crear el equipo`
+        })
+      })
+    }
+  }).catch((err) => {
+    console.log(`Error: ${err}`)
+    return res.status(500).send({
+      message: `Error al registrar equipo`
+    })
   })
 }
 
@@ -50,46 +87,37 @@ function getTeam(req, res) {
   let teamId = req.params.id
   console.log("Buscando equipo con id: " + teamId + " en la base de datos...");
   //search team on DB
-  Team.findById(teamId).populate('players').populate('stats').exec((err, team) => {
-    // case if there is any problem in search
-    if (err) {
-      console.log(`Error: ${err}`)
-      return res.status(500).send({
-        message: `Error al buscar: ${err}`
+  teamService.findById(teamId).then((team) => {
+    if (team) {
+      console.log("Equipo " + team.name + " entontrado.");
+      res.status(200).send({
+        message: 'Datos obtenidos correctamente',
+        team: team
       })
-    }
-    // case if team is not found on DB
-    if (!team) {
+    } 
+    else {
       console.log("No existe el equipo.")
       return res.status(401).send({
         message: 'No se ha encontrado el equipo'
       })
     }
-    // case if team found
-    if (team) {
-      console.log("Equipo " + team.name + " entontrado.");
-      // send user
-      res.status(200).send({
-        message: 'Datos obtenidos correctamente',
-        team: team
-      })
-    }
+  }).catch((err) => {
+    console.log(`Error: ${err}`)
+    return res.status(500).send({
+      message: `Error al buscar`
+    })
   })
 }
 
 function getAllTeams(req, res) {
   console.log("Buscando todos los equipos en la base de datos...");
-  Team.find({},(err, teams) => {
-    // case if there is any problem in search
-    if (err) {
-      console.log(`Error: ${err}`)
-    }
-    if (teams) {
-      console.log("Equipos encontrados.");
-      res.status(200).send({
-        teams: teams
-      })
-    }
+  teamService.findAll().then((teams) => {
+    console.log("Equipos encontrados.");
+    res.status(200).send({
+      teams: teams
+    })
+  }).catch((err) => {
+    console.log(`Error: ${err}`)
   })
 }
 
@@ -97,22 +125,7 @@ function getUserTeams(req, res) {
   let userId = req.params.userId
   console.log("Buscando equipos del usuario " + userId + "en la base de datos..." );
   //search team on DB
-  Team.find({ manager: userId }, (err, teams) => {
-    // case if there is any problem in search
-    if (err) {
-      console.log(`Error: ${err}`)
-      return res.status(500).send({
-        message: `Error al buscar: ${err}`
-      })
-    }
-    // case if team is not found on DB
-    if (!teams) {
-      console.log("No existen equipos.")
-      return res.status(401).send({
-        message: 'No se han encontrado equipos'
-      })
-    }
-    // case if team found
+  teamService.findByManager(userId).then((teams) => {
     if (teams) {
       console.log("Equipos de " + userId + " entontrados.");
       // send user
@@ -121,82 +134,64 @@ function getUserTeams(req, res) {
         teams: teams
       })
     }
+    else {
+      console.log("No existen equipos.")
+      return res.status(401).send({
+        message: 'No se han encontrado equipos'
+      })
+    }
+  }).catch((err) => {
+    console.log(`Error: ${err}`)
+    return res.status(500).send({
+      message: `Error al buscar`
+    })
   })
 }
 
 function addPlayerToTeam(req, res) {
   let player = req.player
-  Team.findByIdAndUpdate(player.team,{ "$push": {"players": player._id}}, function(err, team) {
-    // case if error in search
-    if (err) {
-      console.log(`Error: ${err}`)
-      return res.status(500).send({
-        message: `Error al insertar usuario al equipo: ${err}`
-      })
-    }
-    // case if team not exists ==> register
-    if (!team) {
-      return res.status(404).send({
-        message: `Error al insertar usuario al equipo: ${err}`
-      })
-    }
-    // case if user exists ==> RETURN Error
-    if (team) {
+  teamService.findTeamByIdAndUpdatePlayer(player.team, player._id).then((player) => {
+    if (player) {
       console.log("Jugador añadido al equipo...")
       return res.status(200).send(
         player
       )
     }
-  })
-}
-
-function addNoManagerTeam(req, res, next) {
-  const team = new Team({
-    name: req.body.team.name,
-    players: [],
-    season: req.body.team.temporada,
-    avatar: req.body.team.avatar
-  })
-  console.log(team);
-  console.log("Registrando equipo con nombre: " + team.name + "...");
-
-  team.save((err) => {
-    if (err) {
-      console.log(err)
-      return res.status(500).send({
-        message: `Error al crear el equipo: ${err}`
+    else {
+      return res.status(404).send({
+        message: `Error al insertar usuario al equipo`
       })
     }
-    else {
-      req.competition = req.body.competition
-      req.team = team
-      next()
-    }
+  }).catch((err) => {
+    console.log(`Error: ${err}`)
+    return res.status(500).send({
+      message: `Error al insertar usuario al equipo`
+    })
   })
 }
+
+
 
 function addStatsToTeam(req, res, next) {
   let match = req.match
   let localStats = req.localTeamStats._id
   let awayStats = req.awayTeamStats._id
 
-  Team.findOneAndUpdate({_id:match.localTeam._id},{ "$push": {"stats": localStats}},{new:true})
-  .then((stats)=>{
+  teamService.findTeamByIdAndUpdateStats(match.localTeam._id, localStats).then((stats) => {
     console.log("Stats local añadidos al equipo...")
-    Team.findOneAndUpdate({_id:match.awayTeam._id},{ "$push": {"stats": awayStats}}, {new:true})
-    .then((stats2)=>{
+    teamService.findTeamByIdAndUpdateStats(match.awayTeam._id, awayStats).then((stats2)=>{
       console.log("Stats visitante añadidos al equipo...")
       next()
     }).catch((err2)=>{
       console.log(`Error: ${err2}`)
       return res.status(500).send({
-        message: `Error al insertar stats al equipo: ${err2}`
+        message: `Error al insertar stats al equipo`
       })
     })
   }).catch((err)=>{
     console.log(`Error: ${err}`)
     return res.status(500).send({
-      message: `Error al insertar stats al equipo: ${err}`
+      message: `Error al insertar stats al equipo`
     })
   })
 }
@@ -206,11 +201,12 @@ function deleteStatsOfTeam(req, res, next) {
   // localteamId    borrar localTeamStatsId
   // awayTeamId    borrar awayTeamStatsId
   // let localStatsId = req.params.localStatsId
-  Team.updateOne({_id:req.body.localTeamId}, { $pullAll: {stats: [req.body.localTeamStatsId] } } )
+  
+  teamService.findTeamByIdAndDeleteStats(req.body.localTeamId, [req.body.localTeamStatsId])
   .then((value) => {
     console.log("Paso 3a - Eliminar stats de lista de stats del equipo local");
     console.log(value);
-    Team.updateOne({_id:req.body.awayTeamId}, { $pullAll: {stats: [req.body.awayTeamStatsId] } } )
+    teamService.findTeamByIdAndDeleteStats(req.body.awayTeamId, [req.body.awayTeamStatsId])
     .then((value2) => {
       console.log("Paso 3b - Eliminar stats de lista de stats del equipo visitante");
       console.log(value2);
@@ -218,33 +214,12 @@ function deleteStatsOfTeam(req, res, next) {
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).send({message: `Error al borrar team stats: ${err}`})
+      res.status(500).send({message: `Error al borrar team stats`})
     })
   })
   .catch((err) => {
     console.log(err);
-    res.status(500).send({message: `Error al borrar team stats: ${err}`})
-  })
-
-  // Match.deleteOne(localStatsId)
-  // .then((value) => {
-  //   console.log('Las stats han sido eliminadas')
-  // })
-  // .catch((err) => {
-  //   if (err) res.status(500).send({message: `Error al borrar team stats: ${err}`})
-  // })
-  // }
-}
-
-function updateTeam(req, res) {
-  let team = req.body.team
-  Team.updateOne({_id:req.params.id}, { $set: {name: team.name, season: team.season, avatar: team.avatar } } )
-  .then((value) => {
-    res.status(200).send({team: value})
-  })
-  .catch((err) => {
-    console.log(err);
-    res.status(500).send({message: `Error al editar team: ${err}`})
+    res.status(500).send({message: `Error al borrar team stats`})
   })
 }
 
@@ -253,9 +228,7 @@ function deleteStatsOfRoundTeams(req, res, next) {
   for (let i = 0; i < req.deletedTeamStats.length; i++) {
     teamStatsIds.push(req.deletedTeamStats[i]._id)
   }
-  // Team.updateMany({stats:{ $contains :{$in:{teamStatsIds}}}}, { $pullAll: {stats: [req.deletedTeamStats] } } )
-  // Team.updateMany({stats:{ $contains:{$in:{teamStatsIds}}}}, { $pop: {stats: 1 } } )
-  Team.updateMany({stats:{ $in: teamStatsIds}}, { $pop: {stats: 1 } } )
+  teamService.findManyTeamsAndDeleteLastStats(teamStatsIds)
   .then((value) => {
     console.log("Eliminar stats de lista de stats de los equipos");
     console.log(value);
@@ -263,7 +236,51 @@ function deleteStatsOfRoundTeams(req, res, next) {
   })
   .catch((err) => {
     console.log(err);
-    res.status(500).send({message: `Error al borrar team stats: ${err}`})
+    res.status(500).send({message: `Error al borrar team stats`})
+  })
+}
+
+function updateTeam(req, res) {
+  let team = req.body.team
+  teamService.updateTeam(req.params.id, team)
+  .then((value) => {
+    res.status(200).send({team: value})
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).send({message: `Error al editar team`})
+  })
+}
+
+function deleteTeam (req, res) {
+  let teamId = req.params.id
+  // check if this team is in a competition
+  competitionService.findAll().then((competitions) => {
+    let found = false
+    if (competitions) {
+      let i = 0
+      while (!found && i < competitions.length) {
+        if (competitions[i].myTeam == teamId) {
+          if (competitions[i].rounds.length!=0) {
+            found = true
+          }
+        }
+        i++
+      }
+    }
+    if (!competitions || found == false) {
+      teamService.deleteTeam(teamId).then((value) => {
+        res.status(200).send({team: value})
+      }).catch((err) => {
+        res.status(500).send({message: `Error al borrar el equipo`})
+      })
+    }
+    else {
+      res.status(409).send({message: `No puedes borrar el equipo porque esta en una competición`})
+    }
+  }).catch((err) => {
+    console.log(`Error: ${err}`)
+    res.status(500).send({message: `Error al borrar el equipo`})
   })
 }
 
@@ -277,5 +294,6 @@ module.exports = {
   addStatsToTeam,
   deleteStatsOfTeam,
   updateTeam,
-  deleteStatsOfRoundTeams
+  deleteStatsOfRoundTeams,
+  deleteTeam
 }

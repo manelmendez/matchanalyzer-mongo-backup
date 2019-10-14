@@ -22,7 +22,7 @@ export const signIn = ({commit}, body) => {
       return response
     })
     .catch((err) => {
-      return err.response
+      throw err.response
     })
 }
 export const signInGoogle = ({commit}, googleUser) => {
@@ -52,7 +52,7 @@ export const signInGoogle = ({commit}, googleUser) => {
       return response
     })
     .catch((err) => {
-      return err.response
+      throw err.response
     })
 }
 export const signInFB = ({commit}, token_payload) => {
@@ -72,7 +72,7 @@ export const signInFB = ({commit}, token_payload) => {
       return response
     })
     .catch((err) => {
-      return err.response
+      throw err.response
     })
 }
 
@@ -93,7 +93,7 @@ export const signUp = ({commit}, body) => {
       return response
     })
     .catch((err) => {
-      return err.response
+      throw err.response
     })
 }
 export const signOut = ({commit}) => {
