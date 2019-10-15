@@ -6,7 +6,7 @@ const playerCtrl = require('../controllers/playerCtrl')
 const competitionCtrl = require('../controllers/competitionCtrl')
 const roundCtrl = require('../controllers/roundCtrl')
 const matchCtrl = require('../controllers/matchCtrl')
-const statsCtrl = require('../controllers/statsCtrl')
+const teamStatsCtrl = require('../controllers/teamStatsCtrl')
 const imageServices = require('../services/image-services')
 const auth = require('../middlewares/auth')
 const api = express.Router()
@@ -49,11 +49,11 @@ api.get('/getUserCompetitions/:id', auth.checkAuth, competitionCtrl.getUserCompe
 
 // ROUND
 api.post('/addRound', auth.checkAuth, roundCtrl.addRound, competitionCtrl.addRoundToCompetition)
-api.delete('/deleteRound/:id', auth.checkAuth, statsCtrl.deleteAllTeamStatsOfRound, teamCtrl.deleteStatsOfRoundTeams, roundCtrl.deleteRound)
+api.delete('/deleteRound/:id', auth.checkAuth, teamStatsCtrl.deleteAllTeamStatsOfRound, teamCtrl.deleteStatsOfRoundTeams, roundCtrl.deleteRound)
 
 // MATCH
-api.post('/addMatch', auth.checkAuth, matchCtrl.addMatch, statsCtrl.addTeamStats, teamCtrl.addStatsToTeam, roundCtrl.addMatchToRound)
-api.put('/updateMatch/:id', auth.checkAuth, matchCtrl.updateMatch, statsCtrl.updateTeamStats)
-api.delete('/deleteMatch/:id', auth.checkAuth, matchCtrl.deleteMatch, statsCtrl.deleteTeamStats, teamCtrl.deleteStatsOfTeam, roundCtrl.deleteMatchOfRound)
+api.post('/addMatch', auth.checkAuth, matchCtrl.addMatch, teamStatsCtrl.addTeamStats, teamCtrl.addStatsToTeam, roundCtrl.addMatchToRound)
+api.put('/updateMatch/:id', auth.checkAuth, matchCtrl.updateMatch, teamStatsCtrl.updateTeamStats)
+api.delete('/deleteMatch/:id', auth.checkAuth, matchCtrl.deleteMatch, teamStatsCtrl.deleteMatchTeamStats, teamCtrl.deleteStatsOfTeam, roundCtrl.deleteMatchOfRound)
 
 module.exports = api

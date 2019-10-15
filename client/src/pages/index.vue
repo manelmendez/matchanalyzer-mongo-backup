@@ -1,7 +1,7 @@
 <template>
-  <v-container fluid>
-    <v-col>
-      <v-row class="content"> 
+  <v-container class="homeContent" fluid>
+    <v-col class="content">
+      <v-row class="group"> 
         <v-col v-if="this.myTeams.length == 0">
           No tienes equipos
         </v-col>
@@ -16,7 +16,7 @@
           </v-list-item>
         </v-list>
       </v-row>
-      <v-row class="content">
+      <v-row class="group">
         <v-col v-if="this.competitions.length == 0">
           No tienes competiciones
         </v-col>
@@ -59,7 +59,14 @@ export default {
 }
 </script>
 <style scoped>
+.homeContent {
+  height: 100%;
+}
 .content {
+  height: 100%;
+}
+.group {
   background-color: #424242;
+  height: 50%;
 }
 </style>

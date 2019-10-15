@@ -1,7 +1,7 @@
 'use strict'
 
 const TeamStats = require('../models/teamStats.js')
-const MatchStats = require('../models/matchStats.js')
+const teamStatsService = require('../dao/teamStats-service')
 
 function addTeamStats(req, res, next) {
   const localTeamStats = new TeamStats({
@@ -11,26 +11,24 @@ function addTeamStats(req, res, next) {
     ...req.awayTeamStats,
   })
   console.log("Guardando stats...")
-  localTeamStats.save((err, stats) => {
-    if (err) return res.status(500).send({
+  teamStatsService.saveTeamStats(localTeamStats).then(() => {
+    console.log("Local stats guardadas");
+    teamStatsService.saveTeamStats(awayTeamStats).then(() => {
+      console.log("Away stats guardadas");
+      req.match = req.match
+      req.round = req.round
+      req.localTeamStats = stats
+      req.awayTeamStats = stats2
+      next()
+    }).catch((err) => {
+      return res.status(500).send({
+        message: `Error al guardar local stats: ${err}`
+      })
+    })
+  }).catch((err) => {
+    return res.status(500).send({
       message: `Error al guardar local stats: ${err}`
     })
-    else {
-      console.log("Local stats guardadas");
-      awayTeamStats.save((err, stats2) => {
-        if (err) return res.status(500).send({
-          message: `Error al guardar away stats: ${err}`
-        })
-        else {
-          console.log("Away stats guardadas");
-          req.match = req.match
-          req.round = req.round
-          req.localTeamStats = stats
-          req.awayTeamStats = stats2
-          next()
-        }
-      })
-    }
   })
 }
 
@@ -40,7 +38,6 @@ function updateTeamStats (req, res) {
   const localId= req.localTeamStats._id
   const awayId= req.awayTeamStats._id
 
-
   delete localTeamStats._id;
   delete awayTeamStats._id;
 
@@ -48,10 +45,10 @@ function updateTeamStats (req, res) {
   console.log(awayId);
   console.log("Actualizar stats...")
   // para los dos equipos, 2 parametros? 2 peticiones?
-  TeamStats.findOneAndUpdate({_id: localId}, {$set:localTeamStats}, {new:true})
+  teamStatsService.updateTeamStats(localId, localTeamStats)
   .then((value) => {
     console.log(value);
-    TeamStats.findOneAndUpdate({_id: awayId}, {$set:awayTeamStats}, {new:true})
+    teamStatsService.updateTeamStats(awayId, awayTeamStats)
     .then((value2) => {
       console.log(value2);
       let data = {
@@ -72,11 +69,10 @@ function updateTeamStats (req, res) {
   })
 }
 
-function deleteTeamStats (req, res, next) {
+function deleteMatchTeamStats (req, res, next) {
   console.log(req.body);
   console.log(req.body.localTeamStatsId);
-  
-  TeamStats.deleteMany({_id:[req.body.localTeamStatsId,req.body.awayTeamStatsId]})
+  teamStatsService.deleteMatchTeamStats(req.body.localTeamStatsId,req.body.awayTeamStatsId)
   .then((value) => {
     console.log("Paso 2 - Eliminar stats de lista de teamStats");
     console.log(value);
@@ -90,7 +86,7 @@ function deleteTeamStats (req, res, next) {
 
 function deleteAllTeamStatsOfRound(req, res, next) {
   console.log(req.params.id);
-  TeamStats.find({round: req.params.id})
+  teamStatsService.findByRoundId(req.params.id)
   .then((value) => {    
     let deletedTeamStats = value
     TeamStats.deleteMany({round: req.params.id})
@@ -107,12 +103,11 @@ function deleteAllTeamStatsOfRound(req, res, next) {
   .catch((err)=>{
     res.status(500).send({message: `Error al buscar team stats de jornada: ${err}`})
   })
-  
 }
 
 module.exports = {
   addTeamStats,
   updateTeamStats,
-  deleteTeamStats,
+  deleteMatchTeamStats,
   deleteAllTeamStatsOfRound
 }

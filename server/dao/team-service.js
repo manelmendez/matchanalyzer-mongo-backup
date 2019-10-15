@@ -37,15 +37,10 @@ function findAll() {
   })
 }
 function saveTeam(teamToSave) {
-  return new Promise ((resolve, reject) =>{
-    const team = new Team({
-      name: teamToSave.name,
-      season: teamToSave.season,
-      avatar: teamToSave.avatar,
-    })
-    team.save((err) => {
+  return new Promise ((resolve, reject) =>{ 
+    teamToSave.save((err) => {
       if (err) reject(err)
-      else resolve(team)
+      else resolve(teamToSave)
     })
   })
 }
