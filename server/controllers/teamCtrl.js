@@ -150,8 +150,8 @@ function getUserTeams(req, res) {
 
 function addPlayerToTeam(req, res) {
   let player = req.player
-  teamService.findTeamByIdAndUpdatePlayer(player.team, player._id).then((player) => {
-    if (player) {
+  teamService.findTeamByIdAndUpdatePlayer(player.team, player._id).then((team) => {
+    if (team) {
       console.log("Jugador añadido al equipo...")
       return res.status(200).send(
         player

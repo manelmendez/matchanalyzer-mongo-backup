@@ -108,6 +108,8 @@ export const addPlayer = ({commit}, body) => {
   return axios.post('addPlayer', body)
     .then(response => {
       if(response.status === 200) {
+        console.log(response);
+        
         commit(types.ADD_PLAYER, response.data)
       }
       return response

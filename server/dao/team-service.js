@@ -48,7 +48,7 @@ function findTeamByIdAndUpdatePlayer(teamId, playerId) {
   return new Promise ((resolve, reject) =>{
     Team.findByIdAndUpdate(teamId,{ "$push": {"players": playerId}}, function(err, team) {
       if (err) reject(err)
-      else resolve(player)
+      else resolve(team)
     })
   })
 }

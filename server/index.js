@@ -4,6 +4,7 @@ const config = require('./config/config');
 
 let options = {
   useCreateIndex: true,
+  useFindAndModify: false,
   useNewUrlParser: true,
   useUnifiedTopology: true,
   //retry to connect for 60 times

@@ -28,23 +28,29 @@ function updateTeamStats (id, stats) {
 }
 
 function deleteTeamStats (teamStatsId) {
-  TeamStats.findByIdAndDelete(teamStatsId, function(err, stats) {
-    if (err) reject(err)
-    else resolve(stats)
+  return new Promise ((resolve, reject) =>{
+    TeamStats.findByIdAndDelete(teamStatsId, function(err, stats) {
+      if (err) reject(err)
+      else resolve(stats)
+    })
   })
 }
 
 function deleteMatchTeamStats (localTeamStatsId, awayTeamStatsId) {
-  TeamStats.deleteMany({_id:[localTeamStatsId, awayTeamStatsId]}, function(err, stats) {
-    if (err) reject(err)
-    else resolve(stats)
+  return new Promise ((resolve, reject) =>{
+    TeamStats.deleteMany({_id:[localTeamStatsId, awayTeamStatsId]}, function(err, stats) {
+      if (err) reject(err)
+      else resolve(stats)
+    })
   })
 }
 
 function deleteTeamStatsByRoundId(roundId) {
-  TeamStats.deleteMany({round: roundId}, function(err, stats) {
-    if (err) reject(err)
-    else resolve(stats)
+  return new Promise ((resolve, reject) =>{
+    TeamStats.deleteMany({round: roundId}, function(err, stats) {
+      if (err) reject(err)
+      else resolve(stats)
+    })
   })
 }
 

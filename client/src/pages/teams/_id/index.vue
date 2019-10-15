@@ -17,6 +17,7 @@
         :items="teamPlayers"
         class="elevation-1 text-xs-center"
         hide-default-footer
+        :items-per-page="-1"
       >
         <template v-slot:item.avatar="{ item }">
           <v-row class="text-center">

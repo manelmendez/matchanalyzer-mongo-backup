@@ -11,9 +11,9 @@ function addTeamStats(req, res, next) {
     ...req.awayTeamStats,
   })
   console.log("Guardando stats...")
-  teamStatsService.saveTeamStats(localTeamStats).then(() => {
+  teamStatsService.saveTeamStats(localTeamStats).then((stats) => {
     console.log("Local stats guardadas");
-    teamStatsService.saveTeamStats(awayTeamStats).then(() => {
+    teamStatsService.saveTeamStats(awayTeamStats).then((stats2) => {
       console.log("Away stats guardadas");
       req.match = req.match
       req.round = req.round
