@@ -1,6 +1,5 @@
-'use strict'
-
 const Round = require('../models/round.js')
+const roundService = require('../dao/round-service')
 
 function addRound(req, res, next) {
   // getting data
@@ -9,15 +8,15 @@ function addRound(req, res, next) {
     matches: []
   })
   console.log("Registrando competicion con nombre: " + round.name + "...")
-  round.save((err, round) => {
-    if (err) return res.status(500).send({
-      message: `Error al crear competición: ${err}`
+  roundService.saveRound(round).then((roundSaved) => {
+    req.round = roundSaved
+    req.competition = req.body.competition
+    next()
+  }).catch((err) => {
+    console.log(err);
+    return res.status(500).send({
+      message: `Error al crear competición`
     })
-    else {
-      req.round = round
-      req.competition = req.body.competition
-      next()
-    }
   })
 }
 
@@ -27,18 +26,10 @@ function addMatchToRound(req, res) {
   let match = req.match
   let localTeamStats = req.localTeamStats
   let awayTeamStats = req.awayTeamStats
-  Round.findOneAndUpdate({_id:round},{ "$push": {"matches": match._id}}, function(err, round) {
-    if (err) {
-      console.log(`Error: ${err}`)
-      return res.status(500).send({
-        message: `Error al insertar partido en la competición: ${err}`
-      })
-    }
-    if (!round) {
-      return res.status(404).send({
-        message: `Error al insertar partido en la competición: ${err}`
-      })
-    }
+  let query   = {_id:round}; 
+  let update  = { "$push": {"matches": match._id}}
+  let options = { new: true }; 
+  roundService.updateRound(query, update, options).then((round) => {
     if (round) {
       console.log("Partido añadido a la competición...")
       return res.status(200).send({
@@ -47,14 +38,26 @@ function addMatchToRound(req, res) {
         awayTeamStats: awayTeamStats
       })
     }
+    else {
+      return res.status(404).send({
+        message: `Error al insertar partido en la competición: ${err}`
+      })
+    }
+  }).catch((err) => {
+    console.log(`Error: ${err}`)
+    return res.status(500).send({
+      message: `Error al insertar partido en la competición: ${err}`
+    })
   })
 }
 
 function deleteMatchOfRound(req, res, next) {
   // borrar un atributo del array de matchs en round
   // roundId     borrar params.matchId
-  Round.updateOne({_id:req.body.roundId}, { $pullAll: {matches: [req.params.id] } } )
-  .then((value) => {
+  let query   = {_id:req.body.roundId} 
+  let update  = { $pullAll: {matches: [req.params.id] } }
+  let options = { new: true }; 
+  roundService.updateRound(query, update, options).then((round) => {
     console.log("Paso 4 FINAL - Eliminar partido de lista de partidos de la jornada");
     res.status(200).send({message: `Stats borradas`})
   })
@@ -66,9 +69,10 @@ function deleteMatchOfRound(req, res, next) {
 
 function deleteRound(req, res, next) {
   let roundId = req.params.id
-  Round.deleteOne({_id:roundId})
-  .then((value) => {
-    console.log(value);
+  let query = {_id:roundId}
+  roundService.deleteRound(query)
+  .then((round) => {
+    console.log(round);
     res.status(200).send({message: `Jornada borrada`})
   })
   .catch((err) => {
