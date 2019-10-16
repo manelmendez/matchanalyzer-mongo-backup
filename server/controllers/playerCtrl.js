@@ -8,9 +8,7 @@ function addPlayer(req, res, next) {
     year: req.body.year,
     team: req.body.team
   })
-  playerService.findByName(player.name).then((existingPlayer) => {
-    console.log(existingPlayer);
-    
+  playerService.findByName(player.name).then((existingPlayer) => {    
     if (existingPlayer) {
       console.log("Este nombre ya está registrado, no se puede continuar.")
       return res.status(202).send({
@@ -84,11 +82,14 @@ function updatePlayer(req, res) {
   })
 }
 
-function deletePlayer (req, res) {
+function deletePlayer (req, res, next) {
   let playerId = req.params.id
   playerService.deletePlayer(playerId)
   .then((value) => {
-    res.status(200).send({player: value})
+    console.log(value);
+    
+    req.player = value
+    next()
   })
   .catch((err) => {
     res.status(500).send({message: `Error al borrar el jugador`})

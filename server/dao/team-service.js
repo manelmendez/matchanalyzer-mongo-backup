@@ -52,17 +52,17 @@ function findTeamByIdAndUpdatePlayer(teamId, playerId) {
     })
   })
 }
-function findTeamByIdAndUpdateStats(teamId, stats) {
+function findTeamByIdAndDeletePlayer(teamId, playerId) {
   return new Promise ((resolve, reject) =>{
-    Team.findOneAndUpdate({_id:teamId},{ "$push": {"stats": stats}}, {new:true}, function(err, stats) {
+    Team.findByIdAndUpdate(teamId,{ "$pull": {"players": playerId}}, function(err, team) {
       if (err) reject(err)
-      else resolve(stats)
+      else resolve(team)
     })
   })
 }
-function findTeamByIdAndDeleteStats(teamId, stats) {
+function findTeamByIdAndUpdateStats(teamId, stats) {
   return new Promise ((resolve, reject) =>{
-    Team.findOneAndUpdate({_id:teamId},{ "$pullAll": {"stats": stats}}, function(err, stats) {
+    Team.findOneAndUpdate({_id:teamId},{ "$push": {"stats": stats}}, {new:true}, function(err, stats) {
       if (err) reject(err)
       else resolve(stats)
     })
@@ -111,6 +111,7 @@ module.exports = {
   findAll,
   saveTeam,
   findTeamByIdAndUpdatePlayer,
+  findTeamByIdAndDeletePlayer,
   findTeamByIdAndUpdateStats,
   findTeamByIdAndDeleteStats,
   findManyTeamsAndDeleteLastStats,

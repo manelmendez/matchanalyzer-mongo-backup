@@ -47,7 +47,7 @@ function updatePlayer(id, player) {
 
 function deletePlayer (id) {
   return new Promise ((resolve, reject) =>{ 
-    Player.deleteOne({_id:id}, function(err, player) {
+    Player.findOneAndRemove({_id:id}, function(err, player, result) {
       if (err) reject(err)
       else resolve(player)
     })

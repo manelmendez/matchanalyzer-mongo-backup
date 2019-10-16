@@ -1,6 +1,5 @@
-'use strict'
-
 const Competition = require('../models/competition.js')
+const competitionService = require('../dao/competition-service')
 
 function addCompetition(req, res) {
   // getting data
@@ -16,34 +15,32 @@ function addCompetition(req, res) {
   })
   console.log("Registrando competicion con nombre: " + competition.name + "...")
   // check if competition exists in database
-  Competition.findOne({ name: competition.name }, function(err, existingCompetition) {
-    // case if error in search
-    if (err) {
-      console.log(`Error: ${err}`)
-      return res.status(500).send({
-        message: `Error al registrar competicion: ${err}`
-      })
-    }
-    // case if competition not exists ==> register
-    if (!existingCompetition) {
-      console.log("No existe ninguna competicion con ese nombre, creando...")
-      // saving competition in DB
-      competition.save((err) => {
-        if (err) return res.status(500).send({
-          message: `Error al crear competición: ${err}`
-        })
-        return res.status(200).send({
-          competition: competition
-        })
-      })
-    }
-    // case if competition exists ==> RETURN Error
+  competitionService.findByName(Competition.name).then((existingCompetition) => {    
     if (existingCompetition) {
       console.log("Este nombre de competición ya está registrado, no se puede continuar.")
-      return res.status(202).send({
+      return res.status(409).send({
         message: `Error. Competición ya registrada`
       })
     }
+    else {
+      console.log("No existe ninguna competicion con ese nombre, creando...")
+      // saving competition in DB
+      competitionService.saveCompetition(competition).then((competitionSaved) => {
+        return res.status(200).send({
+          competition: competitionSaved
+        })
+      }).catch((err) => {
+        console.log(err)
+        return res.status(500).send({
+          message: `Error al crear competición`
+        })
+      })
+    }
+  }).catch((err) => {
+    console.log(`Error: ${err}`)
+    return res.status(500).send({
+      message: `Error al registrar competicion`
+    })
   })
 }
 
@@ -51,39 +48,7 @@ function getCompetition(req, res) {
   let id = req.params.id
   console.log("Buscando competición con id: " + id + " en la base de datos...");
   //search competition on DB
-  Competition.findById(id)
-  .populate({
-    path:'teams',
-    populate: {
-      path: 'stats'
-    }
-  })
-  .populate('myTeam').populate('players')
-  .populate({
-    path: 'rounds',
-    populate: {
-      path: 'matches',
-      populate: [
-        {path: 'localTeam'},
-        {path: 'awayTeam'}
-      ]
-    }
-  }).exec((err, competition) => {
-    // case if there is any problem in search
-    if (err) {
-      console.log(`Error: ${err}`)
-      return res.status(500).send({
-        message: `Error al buscar: ${err}`
-      })
-    }
-    // case if competition is not found on DB
-    if (!competition) {
-      console.log("No existe la competición.")
-      return res.status(401).send({
-        message: 'No se ha encontrado la competición'
-      })
-    }
-    // case if competition found
+  competitionService.findById(id).then((competition => {
     if (competition) {
       console.log("Competición " + competition.name + " entontrada.");
       // send competition
@@ -92,71 +57,82 @@ function getCompetition(req, res) {
         competition: competition
       })
     }
+    else {
+      console.log("No existe la competición.")
+      return res.status(401).send({
+        message: 'No se ha encontrado la competición'
+      })
+    }
+  })).catch((err) => {
+    console.log(`Error: ${err}`)
+    return res.status(500).send({
+      message: `Error al buscar`
+    })
   })
 }
 
 function getUserCompetitions(req, res) {
   let id = req.params.id
   console.log("Buscando todas las competiciones en la base de datos...");
-  Competition.find({manager: id},(err, competitions) => {
-    // case if there is any problem in search
-    if (err) {
-      console.log(`Error: ${err}`)
-    }
-    if (competitions) {
-      console.log("Competiciones encontradas.");
-      res.status(200).send({
-        competitions: competitions
-      })
-    }
-  }).populate('myTeam')
+  competitionService.findByManager(id).then((competitions) => {
+    console.log("Competiciones encontradas.");
+    res.status(200).send({
+      competitions: competitions
+    })
+  }).catch((err) => {
+    console.log(`Error: ${err}`)
+  })
 }
 
 function addTeamToCompetition(req, res) {
-  let competition = req.competition
+  let competitionId = req.competition
   let team = req.team
-  Competition.findByIdAndUpdate(competition,{ "$push": {"teams": team._id}}, function(err, competition) {
-    if (err) {
-      console.log(`Error: ${err}`)
-      return res.status(500).send({
-        message: `Error al insertar equipo en la competición: ${err}`
-      })
-    }
-    if (!competition) {
-      return res.status(404).send({
-        message: `Error al insertar equipo en la competición: ${err}`
-      })
-    }
+  let query = {_id: competitionId}
+  let update = { "$push": {"teams": team._id}}
+  let options = {new:true}
+  competitionService.updateCompetition(query, update, options).then((competition) => {
     if (competition) {
       console.log("Equipo añadido a la competición...")
       return res.status(200).send({
         team: team
       })
     }
+    else {
+      return res.status(404).send({
+        message: `Error al insertar equipo en la competición: ${err}`
+      })
+    }
+  }).catch((err) => {
+    console.log(`Error: ${err}`)
+    return res.status(500).send({
+      message: `Error al insertar equipo en la competición`
+    })
   })
 }
 
 function addRoundToCompetition(req, res) {
-  let competition = req.competition
+  let competitionId = req.competition
   let round = req.round
-  Competition.findByIdAndUpdate(competition,{ "$push": {"rounds": round._id}}, function(err, competition) {
-    if (err) {
-      console.log(`Error: ${err}`)
-      return res.status(500).send({
-        message: `Error al insertar jornada en la competición: ${err}`
-      })
-    }
-    if (!competition) {
-      return res.status(404).send({
-        message: `Error al insertar jornada en la competición: ${err}`
-      })
-    }
+  let query = {_id: competitionId}
+  let update = { "$push": {"rounds": round._id}}
+  let options = {new:true}
+  competitionService.updateCompetition(query, update, options).then((competition) => {
     if (competition) {
       console.log("Jornada añadida a la competición...")
       return res.status(200).send({
         round: round
       })
     }
+    else {
+      return res.status(404).send({
+        message: `Error al insertar jornada en la competición: ${err}`
+      })
+    }
+  }).catch((err) => {
+    console.log(`Error: ${err}`)
+    return res.status(500).send({
+      message: `Error al insertar jornada en la competición: ${err}`
+    })
   })
 }
 

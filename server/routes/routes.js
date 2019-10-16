@@ -40,7 +40,7 @@ api.post('/addPlayer', auth.checkAuth, playerCtrl.addPlayer, teamCtrl.addPlayerT
 api.get('/getPlayer/:id', auth.checkAuth, playerCtrl.getPlayer)
 api.get('/getAllPlayers', auth.checkAuth, playerCtrl.getAllPlayers)
 api.put('/updatePlayer/:id', auth.checkAuth, playerCtrl.updatePlayer)
-api.delete('/deletePlayer/:id', auth.checkAuth, playerCtrl.deletePlayer)
+api.delete('/deletePlayer/:id', auth.checkAuth, playerCtrl.deletePlayer, teamCtrl.deletePlayerOfTeam)
 
 // COMPETITIION
 api.post('/addCompetition', auth.checkAuth, competitionCtrl.addCompetition)

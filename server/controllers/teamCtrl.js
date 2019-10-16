@@ -223,6 +223,18 @@ function deleteStatsOfTeam(req, res, next) {
   })
 }
 
+function deletePlayerOfTeam(req, res) {
+  let player = req.player
+  teamService.findTeamByIdAndDeletePlayer(player.team, player._id)
+  .then((value) => {
+    res.status(200).send({player: value})
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).send({message: `Error al borrar team player`})
+  })
+}
+
 function deleteStatsOfRoundTeams(req, res, next) {
   let teamStatsIds = []
   for (let i = 0; i < req.deletedTeamStats.length; i++) {
@@ -293,6 +305,7 @@ module.exports = {
   addNoManagerTeam,
   addStatsToTeam,
   deleteStatsOfTeam,
+  deletePlayerOfTeam,
   updateTeam,
   deleteStatsOfRoundTeams,
   deleteTeam

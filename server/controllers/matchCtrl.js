@@ -1,7 +1,6 @@
 'use strict'
 
 const Match = require('../models/match.js')
-const MatchStats = require('../models/matchStats.js')
 
 function addMatch(req, res, next) {
   // getting data
@@ -34,31 +33,6 @@ function addMatch(req, res, next) {
           next()
         }
       })
-    }
-  })
-}
-
-function addMyMatch(req, res, next) {
-  // getting data
-  const match = new Match({
-    localTeam: req.match.localTeam,
-    awayTeam: req.match.awayTeam,
-    localTeamGoals: req.match.localTeamGoals,
-    awayTeamGoals: req.match.awayTeamGoals,
-    matchDay: req.match.matchDay,
-    competition: req.match.competition,
-    round: req.match.round,
-    stats: req.stats,
-  })
-  console.log("Añadiendo partido...")
-  match.save((err, match) => {
-    if (err) return res.status(500).send({
-      message: `Error al crear competición: ${err}`
-    })
-    else {
-      req.match = match
-      req.round = req.body.match.round
-      next()
     }
   })
 }
@@ -109,7 +83,6 @@ function deleteMatch (req, res, next) {
 
 module.exports = {
   addMatch,
-  addMyMatch,
   updateMatch,
   deleteMatch
 }
