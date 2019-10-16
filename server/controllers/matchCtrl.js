@@ -1,6 +1,7 @@
 'use strict'
 
 const Match = require('../models/match.js')
+const matchService = require('../dao/match-service')
 
 function addMatch(req, res, next) {
   // getting data
@@ -14,26 +15,25 @@ function addMatch(req, res, next) {
     round: req.body.match.round
   })
   console.log("Añadiendo partido...")
-  match.save((err, match) => {
-    if (err) return res.status(500).send({
+  matchService.saveMatch(match).then((matchSaved) => {
+    matchSaved.populate([{path: 'localTeam'},{path: 'awayTeam'}]).execPopulate(function(err2, match2) {
+      if(err2){
+        return res.status(500).send({
+          message: `Error al crear competición: ${err2}`
+        })
+      }
+      else{
+        req.match = match2
+        req.round = req.body.match.round
+        req.localTeamStats = req.body.localTeamStats
+        req.awayTeamStats = req.body.awayTeamStats
+        next()
+      }
+    })
+  }).catch((err) => {
+    return res.status(500).send({
       message: `Error al crear competición: ${err}`
     })
-    else {
-      match.populate([{path: 'localTeam'},{path: 'awayTeam'}]).execPopulate(function(err2, match2) {
-        if(err2){
-          return res.status(500).send({
-            message: `Error al crear competición: ${err2}`
-          })
-        }
-        else{
-          req.match = match2
-          req.round = req.body.match.round
-          req.localTeamStats = req.body.localTeamStats
-          req.awayTeamStats = req.body.awayTeamStats
-          next()
-        }
-      })
-    }
   })
 }
 
@@ -51,25 +51,33 @@ function updateMatch (req, res, next) {
   }
   console.log("Actualizar partido");
   // Match.updateOne({_id:id}, {$set:match})    LA FUNCION UPDATEONE() NO DEVUELVE EL DOC EDITADO
-  Match.findByIdAndUpdate({_id:id}, {$set:match}, {new:true}).populate([{path: 'localTeam'},{path: 'awayTeam'}])
-  .then((value) => {
-    console.log("Partido actualizado");
-    console.log(value);
-    req.match = value
-    req.round = req.body.match.round
-    req.localTeamStats = req.body.localTeamStats
-    req.awayTeamStats = req.body.awayTeamStats
-    next()
-  })
-  .catch((err) => {
+  let query = {_id:id}
+  let update = {$set:match}
+  let options = {new:true}
+  matchService.updateMatch(query, update, options).then((matchUpdated) => {    
+    matchUpdated.populate([{path: 'localTeam'},{path: 'awayTeam'}]).execPopulate(function(err2, value) {
+      if (err2) {
+        console.log(err2);
+        res.status(500).send({message: `Error al actualizar el partido`})
+      }    
+      else {
+        console.log("Partido actualizado");
+        req.match = value
+        req.round = req.body.match.round
+        req.localTeamStats = req.body.localTeamStats
+        req.awayTeamStats = req.body.awayTeamStats
+        next()
+      }
+    })
+  }).catch((err) => {
     console.log(err);
-    res.status(500).send({message: `Error al actualizar el partido: ${err}`})
+    res.status(500).send({message: `Error al actualizar el partido`})
   })
 }
 
 function deleteMatch (req, res, next) {
   let matchId = req.params.id
-  Match.deleteOne({_id:matchId})
+  matchService.deleteMatch(matchId)
   .then((value) => {
     console.log("Paso 1 - Eliminar partido de lista de partidos");
     console.log(value);
@@ -77,7 +85,7 @@ function deleteMatch (req, res, next) {
   })
   .catch((err) => {
     console.log(err);
-    res.status(500).send({message: `Error al borrar el partido: ${err}`})
+    res.status(500).send({message: `Error al borrar el partido`})
   })
 }
 
