@@ -81,9 +81,24 @@ function deleteRound(req, res, next) {
   })
 }
 
+function deleteCompetitionRounds(req, res, next) {
+  let competitionId = req.params.id
+  let query = {competition:competitionId}
+  roundService.deleteCompetitionRounds(query)
+  .then((round) => {
+    console.log(round);
+    res.status(200).send({message: `Jornada borrada`})
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).send({message: `Error al borrar la jornada: ${err}`})
+  })
+}
+
 module.exports = {
   addRound,
   addMatchToRound,
   deleteMatchOfRound,
-  deleteRound
+  deleteRound,
+  deleteCompetitionRounds
 }

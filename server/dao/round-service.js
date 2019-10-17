@@ -40,10 +40,20 @@ function deleteRound(query) {
   })
 }
 
+function deleteCompetitionRounds(query) {
+  return new Promise ((resolve, reject) =>{
+    Round.deleteMany(query, function(err, round){
+      if (err) reject(err)
+      else resolve(round)
+    })
+  })
+}
+
 module.exports = {
   findById,
   findAll,
   updateRound,
   saveRound,
-  deleteRound
+  deleteRound,
+  deleteCompetitionRounds
 }

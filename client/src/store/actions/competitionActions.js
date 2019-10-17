@@ -116,3 +116,28 @@ export const deleteRound = ({commit}, data) => {
     return err.response
   })
 }
+
+export const updateCompetition = ({commit}, data) => {
+  console.log("ACTION -- updateCompetition")
+  return axios.put('updateCompetition/'+data._id, data).then(response => {
+    if(response.status === 200) {
+      commit(types.UPDATE_COMPETITION, response.data)
+    }
+    return response
+  }).catch((err) => {
+    return err.response
+  })
+}
+
+export const deleteCompetition = ({commit}, data) => {
+  console.log("ACTION -- deleteCompetition")
+  console.log(data);
+  return axios.delete('deleteCompetition/'+data.id).then(response => {
+    if(response.status === 200) {
+      commit(types.DELETE_COMPETITION, response.data._id)
+    }
+    return response
+  }).catch((err) => {
+    return err.response
+  })
+}

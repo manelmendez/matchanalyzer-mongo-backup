@@ -50,7 +50,7 @@
         <small>*indicates required field</small>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="primary" @click.native="confirm">Continue</v-btn>
+        <v-btn color="primary" @click.native="(competition) ? editCompetition() : createCompetition()">Continue</v-btn>
         <v-btn text @click.native="close">Cancel</v-btn>
       </v-card-actions>
     </v-card>
@@ -59,10 +59,15 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 export default {
-  data:() => ({
-    name: '',
-      team: '',
-      season: '',
+  props:{
+    show: Boolean,
+    competition: Object,
+  },
+  data() {
+    return {
+      name: (this.competition) ? this.competition.name : '',
+      team: (this.competition) ? this.competition.myTeam : '',
+      season: (this.competition) ? this.competition.season : '',
       seasons: [
         "14/15",
         "15/16",
@@ -86,11 +91,9 @@ export default {
         "Juvenil",
         "Amateur"
       ],
-      discipline: "",
-      category: ""
-  }),
-  props:{
-    show: Boolean
+      discipline: (this.competition) ? this.competition.discipline : "",
+      category: (this.competition) ? this.competition.category : ""
+    }
   },
   computed: {
     ...mapGetters({
@@ -99,7 +102,7 @@ export default {
     })
   },
   methods: {
-    confirm() {
+    createCompetition() {
       let competition = {
         name: this.name,
         season: this.season,
@@ -112,11 +115,26 @@ export default {
         this.$emit('confirm')
       })
     },
+    editCompetition() {
+      let competition = {
+        _id: this.competition._id,
+        name: this.name,
+        season: this.season,
+        team: this.team,
+        manager: this.user._id,
+        discipline: this.discipline,
+        category: this.category
+      }
+      this.updateCompetition(competition).then((value) => {
+        this.$emit('confirm')
+      })
+    },
     close() {
       this.$emit('close')
     },
     ...mapActions("competition",[
         'addCompetition',
+        'updateCompetition'
     ])
   }
 }

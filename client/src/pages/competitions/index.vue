@@ -12,6 +12,26 @@
         <v-list-item-content>
           <v-list-item-title v-text="(competition.myTeam ? competition.myTeam.name : 'Equipo Borrado') + ' - ' + competition.discipline + ' - ' + competition.category + ' - ' + competition.name"></v-list-item-title>
         </v-list-item-content>
+        <v-list-item-action>
+          <v-tooltip top>
+            <template v-slot:activator="{ on }">
+              <v-btn text icon color="blue lighten-2" @click.stop="updatingCompetition=competition, dialog=true" v-on="on">
+                <v-icon size="18">edit</v-icon>
+              </v-btn>
+            </template>
+            <span>Editar equipo</span>
+          </v-tooltip>
+        </v-list-item-action>
+        <v-list-item-action>
+          <v-tooltip top>
+            <template v-slot:activator="{ on }">
+            <v-btn text icon color="red lighten-2" v-on="on" @click.stop="deletingCompetition=competition._id ,deleteDialog=true">
+              <v-icon size="18">delete</v-icon>
+            </v-btn>
+            </template>
+            <span>Borrar equipo</span>
+          </v-tooltip>
+        </v-list-item-action>
       </v-list-item>
     </v-list>
     <v-tooltip left>
@@ -31,19 +51,30 @@
       </template>
       <span>Añadir competición</span>
     </v-tooltip>
-    <CreateCompetition v-if="dialog" :show="dialog" @confirm="confirmCreate" @close="dialog=!dialog"></CreateCompetition>
+    <CreateCompetition v-if="dialog" :show="dialog" :competition="(updatingCompetition ? updatingCompetition : null)"  @confirm="confirmCreate" @close="dialog=!dialog,  updatingCompetition=null"></CreateCompetition>
+    <DeleteDialog
+      v-if="deleteDialog"
+      :show="deleteDialog"
+      type="competition"
+      @close="deleteDialog=!deleteDialog, deletingCompetition=null"
+      @delete="deleteCompetitionFunction"
+    ></DeleteDialog>
   </v-container>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import CreateCompetition from '../../components/modals/CreateCompetition'
-  export default {
-    name: "MyCompetitions",
+import DeleteDialog from '../../components/modals/DeleteDialog'
+export default {
     components: {
-      CreateCompetition
+      CreateCompetition,
+      DeleteDialog
     },
     data: () => ({
       dialog: false,
+      deleteDialog: false,
+      deletingCompetition: null,
+      updatingCompetition: null
     }),
     methods: {
       goTo(id) {
@@ -57,6 +88,9 @@ import CreateCompetition from '../../components/modals/CreateCompetition'
       confirmCreate(){        
         this.getUserCompetitions(this.user._id)
         this.dialog = false
+      },
+      deleteCompetitionFunction(){
+        alert("JEJE")
       },
       ...mapActions({
         getUserCompetitions:'competition/getUserCompetitions',

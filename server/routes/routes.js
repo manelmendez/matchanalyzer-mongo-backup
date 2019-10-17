@@ -46,6 +46,8 @@ api.delete('/deletePlayer/:id', auth.checkAuth, playerCtrl.deletePlayer, teamCtr
 api.post('/addCompetition', auth.checkAuth, competitionCtrl.addCompetition)
 api.get('/getCompetition/:id', auth.checkAuth, competitionCtrl.getCompetition)
 api.get('/getUserCompetitions/:id', auth.checkAuth, competitionCtrl.getUserCompetitions)
+api.put('/updateCompetition/:id', auth.checkAuth, competitionCtrl.updateCompetition)
+api.delete('/deleteCompetition/:id', auth.checkAuth, competitionCtrl.deleteCompetition)
 
 // ROUND
 api.post('/addRound', auth.checkAuth, roundCtrl.addRound, competitionCtrl.addRoundToCompetition)

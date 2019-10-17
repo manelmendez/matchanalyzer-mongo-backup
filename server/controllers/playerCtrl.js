@@ -85,9 +85,7 @@ function updatePlayer(req, res) {
 function deletePlayer (req, res, next) {
   let playerId = req.params.id
   playerService.deletePlayer(playerId)
-  .then((value) => {
-    console.log(value);
-    
+  .then((value) => {    
     req.player = value
     next()
   })

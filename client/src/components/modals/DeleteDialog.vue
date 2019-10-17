@@ -38,6 +38,11 @@ export default {
         title: "Quieres borrar este equipo?",
         text:
           "Si aceptas, el equipo se borrará y se perderán todos sus partidos y datos estadísticos. Quieres continuar?"
+      },
+      competition: {
+        title: "Quieres borrar esta competición?",
+        text:
+          "Si aceptas, la competición se borrará y se perderán todos sus datos. Quieres continuar?"
       }
     };
   },
@@ -51,6 +56,8 @@ export default {
         return this.player.title;
       } else if (this.type == "team") {
         return this.team.title;
+      }else if (this.type == "competition") {
+        return this.competition.title;
       }
     },
     text() {
@@ -62,6 +69,8 @@ export default {
         return this.player.text;
       } else if (this.type == "team") {
         return this.team.text;
+      } else if (this.type == "competition") {
+        return this.competition.text;
       }
     }
   },

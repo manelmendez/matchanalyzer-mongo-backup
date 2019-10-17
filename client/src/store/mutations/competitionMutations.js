@@ -127,4 +127,13 @@ export const competitionMutations = {
     state.competition.rounds.pop()
     state.selectedRound = Number(state.competition.rounds.length)
   },
+
+  [types.UPDATE_COMPETITION] (state, competition) {
+    let previousCompetition = state.competitions.find(a => a._id === competition._id)    
+    Object.assign(previousCompetition, competition)
+  },
+  [types.DELETE_COMPETITION] (state, competitionId) {
+    let index = state.competitions.findIndex(item => item._id == competitionId)
+    state.competitions.splice(index, 1)
+  },
 }

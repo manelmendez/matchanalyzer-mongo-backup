@@ -135,11 +135,71 @@ function addRoundToCompetition(req, res) {
     })
   })
 }
+function updateCompetition(req, res) {
+  const competition = {
+    name: req.body.name,
+    myTeam: req.body.team,
+    season: req.body.season,
+    discipline: req.body.discipline,
+    category: req.body.category,
+  }
+  let query = {_id:req.params.id}
+  let update = {$set:competition}
+  let options = {new:true}
+  competitionService.updateCompetition(query, update, options).then((competitionUpdated) => {    
+    competitionUpdated.populate([{
+      path:'teams',
+      populate: {
+        path: 'stats'
+      }
+    },
+    {
+      path:'myTeam',
+      populate: {
+        path:'players'
+      }
+    },
+    {
+      path: 'rounds',
+      populate: {
+        path: 'matches',
+        populate: [
+          {path: 'localTeam'},
+          {path: 'awayTeam'}
+        ]
+      }
+    }])
+    .execPopulate(function(err2, value) {
+      if (err2) {
+        console.log(err2);
+        res.status(500).send({message: `Error al actualizar el partido`})
+      }    
+      else {
+        console.log("Partido actualizado");
+        res.status(200).send(value)
+      }
+    })
+  }).catch((err) => {
+    console.log(err);
+    res.status(500).send({message: `Error al actualizar el partido`})
+  })
+}
+function deleteCompetition(req, res, next) {
+  competitionService.deleteCompetition(req.params.id).then((competition) => {
+    next()
+  }).catch((err) => {
+    return res.status(500).send({
+      message: `Error al borrar la competición`
+    })
+  })
+}
 
 module.exports = {
   addCompetition,
   getCompetition,
   getUserCompetitions,
   addTeamToCompetition,
-  addRoundToCompetition
+  addRoundToCompetition,
+  updateCompetition,
+  deleteCompetition
 }
