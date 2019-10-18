@@ -88,7 +88,7 @@ function findManyTeamsAndDeleteLastStats(teamStatsIds) {
 
 function updateTeam(id, team) {
   return new Promise ((resolve, reject) =>{
-    Team.updateOne({_id:id}, { $set: {name: team.name, season: team.season, avatar: team.avatar } }, function(err, team) {
+    Team.updateOne({_id:id}, { $set: team }, function(err, team) {
       if (err) reject(err)
       else resolve(team)
     })

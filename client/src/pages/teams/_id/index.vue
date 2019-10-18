@@ -4,7 +4,7 @@
       <v-card-title>
         <v-layout align-center>
           <v-flex xs1>
-            <v-img v-if="team.avatar!=undefined" :src="constants.ADDRESS+team.avatar" alt="avatar" :contain="true" height="40" width="40">
+            <v-img v-if="team.avatar!=undefined" :src="constants.ADDRESS+team.avatar" @error="team.avatar=constants.DEFAULT_TEAM_URL" alt="avatar" :contain="true" height="40" width="40">
           </v-flex>
           <v-flex>  
             {{team.name}}

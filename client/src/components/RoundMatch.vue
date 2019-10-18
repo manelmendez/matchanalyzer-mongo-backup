@@ -8,6 +8,7 @@
         ><v-img 
           justify="center"
           :src="constants.ADDRESS+match.localTeam.avatar"
+          @error="match.localTeam.avatar=constants.DEFAULT_TEAM_URL"
           aspect-ratio="10"
           contain
         ></v-img> {{match.localTeam.name}}</v-card-text>
@@ -29,6 +30,7 @@
         <v-img 
           justify="center"
           :src="constants.ADDRESS+match.awayTeam.avatar"
+          @error="match.awayTeam.avatar=constants.DEFAULT_TEAM_URL"
           aspect-ratio="10"
           contain
         ></v-img>{{match.awayTeam.name}}</v-card-text>

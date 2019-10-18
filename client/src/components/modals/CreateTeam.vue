@@ -9,10 +9,13 @@
           <v-layout wrap>
             <v-flex xs12 md4 class="text-xs-center">
               <input type="file" ref="file" @change="onFileChanged" style="display:none">
-              <v-avatar size="100px" v-if="!image" class="uploadPhoto" @click="launchFilePicker">
+              <v-avatar v-if="!image" size="100px" class="uploadPhoto" @click="launchFilePicker">
                 <v-icon>add_a_photo</v-icon>
               </v-avatar>
-              <v-img height="100px" :src="team ? constants.ADDRESS+image : image" v-else @click="launchFilePicker" contain>
+              <v-img v-else height="100px" :src="image" 
+              @click="launchFilePicker" 
+              @error="image=constants.DEFAULT_TEAM_URL"
+              contain>
             </v-flex>
             <v-flex xs12 md4>
               <v-text-field label="Nombre del equipo" v-model="name" required></v-text-field>
@@ -50,7 +53,7 @@ export default {
   data() {
     return {
       constants:constants,
-      image: (this.team) ? this.team.avatar : null,
+      image: (this.team) ? constants.ADDRESS+this.team.avatar : null,
       file: null,
       temporada: [
         "14/15",
@@ -157,8 +160,7 @@ export default {
           let body = {
             team: {
               season: this.season,
-              name: this.name,
-              avatar: this.image
+              name: this.name
             },
             competition: this.competition._id
           }
@@ -180,8 +182,7 @@ export default {
         let body = {
           team: {
             season: this.season,
-            name: this.name,
-            avatar: this.image
+            name: this.name
           },
           competition: this.competition._id
         }

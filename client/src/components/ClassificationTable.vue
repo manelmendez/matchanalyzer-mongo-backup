@@ -12,7 +12,7 @@
           <td class="text-xs-center">{{ index+1 }}</td>
           <td class="text-xs-center">
             <v-list-item-avatar :tile="true">
-              <v-img :src="constants.ADDRESS+item.avatar" contain>
+              <v-img :src="constants.ADDRESS+item.avatar" @error="item.avatar=constants.DEFAULT_TEAM_URL" contain>
             </v-list-item-avatar>
           </td>
           <td class="text-xs-center">{{ item.name }}</td>

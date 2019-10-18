@@ -90,11 +90,23 @@ export default {
         this.dialog = false
       },
       deleteCompetitionFunction(){
-        alert("JEJE")
+        this.deleteCompetition(this.deletingCompetition).then((response) =>{          
+          this.deleteDialog = false
+        })
+        .catch((err) => {   
+          this.deleteDialog = false         
+          let snackbar = {
+            show: true,
+            color: "error",
+            text: err.data.message
+          };
+          this.$store.commit("root/SNACKBAR", snackbar);
+        })
       },
       ...mapActions({
         getUserCompetitions:'competition/getUserCompetitions',
-        getUserTeams:'team/getUserTeams'
+        getUserTeams:'team/getUserTeams',
+        deleteCompetition: 'competition/deleteCompetition'
       }),
     },
     computed: {

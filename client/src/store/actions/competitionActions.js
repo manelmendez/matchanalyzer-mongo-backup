@@ -132,7 +132,7 @@ export const updateCompetition = ({commit}, data) => {
 export const deleteCompetition = ({commit}, data) => {
   console.log("ACTION -- deleteCompetition")
   console.log(data);
-  return axios.delete('deleteCompetition/'+data.id).then(response => {
+  return axios.delete('deleteCompetition/'+data).then(response => {
     if(response.status === 200) {
       commit(types.DELETE_COMPETITION, response.data._id)
     }

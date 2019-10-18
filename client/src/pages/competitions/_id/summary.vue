@@ -12,6 +12,7 @@
             <v-img 
               justify="center"
               :src="constants.ADDRESS+team.avatar"
+              @error="team.avatar=constants.DEFAULT_TEAM_URL"
               aspect-ratio="2"
               contain
             ></v-img>
