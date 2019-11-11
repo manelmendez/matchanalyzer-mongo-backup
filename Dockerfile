@@ -12,7 +12,7 @@ COPY ./ ./
 RUN cd server && npm install
 
 # Install client dependencies and build it
-RUN cd client && npm install && npm run build
+RUN cd client && npm install && npm run docker
 
 # Run server
 WORKDIR /projects/matchanalyzer/server

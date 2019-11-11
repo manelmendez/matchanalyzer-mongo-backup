@@ -81,7 +81,13 @@ const router = new VueRouter({
           meta: { requiresAuth: true, layout: 'default' }
         }
       ]
-    }
+    },
+    {
+      path: '*',
+      name: 'error',
+      component: index,
+      meta: { requiresAuth: false, layout: "default" }
+    },
   ]
 })
 /**

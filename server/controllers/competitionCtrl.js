@@ -163,13 +163,21 @@ function updateCompetition(req, res) {
       path: 'rounds',
       populate: {
         path: 'matches',
-        populate: [
-          {path: 'localTeam'},
-          {path: 'awayTeam'}
-        ]
+        populate: [{
+          path: 'localTeam',
+          populate: {
+            path: 'players'
+          }
+        },
+        {
+          path: 'awayTeam',
+          populate: {
+            path: 'players'
+          }
+        }]
       }
     }])
-    .execPopulate(function(err2, value) {
+    .execPopulate(function(err2, value) {      
       if (err2) {
         console.log(err2);
         res.status(500).send({message: `Error al actualizar el partido`})

@@ -2,23 +2,36 @@ const Competition = require('../models/competition')
 
 function findById(id) {
   return new Promise ((resolve, reject) =>{
-    Competition.findById(id).populate({
+    Competition.findById(id).populate([{
       path:'teams',
       populate: {
         path: 'stats'
       }
-    })
-    .populate('myTeam').populate('players')
-    .populate({
+    },
+    {
+      path:'myTeam',
+      populate: {
+        path:'players'
+      }
+    },
+    {
       path: 'rounds',
       populate: {
         path: 'matches',
-        populate: [
-          {path: 'localTeam'},
-          {path: 'awayTeam'}
-        ]
+        populate: [{
+          path: 'localTeam',
+          populate: {
+            path: 'players'
+          }
+        },
+        {
+          path: 'awayTeam',
+          populate: {
+            path: 'players'
+          }
+        }]
       }
-    }).exec((err, competition) => {
+    }]).exec((err, competition) => {
       if (err) reject(err)
       else resolve(competition)
     })

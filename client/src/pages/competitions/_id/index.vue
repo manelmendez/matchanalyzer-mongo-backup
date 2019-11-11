@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-tabs
       centered
-      :background-color="constants.theme2.PRIMARY_LIGHT_COLOR"
+      :background-color="constants.theme2.PRIMARY_COLOR"
       dark
       grow
       icons-and-text 
@@ -11,15 +11,15 @@
       <v-tabs-slider color="yellow"></v-tabs-slider>
       <v-tab class="compTab" to="summary">
         Resumen
-        <v-icon>far fa-chart-bar</v-icon>
+        <v-icon>mdi-chart-line</v-icon>
       </v-tab>
       <v-tab class="compTab" to="results">
         Resultados
-        <v-icon>fas fa-list</v-icon>
+        <v-icon>mdi-format-list-checkbox</v-icon>
       </v-tab>
       <v-tab class="compTab" to="rankings">
         Clasificación
-        <v-icon>fas fa-trophy</v-icon>
+        <v-icon>mdi-trophy-outline</v-icon>
       </v-tab>
     </v-tabs>
     <router-view></router-view>

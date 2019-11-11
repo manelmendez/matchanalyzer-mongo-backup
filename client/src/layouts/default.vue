@@ -1,10 +1,8 @@
 <template>
   <v-content>
-    <v-app-bar app fixed clipped-left :color="constants.theme2.PRIMARY_COLOR" class="elevation-0">
+    <v-app-bar app fixed clipped-left collapse-on-scroll :color="constants.theme2.PRIMARY_COLOR" class="elevation-0">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <router-link to='/' class="toolbar-title">
-        <v-toolbar-title>MatchAnalyzer</v-toolbar-title>
-      </router-link>
+      <v-toolbar-title><router-link to='/' class="toolbar-title">MatchAnalyzer</router-link></v-toolbar-title>
       <v-spacer></v-spacer>
       <v-menu open-on-hover offset-y>
         <template v-slot:activator="{ on }">
@@ -22,22 +20,31 @@
     <v-navigation-drawer
       clipped
       fixed
+      expand-on-hover
       v-model="drawer"
       width="200"
       app
     >
       <v-list dense>
-        <v-list-item @click="goTo('teams')">
+        <v-list-item to='/'>
           <v-list-item-action>
-            <v-icon>fas fa-futbol</v-icon>
+            <v-icon>mdi-home-outline</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Inicio</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item to='teams'>
+          <v-list-item-action>
+            <v-icon>mdi-soccer</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Mis equipos</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item @click="goTo('competitions')">
+        <v-list-item to='competitions'>
           <v-list-item-action>
-            <v-icon>fas fa-trophy</v-icon>
+            <v-icon>mdi-trophy-outline</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Mis competicones</v-list-item-title>
@@ -61,11 +68,6 @@ import constants from '../assets/constants/constants'
       ]
     }),
     methods: {
-      goTo(page) {
-        this.$router.push({
-          name: page
-        })
-      },
       logOut() {
         window.localStorage.removeItem('authUser')
         this.signOut()
