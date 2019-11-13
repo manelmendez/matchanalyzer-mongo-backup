@@ -2,7 +2,7 @@
   <v-content>
     <v-app-bar app fixed clipped-left collapse-on-scroll color="primary darken-1" class="elevation-0">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title><router-link to='/' class="toolbar-title">MatchAnalyzer</router-link></v-toolbar-title>
+      <v-toolbar-title @click="changeTheme">MatchAnalyzer</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-menu open-on-hover offset-y>
         <template v-slot:activator="{ on }">
@@ -57,6 +57,12 @@
 </template>
 <script>
 import { mapActions } from 'vuex'
+import red from '../assets/themes/red'
+import green from '../assets/themes/green'
+import deepPurple from '../assets/themes/deep-purple'
+import lightBlue from '../assets/themes/light-blue'
+import indigo from '../assets/themes/indigo'
+import teal from '../assets/themes/teal'
 import constants from '../assets/constants/constants'
   export default {
     name: "Layout",
@@ -65,7 +71,14 @@ import constants from '../assets/constants/constants'
       drawer: true,
       items: [
         { title: 'Sign Out' },
-      ]
+      ],
+      themes: [
+        {name:'red', value: red}, 
+        {name:'green', value: green}, 
+        {name:'indigo', value: indigo}, 
+        {name:'teal', value: teal}, 
+        {name:'lightBlue', value: lightBlue}, 
+        {name:'deepPurple', value: deepPurple}]
     }),
     methods: {
       logOut() {
@@ -77,7 +90,12 @@ import constants from '../assets/constants/constants'
       },
       ...mapActions("user",[
         'signOut',
-      ])
+      ]),
+      changeTheme() {
+        var randomTheme = this.themes[Math.floor(Math.random() * this.themes.length)];
+        window.localStorage.setItem('theme', randomTheme.name)
+        this.$vuetify.theme.themes.dark= randomTheme.value
+      }
     }
   }
 </script>

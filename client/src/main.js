@@ -12,6 +12,10 @@ import store from './store/store'
 import 'vuetify/dist/vuetify.min.css'
 import green from './assets/themes/green'
 import red from './assets/themes/red'
+import teal from './assets/themes/teal'
+import indigo from './assets/themes/indigo'
+import lightBlue from './assets/themes/light-blue'
+import deepPurple from './assets/themes/deep-purple'
 
 Vue.use(Vuetify)
 Vue.use(GSignInButton)
@@ -25,6 +29,13 @@ if (JSON.parse(window.localStorage.getItem('authUser'))!= null)
 {
   Vue.prototype.$axios.defaults.headers.common['Authorization'] = 'Bearer '+JSON.parse(window.localStorage.getItem('authUser')).token
 }
+let themeApp = green
+if (window.localStorage.getItem('theme')!= null) {
+  const storeTheme = window.localStorage.getItem('theme')
+  themeApp= storeTheme=='red'? red : storeTheme=='green'? green : 
+    storeTheme=='lightBlue'? lightBlue : storeTheme=='indigo'? indigo :
+    storeTheme=='teal'? teal : storeTheme=='deepPurple'? deepPurple : green
+}
 
 new Vue({
   el: '#app',
@@ -34,7 +45,8 @@ new Vue({
     theme: {
       dark: true,
       themes: {
-        dark: green
+        dark: themeApp,
+        light: red
       },
       options: {
         customProperties: true,
@@ -43,6 +55,8 @@ new Vue({
   }),
   beforeCreate() {
     //do something before creating vue instance
+    console.log(store);
+    
     this.$store.dispatch('user/initializeStore')    
   },
   render: (h) => h(App)
