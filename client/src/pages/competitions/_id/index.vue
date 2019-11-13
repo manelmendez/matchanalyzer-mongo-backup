@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-tabs
       centered
-      :background-color="constants.theme2.PRIMARY_COLOR"
+      background-color="primary darken-1"
       dark
       grow
       icons-and-text 

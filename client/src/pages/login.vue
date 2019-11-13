@@ -1,8 +1,9 @@
 <template>
   <v-content class="welcome-content">
-    <v-container grid-list-xl text-xs-center>
+    <v-container text-center>
+      <!-- LOGIN -->
       <v-row class="login" v-if="login" wrap justify="center">
-        <v-col cols="6">
+        <v-col lg="6" md="6" sm="10" xs="12">
           <v-card class="elevation-0">
             <v-toolbar dark color="primary" class="elevation-0">
               <v-toolbar-title>Iniciar sesión</v-toolbar-title>
@@ -38,10 +39,10 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <a style="padding-right:10px" @click="login=!login">Si aún no tienes cuenta</a>
+                <a class="info--text" style="padding-right:10px" @click="login=!login">Si aún no tienes cuenta</a>
                 <v-btn
                   depressed
-                  color="primary"
+                  color="info"
                   rounded
                   type="submit"
                   @click="submit"
@@ -67,10 +68,11 @@
           >Sign in with Facebook</fb-signin-button>
         </v-col>
       </v-row>
+      <!-- REGISTER -->
       <v-row v-else class="register" wrap justify="center">
-        <v-col cols="6">
-          <v-card class="elevation-12">
-            <v-toolbar dark color="primary">
+        <v-col lg="6" md="6" sm="10" xs="12">
+          <v-card class="elevation-0">
+            <v-toolbar dark color="primary" class="elevation-0">
               <v-toolbar-title>Registrarse</v-toolbar-title>
               <v-spacer></v-spacer>
             </v-toolbar>
@@ -97,13 +99,13 @@
                   prepend-icon="lock"
                   name="password"
                   label="Contraseña"
-                  type="password"
                   autocomplete="new-password"
                   hint="At least 8 characters"
                   v-model="password2"
                   min="8"
                   :append-icon="e2 ? 'visibility' : 'visibility_off'"
                   @click:append="() => (e2 = !e2)"
+                  :type="e2 ? 'password' : 'text'"
                   counter
                   :rules="passwordRules"
                   required
@@ -112,8 +114,8 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <a style="padding-right:10px" @click="login=!login">Volver a Inicio de Sesión</a>
-              <v-btn color="primary" @click="submit2" :disabled="!valid2">Registrarse</v-btn>
+              <a class="info--text" style="padding-right:10px" @click="login=!login">Volver a Inicio de Sesión</a>
+              <v-btn depressed rounded color="info" @click="submit2" :disabled="!valid2">Registrarse</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>

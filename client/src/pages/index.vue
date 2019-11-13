@@ -66,7 +66,7 @@ export default {
   height: 100%;
 }
 .group {
-  background-color: #424242;
+  background-color: var(--v-item-base);
   height: 50%;
 }
 </style>

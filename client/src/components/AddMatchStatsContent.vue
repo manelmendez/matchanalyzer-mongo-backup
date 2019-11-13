@@ -35,7 +35,7 @@
         <v-row class="text-center" justify="center" align="center" dense>
           Añadir jugadores:
           <v-btn class="ml-2" fab color="pink" x-small dark @click.stop="totalplayers+=1,players.push({})">
-            <i class="material-icons">add</i>
+            <v-icon class="material-icons">mdi-plus</v-icon>
           </v-btn>
         </v-row>
         <v-row dense>
@@ -78,7 +78,7 @@
         <v-row dense class="text-center" justify="center" align="center">
           Añadir goles:
           <v-btn class="ml-2" fab color="pink" x-small dark @click.stop="totalgoals+=1, goals.push({})">
-            <i class="material-icons">add</i>
+            <v-icon class="material-icons">mdi-plus</v-icon>
           </v-btn>
         </v-row>
         <v-row dense>
@@ -102,7 +102,7 @@
                   label="Jugador"></v-select>
               </v-col>
               <v-col>
-                <v-text-field dense outlined shaped label="Minute" :max="duration" class="centered-input ml-2" type="number" v-model="goals[i-1].minute" required></v-text-field>
+                <v-text-field dense outlined shaped label="Minuto" :max="duration" class="centered-input ml-2" type="number" v-model="goals[i-1].minute" required></v-text-field>
               </v-col>
             </v-row>
           </v-col>
@@ -114,7 +114,7 @@
         <v-row dense class="text-center" justify="center" align="center">
           Añadir tarjetas:
           <v-btn class="ml-2" fab color="pink" x-small dark @click.stop="totalcards+=1">
-            <i class="material-icons">add</i>
+            <v-icon class="material-icons">mdi-plus</v-icon>
           </v-btn>
         </v-row>
       </v-col>
@@ -124,7 +124,7 @@
         <v-row class="text-center" justify="center" align="center">
           Añadir cambios:
           <v-btn class="ml-2" fab color="pink" x-small dark @click.stop="totalchanges+=1">
-            <i class="material-icons">add</i>
+            <v-icon dense class="material-icons">mdi-plus</v-icon>
           </v-btn>
         </v-row>
       </v-col>
@@ -185,7 +185,7 @@ export default {
       players: [{}],
       goals: [{}],
       cards: [{}],
-      duration: 0
+      duration: null
     }
   },
   computed: {

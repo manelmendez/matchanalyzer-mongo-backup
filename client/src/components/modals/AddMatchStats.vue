@@ -34,7 +34,7 @@
         <v-row>
           <v-col class="text-center">
             <v-btn v-if="parts != 4" fab color="pink" dark @click.stop="parts=parts+1">
-              <i class="material-icons">add</i>
+              <v-icon class="material-icons">mdi-plus</v-icon>
             </v-btn>
           </v-col>
         </v-row>
