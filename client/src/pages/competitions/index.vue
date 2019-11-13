@@ -38,7 +38,7 @@
       <template v-slot:activator="{ on }">
         <v-btn
           fab
-          color="pink"
+          color="accent"
           dark
           bottom
           right
