@@ -1,6 +1,6 @@
 <template>
   <v-content>
-    <v-app-bar app fixed clipped-left collapse-on-scroll :color="constants.theme2.PRIMARY_COLOR" class="elevation-0">
+    <v-app-bar app fixed clipped-left collapse-on-scroll color="primary darken-1" class="elevation-0">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title><router-link to='/' class="toolbar-title">MatchAnalyzer</router-link></v-toolbar-title>
       <v-spacer></v-spacer>

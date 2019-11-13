@@ -10,6 +10,8 @@ import App from './App.vue'
 import store from './store/store'
 
 import 'vuetify/dist/vuetify.min.css'
+import green from './assets/themes/green'
+import red from './assets/themes/red'
 
 Vue.use(Vuetify)
 Vue.use(GSignInButton)
@@ -30,7 +32,13 @@ new Vue({
   store,
   vuetify: new Vuetify({
     theme: {
-      dark: true
+      dark: true,
+      themes: {
+        dark: green
+      },
+      options: {
+        customProperties: true,
+      },
     }
   }),
   beforeCreate() {

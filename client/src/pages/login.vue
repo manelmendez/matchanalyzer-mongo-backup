@@ -38,10 +38,10 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <a style="padding-right:10px" @click="login=!login">Si aún no tienes cuenta</a>
+                <a class="info--text" style="padding-right:10px" @click="login=!login">Si aún no tienes cuenta</a>
                 <v-btn
                   depressed
-                  color="primary"
+                  color="info"
                   rounded
                   type="submit"
                   @click="submit"
@@ -69,8 +69,8 @@
       </v-row>
       <v-row v-else class="register" wrap justify="center">
         <v-col cols="6">
-          <v-card class="elevation-12">
-            <v-toolbar dark color="primary">
+          <v-card class="elevation-0">
+            <v-toolbar dark color="primary" class="elevation-0">
               <v-toolbar-title>Registrarse</v-toolbar-title>
               <v-spacer></v-spacer>
             </v-toolbar>
@@ -112,8 +112,8 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <a style="padding-right:10px" @click="login=!login">Volver a Inicio de Sesión</a>
-              <v-btn color="primary" @click="submit2" :disabled="!valid2">Registrarse</v-btn>
+              <a class="info--text" style="padding-right:10px" @click="login=!login">Volver a Inicio de Sesión</a>
+              <v-btn color="info" @click="submit2" :disabled="!valid2">Registrarse</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
