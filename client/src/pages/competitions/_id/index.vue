@@ -8,7 +8,7 @@
       icons-and-text 
       color="white"
     >
-      <v-tabs-slider color="yellow"></v-tabs-slider>
+      <v-tabs-slider color="secondary"></v-tabs-slider>
       <v-tab class="compTab" to="summary">
         Resumen
         <v-icon>mdi-chart-line</v-icon>

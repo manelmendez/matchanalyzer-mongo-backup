@@ -54,9 +54,7 @@ new Vue({
     }
   }),
   beforeCreate() {
-    //do something before creating vue instance
-    console.log(store);
-    
+    //do something before creating vue instance    
     this.$store.dispatch('user/initializeStore')    
   },
   render: (h) => h(App)

@@ -6,7 +6,7 @@
         <v-card-text class="text-center">
           Aun no hay ninguna jornada disputada
           <br>
-          <v-btn fab color="pink" dark>
+          <v-btn fab color="accent" dark>
             <i class="material-icons" @click="createRound()">add</i>
           </v-btn>
         </v-card-text>
@@ -57,7 +57,7 @@
             </v-container>
           </v-col>
           <br>
-          <v-btn v-if="roundTeams.length != 0" fab color="pink" dark @click.stop="roundDialog=!roundDialog, roundType='new'">
+          <v-btn v-if="roundTeams.length != 0" fab color="accent" dark @click.stop="roundDialog=!roundDialog, roundType='new'">
             <i class="material-icons">add</i>
           </v-btn>
         </v-card-text>

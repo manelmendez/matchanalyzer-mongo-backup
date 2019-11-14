@@ -7,7 +7,7 @@
         lg="2"
         xl="1"
         v-for="team in competition.teams" :key="team._id">
-        <v-card class="teamCard" min-height="100%" @click.native.stop="goTo(team._id)">
+        <v-card class="teamCard d-flex flex-column" min-height="100%" @click.native.stop="goTo(team._id)">
           <v-col>
             <v-img 
               justify="center"
@@ -20,10 +20,11 @@
           <v-card-text class="title-card text-center grow">
             <b>{{team.name}}</b>
           </v-card-text>
-          <v-card-text class="text-center" v-if="competition.myTeam._id == team._id">
+          <v-card-text class="text-center" height="100%" v-if="competition.myTeam._id == team._id">
             Nº de jugadores: {{team.players.length}}  
           </v-card-text>
-          <v-card-actions v-if="competition.myTeam._id != team._id" class="actions">
+          <v-spacer></v-spacer>
+          <v-card-actions v-if="competition.myTeam._id != team._id">
             <v-spacer></v-spacer>
             <v-tooltip top>
               <template v-slot:activator="{ on }">
@@ -47,7 +48,7 @@
     </v-row>
     <v-btn
       fab
-      color="pink"
+      color="accent"
       dark
       bottom
       right
@@ -123,12 +124,6 @@ import DeleteDialog from '../../../components/modals/DeleteDialog'
 </script>
 <style>
 .teamCard{
-  cursor: pointer;
-}
-.uploadPhoto {
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(255, 209, 89, 0.44);
   cursor: pointer;
 }
 .title-card{

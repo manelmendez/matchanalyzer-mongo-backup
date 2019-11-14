@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="show" fullscreen hide-overlay transition="dialog-bottom-transition">
       <v-card>
-        <v-toolbar dark :color="constants.theme2.PRIMARY_COLOR">
+        <v-toolbar dark color="primary darken-1">
           <v-btn icon dark @click.native="close">
             <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -33,7 +33,7 @@
         </v-row>
         <v-row>
           <v-col class="text-center">
-            <v-btn v-if="parts != 4" fab color="pink" dark @click.stop="parts=parts+1">
+            <v-btn v-if="parts != 4" fab color="accent" dark @click.stop="parts=parts+1">
               <v-icon class="material-icons">mdi-plus</v-icon>
             </v-btn>
           </v-col>
@@ -59,11 +59,6 @@ export default {
       constants: constants,
       parts:1,
       
-    }
-  },
-  methods: {
-    close() {
-      this.$emit('close')
     }
   },
   created(){
